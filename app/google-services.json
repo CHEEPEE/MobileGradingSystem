@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "345531015638",
+    "firebase_url": "https://classrecordsystem-f6067.firebaseio.com",
+    "project_id": "classrecordsystem-f6067",
+    "storage_bucket": "classrecordsystem-f6067.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345531015638:android:d611e01494239c3a",
+        "android_client_info": {
+          "package_name": "com.mobilegradingsystem.mobilegradingsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345531015638-37ukonro0jied3d18cvf4hsdus16ae3e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobilegradingsystem.mobilegradingsystem",
+            "certificate_hash": "7c459a08b1abaca944ad265fe7cba80b03505d2c"
+          }
+        },
+        {
+          "client_id": "345531015638-jj70j46hullto4effdgd1ujd93cfvefv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE4UqnsMPfv2RPwI5uDe49exA7BKLBJEE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345531015638-jj70j46hullto4effdgd1ujd93cfvefv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
