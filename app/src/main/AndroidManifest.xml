@@ -27,7 +27,9 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".student.StudentRegistration" />
-        <activity android:name=".student.StudentProfile"></activity>
+        <activity android:name=".student.StudentProfile" />
+        <activity android:name=".teacher.TeacherRegistration" />
+        <activity android:name=".teacher.TeacherProfile"></activity>
     </application>
 
 </manifest>

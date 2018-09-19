@@ -59,7 +59,7 @@ public class StudentRegistration extends AppCompatActivity {
         fname = (EditText) findViewById(R.id.fName);
         mName = (EditText) findViewById(R.id.mName);
         lName = (EditText) findViewById(R.id.lName);
-        studentId = (EditText) findViewById(R.id.studentId);
+        studentId = (EditText) findViewById(R.id.className);
         saveInfo = (TextView) findViewById(R.id.saveInfo);
 
 

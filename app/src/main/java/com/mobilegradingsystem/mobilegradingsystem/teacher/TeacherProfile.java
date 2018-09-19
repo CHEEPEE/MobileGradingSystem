@@ -1,4 +1,4 @@
-package com.mobilegradingsystem.mobilegradingsystem.student;
+package com.mobilegradingsystem.mobilegradingsystem.teacher;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,16 +6,15 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.util.Util;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -28,42 +27,40 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.mobilegradingsystem.mobilegradingsystem.Login;
 import com.mobilegradingsystem.mobilegradingsystem.R;
-import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.ProgramsRecyclerViewAdapter;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherProfileProfileObjectModel;
 
 import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class StudentProfile extends AppCompatActivity {
+public class TeacherProfile extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth mAuth;
-    TextView studentName;
-    StudentProfileProfileObjectModel studentProfileProfileObjectModel;
+    TextView teacherName,addClass;
+    TeacherProfileProfileObjectModel teacherProfileProfileObjectModel;
     UserProfileObjectModel userProfileObjectModel;
     CircleImageView accountImage;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_profile);
-        studentName = (TextView) findViewById(R.id.StudentName);
+        setContentView(R.layout.activity_teacher_profile);
+        teacherName = (TextView) findViewById(R.id.StudentName);
         accountImage = (CircleImageView) findViewById(R.id.account_image);
+        addClass = (TextView) findViewById(R.id.addClass);
         mAuth = FirebaseAuth.getInstance();
-        context = StudentProfile.this;
+        context = TeacherProfile.this;
         db = FirebaseFirestore.getInstance();
 
-        db.collection(Utils.studentProfile).document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("teacherProfile").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                studentProfileProfileObjectModel = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
-                studentName.setText(
-                        studentProfileProfileObjectModel.getfName()+" "+studentProfileProfileObjectModel.getlName()
-
+                teacherProfileProfileObjectModel = documentSnapshot.toObject(TeacherProfileProfileObjectModel.class);
+                teacherName.setText(
+                        teacherProfileProfileObjectModel.getTeacherName()
                 );
             }
         });
@@ -82,8 +79,15 @@ public class StudentProfile extends AppCompatActivity {
                 profileSettings();
             }
         });
-    }
+        addClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addClass();
+            }
+        });
 
+
+    }
     void profileSettings(){
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -102,7 +106,18 @@ public class StudentProfile extends AppCompatActivity {
                 signOut();
             }
         });
+    }
 
+    void addClass(){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dlg_add_class_subject);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        EditText className,schedule,description;
+        dialog.show();
     }
 
     private void signOut(){

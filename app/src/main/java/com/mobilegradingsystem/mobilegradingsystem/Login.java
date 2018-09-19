@@ -31,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentRegistration;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherProfile;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherRegistration;
 
 import javax.annotation.Nullable;
 
@@ -107,30 +109,52 @@ public class Login extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             System.out.println(user);
-
+//                            check user type
                             FirebaseFirestore.getInstance()
                                     .collection("users").document(mAuth.getUid())
                                     .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                 @Override
                                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                                     if (documentSnapshot.getData()!=null){
+//                                        if user type == student
                                         if (documentSnapshot.getData().get("userType").toString().equals("student")){
                                             FirebaseFirestore.getInstance()
                                                     .collection("studentProfile")
                                                     .document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                                 @Override
                                                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+//                                                   check if user is registered
                                                     if (documentSnapshot.getData()!=null){
                                                         Intent i = new Intent(Login.this, StudentProfile.class);
                                                         startActivity(i);
                                                         finish();
                                                     }else {
+//                                                        the user has not been registered
                                                         Intent i = new Intent(Login.this,StudentRegistration.class);
                                                         startActivity(i);
                                                         finish();
                                                     }
                                                 }
                                             });
+                                        }else {
+//                                            else user is a teacher
+                                            FirebaseFirestore.getInstance()
+                                                    .collection("teacherProfile")
+                                                    .document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                                    if (documentSnapshot.getData()!=null){
+                                                        Intent i = new Intent(Login.this, TeacherProfile.class);
+                                                        startActivity(i);
+                                                        finish();
+                                                    }else {
+                                                        Intent i = new Intent(Login.this,TeacherRegistration.class);
+                                                        startActivity(i);
+                                                        finish();
+                                                    }
+                                                }
+                                            });
+
                                         }
                                     }else {
                                         selectUserTypeDialog();
@@ -187,6 +211,30 @@ public class Login extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
 
                                 Intent i = new Intent(Login.this,StudentRegistration.class);
+                                startActivity(i);
+                                finish();
+                                dialog.dismiss();
+                            }
+                        });
+            }
+        });
+        dialog.findViewById(R.id.teacher).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserProfileObjectModel userProfileObjectModel
+                        = new UserProfileObjectModel(mAuth.getUid(),
+                        mAuth.getCurrentUser().getPhotoUrl().toString(),
+                        mAuth.getCurrentUser().getDisplayName(),
+                        mAuth.getCurrentUser().getPhoneNumber(),
+                        mAuth.getCurrentUser().getEmail(),"teacher");
+                FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(mAuth.getUid()).set(userProfileObjectModel)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                Intent i = new Intent(Login.this,TeacherRegistration.class);
                                 startActivity(i);
                                 finish();
                                 dialog.dismiss();

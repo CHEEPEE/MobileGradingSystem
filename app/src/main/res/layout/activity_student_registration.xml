@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/studentId"
+        android:id="@+id/className"
         style="@style/TextInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -40,9 +40,9 @@
         android:layout_marginTop="16dp"
         android:hint="First Name"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/studentId"
-        app:layout_constraintStart_toStartOf="@+id/studentId"
-        app:layout_constraintTop_toBottomOf="@+id/studentId" />
+        app:layout_constraintEnd_toEndOf="@+id/className"
+        app:layout_constraintStart_toStartOf="@+id/className"
+        app:layout_constraintTop_toBottomOf="@+id/className" />
 
     <EditText
         android:id="@+id/mName"
@@ -52,7 +52,7 @@
         android:layout_marginTop="16dp"
         android:hint="Middle Name"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@id/studentId"
+        app:layout_constraintEnd_toEndOf="@id/className"
         app:layout_constraintStart_toStartOf="@+id/fName"
         app:layout_constraintTop_toBottomOf="@+id/fName" />
 
@@ -64,7 +64,7 @@
         android:layout_marginTop="16dp"
         android:hint="Last Name"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@id/studentId"
+        app:layout_constraintEnd_toEndOf="@id/className"
         app:layout_constraintStart_toStartOf="@+id/mName"
         app:layout_constraintTop_toBottomOf="@+id/mName" />
 
