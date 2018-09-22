@@ -17,7 +17,7 @@ public class DepartmentObjectModel {
     ){
         this.department = department;
         this.key = key;
-        this.key = key;
+
     }
 
 

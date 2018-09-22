@@ -44,7 +44,7 @@ public class TeacherRegistration extends AppCompatActivity {
         TeacherProfileProfileObjectModel teacherProfileProfileObjectModel =
                 new TeacherProfileProfileObjectModel(mAuth.getUid(),
                         teacherid.getText().toString(),
-                        teacherName.getText().toString());
+                        teacherName.getText().toString(),"pending");
 
         db.collection("teacherProfile")
                 .document(mAuth.getUid()).set(teacherProfileProfileObjectModel)

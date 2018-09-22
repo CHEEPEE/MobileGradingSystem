@@ -29,7 +29,12 @@
         <activity android:name=".student.StudentRegistration" />
         <activity android:name=".student.StudentProfile" />
         <activity android:name=".teacher.TeacherRegistration" />
-        <activity android:name=".teacher.TeacherProfile"></activity>
+        <activity android:name=".teacher.TeacherProfile" />
+        <activity android:name=".student.ClassProfile" />
+        <activity android:name=".teacher.ClassProfileTeacherAct" />
+        <activity
+            android:name=".teacher.ClssProfileTeacherBotNav"
+            android:label="@string/title_activity_clss_profile_teacher_bot_nav"></activity>
     </application>
 
 </manifest>

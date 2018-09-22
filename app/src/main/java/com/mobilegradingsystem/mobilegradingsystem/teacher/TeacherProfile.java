@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,17 +21,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.Login;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherProfileProfileObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.ClassTeacherRecyclerViewAdapter;
+
+import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
@@ -43,6 +52,10 @@ public class TeacherProfile extends AppCompatActivity {
     UserProfileObjectModel userProfileObjectModel;
     CircleImageView accountImage;
     Context context;
+    Dialog addClassDialog;
+    RecyclerView classList;
+    ClassTeacherRecyclerViewAdapter classTeacherRecyclerViewAdapter;
+    ArrayList<TeacherClassObjectModel> teacherClassObjectModelArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,7 @@ public class TeacherProfile extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_profile);
         teacherName = (TextView) findViewById(R.id.StudentName);
         accountImage = (CircleImageView) findViewById(R.id.account_image);
+        classList = (RecyclerView) findViewById(R.id.classList);
         addClass = (TextView) findViewById(R.id.addClass);
         mAuth = FirebaseAuth.getInstance();
         context = TeacherProfile.this;
@@ -85,8 +99,22 @@ public class TeacherProfile extends AppCompatActivity {
                 addClass();
             }
         });
-
-
+        getClassList();
+    }
+    void  getClassList(){
+        classTeacherRecyclerViewAdapter = new ClassTeacherRecyclerViewAdapter(context,teacherClassObjectModelArrayList);
+        classList.setLayoutManager(new LinearLayoutManager(context));
+        classList.setAdapter(classTeacherRecyclerViewAdapter);
+        db.collection("class").whereEqualTo("userId",mAuth.getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                teacherClassObjectModelArrayList.clear();
+                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                    teacherClassObjectModelArrayList.add(documentSnapshot.toObject(TeacherClassObjectModel.class));
+                }
+                classTeacherRecyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
     }
     void profileSettings(){
         final Dialog dialog = new Dialog(context);
@@ -109,17 +137,41 @@ public class TeacherProfile extends AppCompatActivity {
     }
 
     void addClass(){
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.dlg_add_class_subject);
-        Window window = dialog.getWindow();
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        addClassDialog = new Dialog(context);
+        addClassDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        addClassDialog.setCancelable(true);
+        addClassDialog.setContentView(R.layout.dlg_add_class_subject);
+        Window window = addClassDialog.getWindow();
+        addClassDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        EditText className,schedule,description;
-        dialog.show();
+        final EditText className,schedule,description;
+        addClassDialog.show();
+        className = (EditText) addClassDialog.findViewById(R.id.className);
+        schedule = (EditText) addClassDialog.findViewById(R.id.schedule);
+        description = (EditText) addClassDialog.findViewById(R.id.desciption);
+        addClassDialog.findViewById(R.id.saveClass).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveClass(className.getText().toString(),
+                        schedule.getText().toString(),
+                        description.getText().toString());
+            }
+        });
     }
 
+    void saveClass(String name,String schedule,String description){
+        String key  = db.collection("class").document().getId();
+
+        TeacherClassObjectModel teacherClassObjectModel =
+                new TeacherClassObjectModel(key,mAuth.getUid(),name,schedule,description);
+        db.collection("class").document(key).set(teacherClassObjectModel)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        addClassDialog.dismiss();
+                    }
+                });
+    }
     private void signOut(){
         GoogleSignInClient mGoogleSignInClient ;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

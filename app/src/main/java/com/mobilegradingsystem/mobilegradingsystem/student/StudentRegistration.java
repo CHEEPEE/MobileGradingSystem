@@ -162,6 +162,7 @@ public class StudentRegistration extends AppCompatActivity {
                 ,mName.getText().toString()
                 ,lName.getText().toString()
                 ,studentId.getText().toString()
+                ,"pending"
         );
         db.collection(Utils.studentProfile).document(mAuth.getUid()).set(studentProfileProfileObjectModel)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
