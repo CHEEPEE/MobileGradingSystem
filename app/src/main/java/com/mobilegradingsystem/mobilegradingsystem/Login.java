@@ -44,6 +44,13 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private TextView getstarted;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        signIn();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

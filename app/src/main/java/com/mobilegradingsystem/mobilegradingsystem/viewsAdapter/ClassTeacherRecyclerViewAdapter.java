@@ -13,6 +13,7 @@ import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassProfileTeacherAct;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
 
 import org.w3c.dom.Text;
 
@@ -64,7 +65,7 @@ public class ClassTeacherRecyclerViewAdapter
         holder.viewClassProrfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, ClassProfileTeacherAct.class);
+                Intent i = new Intent(context, ClssProfileTeacherBotNav.class);
                 i.putExtra("classKey",teacherClassObjectModel.getClassKey());
                 context.startActivity(i);
             }
