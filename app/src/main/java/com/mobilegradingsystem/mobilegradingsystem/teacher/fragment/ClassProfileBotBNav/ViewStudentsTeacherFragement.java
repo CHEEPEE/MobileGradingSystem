@@ -1,4 +1,4 @@
-package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment;
+package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

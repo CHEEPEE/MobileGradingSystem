@@ -1,4 +1,4 @@
-package com.mobilegradingsystem.mobilegradingsystem.teacher;
+package com.mobilegradingsystem.mobilegradingsystem.student;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,12 +12,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.student.fragmentClassProfileBotNav.AnnouncementClassStudentFragement;
+import com.mobilegradingsystem.mobilegradingsystem.student.fragmentClassProfileBotNav.DashboardClassStudentFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.AnnouncementTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.DashboardClassTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.ViewStudentsTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.ViewPagerAdapter;
 
-public class ClssProfileTeacherBotNav extends AppCompatActivity {
+public class ClssProfileStudentBotNav extends AppCompatActivity {
 
     private TextView mTextMessage;
     ViewPager viewPager;
@@ -28,9 +30,8 @@ public class ClssProfileTeacherBotNav extends AppCompatActivity {
     Context context;
     Dialog dialog;
     String classKey;
-    ViewStudentsTeacherFragement viewStudentsTeacherFragement;
-    AnnouncementTeacherFragement announcementTeacherFragement;
-    DashboardClassTeacherFragement dashboardClassTeacherFragement;
+    DashboardClassStudentFragement dashboardClassStudentFragement;
+    AnnouncementClassStudentFragement announcementClassStudentFragement;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -45,7 +46,7 @@ public class ClssProfileTeacherBotNav extends AppCompatActivity {
                     viewPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_notifications:
-                    viewPager.setCurrentItem(2);
+
                     return true;
             }
             return false;
@@ -56,7 +57,7 @@ public class ClssProfileTeacherBotNav extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clss_profile_teacher_bot_nav);
-        context = ClssProfileTeacherBotNav.this;
+        context = ClssProfileStudentBotNav.this;
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -104,12 +105,10 @@ public class ClssProfileTeacherBotNav extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewStudentsTeacherFragement = new ViewStudentsTeacherFragement();
-        announcementTeacherFragement = new AnnouncementTeacherFragement();
-        dashboardClassTeacherFragement = new DashboardClassTeacherFragement();
-        adapter.addFragment(dashboardClassTeacherFragement);
-        adapter.addFragment(announcementTeacherFragement);
-        adapter.addFragment(viewStudentsTeacherFragement);
+        dashboardClassStudentFragement = new DashboardClassStudentFragement();
+        announcementClassStudentFragement = new AnnouncementClassStudentFragement();
+        adapter.addFragment(dashboardClassStudentFragement);
+        adapter.addFragment(announcementClassStudentFragement);
 
         viewPager.setAdapter(adapter);
     }

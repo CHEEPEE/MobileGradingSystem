@@ -1,5 +1,7 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
@@ -31,7 +35,7 @@ public class ClassTeacherRecyclerViewAdapter
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
       public TextView className,sched,des,accessCode;
-      public ImageView viewClassProrfile;
+      public ImageView viewClassProrfile,copyCode;
         public MyViewHolder(View view){
             super(view);
             className = (TextView) view.findViewById(R.id.className);
@@ -39,6 +43,7 @@ public class ClassTeacherRecyclerViewAdapter
             des = (TextView) view.findViewById(R.id.des);
             accessCode = (TextView) view.findViewById(R.id.accessCode);
             viewClassProrfile = (ImageView) view.findViewById(R.id.viewClassProrfile);
+            copyCode = (ImageView) view.findViewById(R.id.copyCode);
         }
     }
 
@@ -70,8 +75,13 @@ public class ClassTeacherRecyclerViewAdapter
                 context.startActivity(i);
             }
         });
+        holder.copyCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                copyToClibBoard(teacherClassObjectModel.getClassKey());
+            }
+        });
     }
-
     @Override
     public int getItemCount() {
         return teacherClassObjectModelArrayList.size();
@@ -89,6 +99,13 @@ public class ClassTeacherRecyclerViewAdapter
 
     private void addMenuDialog(){
 
+    }
+
+    void copyToClibBoard(String code){
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("userId", code);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(context,"Copy to Clipboard "+code,Toast.LENGTH_SHORT).show();
     }
 }
 

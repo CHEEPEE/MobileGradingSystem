@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_margin="8dp"
-    android:background="@drawable/class_bg"
     android:padding="16dp"
     android:layout_height="wrap_content">
 
@@ -45,11 +44,11 @@
         android:layout_marginTop="16dp"
         android:text="Access Code"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintEnd_toStartOf="@+id/copyCode"
         app:layout_constraintTop_toBottomOf="@+id/des" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/copyCode"
         style="@style/defaultButtonStyle"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -81,13 +80,25 @@
         style="@style/defaultButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:padding="10dp"
         android:src="@drawable/ic_arrow_forward_black_24dp"
         android:tint="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorLightGrey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/des"
+        app:layout_constraintTop_toBottomOf="@+id/viewClassProrfile" />
+
 </android.support.constraint.ConstraintLayout>

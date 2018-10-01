@@ -35,6 +35,7 @@
         <activity
             android:name=".teacher.ClssProfileTeacherBotNav"
             android:label="@string/title_activity_clss_profile_teacher_bot_nav"></activity>
+        <activity android:name=".student.ClssProfileStudentBotNav"/>
     </application>
 
 </manifest>

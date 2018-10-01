@@ -233,7 +233,10 @@ public class StudentProfile extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                                         if (documentSnapshot.getData().get("accountStatus").equals("active")){
-                                            db.collection("studentClasses").whereEqualTo("classCode",inptClassCode.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            db.collection("studentClasses")
+                                                    .whereEqualTo("classCode",inptClassCode.getText().toString())
+                                                    .whereEqualTo("studentUserId",mAuth.getUid())
+                                                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     if (queryDocumentSnapshots.getDocuments().size() == 0){

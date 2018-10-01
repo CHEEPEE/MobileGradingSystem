@@ -1,4 +1,4 @@
-package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment;
+package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -21,10 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.AnnoucementListTeacherRecyclerViewAdapter;
-import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentListTeacherRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
@@ -146,7 +143,6 @@ public class AnnouncementTeacherFragement extends Fragment {
                 annoucementListTeacherRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
 }
