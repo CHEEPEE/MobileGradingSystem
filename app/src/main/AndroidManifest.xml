@@ -34,8 +34,9 @@
         <activity android:name=".teacher.ClassProfileTeacherAct" />
         <activity
             android:name=".teacher.ClssProfileTeacherBotNav"
-            android:label="@string/title_activity_clss_profile_teacher_bot_nav"></activity>
-        <activity android:name=".student.ClssProfileStudentBotNav"/>
+            android:label="@string/title_activity_clss_profile_teacher_bot_nav" />
+        <activity android:name=".student.ClssProfileStudentBotNav" />
+        <activity android:name=".student.FeedBackAct"></activity>
     </application>
 
 </manifest>

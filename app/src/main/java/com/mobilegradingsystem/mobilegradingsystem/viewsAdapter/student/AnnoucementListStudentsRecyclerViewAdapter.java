@@ -1,6 +1,7 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.student;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.student.FeedBackAct;
 
 import java.util.ArrayList;
 
@@ -24,14 +26,14 @@ public class AnnoucementListStudentsRecyclerViewAdapter
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title,description,date;
+        public TextView title,description,date,feedBack;
 
         public MyViewHolder(View view){
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             description = (TextView) view.findViewById(R.id.description);
             date = (TextView) view.findViewById(R.id.date);
-
+            feedBack = (TextView) view.findViewById(R.id.feedBack);
         }
     }
 
@@ -54,7 +56,14 @@ public class AnnoucementListStudentsRecyclerViewAdapter
         holder.title.setText(announcementObjectModel.getTitle());
         holder.description.setText(announcementObjectModel.getDescription());
         holder.date.setText(announcementObjectModel.getTimeStamp()+"");
-
+        holder.feedBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, FeedBackAct.class);
+                i.putExtra("key",announcementObjectModel.getKey());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

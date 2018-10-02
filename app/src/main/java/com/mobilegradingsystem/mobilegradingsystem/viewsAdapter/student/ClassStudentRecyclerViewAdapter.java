@@ -80,7 +80,6 @@ public class ClassStudentRecyclerViewAdapter
             }
         });
 
-
     }
 
     @Override
