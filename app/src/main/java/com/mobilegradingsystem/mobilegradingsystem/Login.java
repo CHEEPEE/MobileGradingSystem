@@ -1,6 +1,7 @@
 package com.mobilegradingsystem.mobilegradingsystem;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -253,6 +254,12 @@ public class Login extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
+            }
+        });
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
             }
         });
     }

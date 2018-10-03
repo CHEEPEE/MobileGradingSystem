@@ -2,6 +2,7 @@ package com.mobilegradingsystem.mobilegradingsystem.student;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -152,6 +153,7 @@ public class StudentRegistration extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
     }
     void saveProfile(){
         StudentProfileProfileObjectModel studentProfileProfileObjectModel
