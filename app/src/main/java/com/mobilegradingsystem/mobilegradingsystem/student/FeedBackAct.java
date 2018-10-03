@@ -89,6 +89,7 @@ public class FeedBackAct extends AppCompatActivity {
                         feedBackAnnouncementObjectModelArrayList.add(feedBackAnnouncementObjectModel);
                     }
                     feedBackListStudentsRecyclerViewAdapter.notifyDataSetChanged();
+                    feedBackList.scrollToPosition(feedBackAnnouncementObjectModelArrayList.size());
             }
         });
     }

@@ -21,6 +21,7 @@
         <item name="android:elevation">5dp</item>
         <item name="android:background">@drawable/btn_bg</item>
         <item name="android:paddingTop">8dp</item>
+        <item name="android:tint">@color/colorAccent</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
@@ -35,8 +36,8 @@
 
     <style name="TextInput">
         <item name="android:background">@drawable/input_bg</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorGrey</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">20dp</item>

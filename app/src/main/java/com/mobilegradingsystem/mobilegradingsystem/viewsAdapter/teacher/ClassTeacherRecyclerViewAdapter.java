@@ -1,5 +1,6 @@
-package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter;
+package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -8,18 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassProfileTeacherAct;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class ClassTeacherRecyclerViewAdapter
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
       public TextView className,sched,des,accessCode;
-      public ImageView viewClassProrfile,copyCode;
+      public ImageView viewClassProrfile,copyCode,showCode;
         public MyViewHolder(View view){
             super(view);
             className = (TextView) view.findViewById(R.id.className);
@@ -44,6 +44,7 @@ public class ClassTeacherRecyclerViewAdapter
             accessCode = (TextView) view.findViewById(R.id.accessCode);
             viewClassProrfile = (ImageView) view.findViewById(R.id.viewClassProrfile);
             copyCode = (ImageView) view.findViewById(R.id.copyCode);
+            showCode = (ImageView) view.findViewById(R.id.showCode);
         }
     }
 
@@ -81,6 +82,12 @@ public class ClassTeacherRecyclerViewAdapter
                 copyToClibBoard(teacherClassObjectModel.getClassKey());
             }
         });
+        holder.showCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewQRCode(teacherClassObjectModel.getClassKey());
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -106,6 +113,21 @@ public class ClassTeacherRecyclerViewAdapter
         ClipData clip = ClipData.newPlainText("userId", code);
         clipboard.setPrimaryClip(clip);
         Toast.makeText(context,"Copy to Clipboard "+code,Toast.LENGTH_SHORT).show();
+    }
+
+    void viewQRCode(String code){
+        final Dialog dialog = new Dialog(context);
+        String api = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_class_qr_code);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.show();
+        ImageView qrCode = (ImageView) dialog.findViewById(R.id.qrCode);
+        GlideApp.with(context).load(api+code).diskCacheStrategy(DiskCacheStrategy.ALL).into(qrCode);
+
     }
 }
 

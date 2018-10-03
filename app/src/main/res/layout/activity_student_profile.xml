@@ -54,22 +54,42 @@
             android:id="@+id/addClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:drawablePadding="5dp"
             android:drawableStart="@drawable/ic_add_black_24dp"
             android:gravity="center"
-            android:text="Add Class/Subject" />
+            android:text="Add Class/Subject"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/ic_outline_center_focus_strong_24px"
+            android:gravity="center"
+            android:text="Scan QR Code"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addClass" />
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
         android:id="@+id/menu"
         style="@style/defaultButtonStyle"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="32dp"
         android:padding="10dp"
         android:src="@drawable/ic_menu_black_24dp"
-        android:tint="@color/colorWhite"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

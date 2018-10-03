@@ -1,6 +1,7 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectMod
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.student.FeedBackAct;
 
 import java.util.ArrayList;
 
@@ -37,12 +39,13 @@ public class AnnoucementListTeacherRecyclerViewAdapter
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title,description;
+        public TextView title,description,feedBack;
 
         public MyViewHolder(View view){
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            description = (TextView) view.findViewById(R.id.desciption);
+            description = (TextView) view.findViewById(R.id.description);
+            feedBack = (TextView) view.findViewById(R.id.feedBack);
         }
     }
 
@@ -64,6 +67,14 @@ public class AnnoucementListTeacherRecyclerViewAdapter
         final AnnouncementObjectModel announcementObjectModel = announcementObjectModelArrayList.get(position);
         holder.title.setText(announcementObjectModel.getTitle());
         holder.description.setText(announcementObjectModel.getDescription());
+        holder.feedBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, FeedBackAct.class);
+                i.putExtra("key",announcementObjectModel.getKey());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

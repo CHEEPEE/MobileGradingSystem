@@ -40,12 +40,12 @@
         style="@style/TextInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:text="Access Code"
         android:textColor="@color/colorGrey"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/copyCode"
+        app:layout_constraintEnd_toStartOf="@+id/showCode"
         app:layout_constraintTop_toBottomOf="@+id/des" />
 
     <ImageView
@@ -61,6 +61,21 @@
         app:layout_constraintBottom_toBottomOf="@+id/accessCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/accessCode" />
+
+    <ImageView
+        android:id="@+id/showCode"
+        style="@style/defaultButtonStyle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+
+        android:padding="8dp"
+        android:src="@drawable/ic_outline_center_focus_strong_24px"
+        android:tint="@color/colorGrey"
+        app:layout_constraintBottom_toBottomOf="@+id/copyCode"
+        app:layout_constraintEnd_toStartOf="@+id/copyCode"
+        app:layout_constraintTop_toTopOf="@+id/copyCode"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView9"

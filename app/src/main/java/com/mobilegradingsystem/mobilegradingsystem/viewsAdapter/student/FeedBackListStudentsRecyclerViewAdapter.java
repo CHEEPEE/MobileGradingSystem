@@ -21,6 +21,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.FeedBackAnnouncem
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherProfileProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.FeedBackAct;
 
 import java.util.ArrayList;
@@ -66,11 +67,11 @@ public class FeedBackListStudentsRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        FeedBackAnnouncementObjectModel feedBackAnnouncementObjectModel = feedBackAnnouncementObjectModelArrayList.get(position);
+        final FeedBackAnnouncementObjectModel feedBackAnnouncementObjectModel = feedBackAnnouncementObjectModelArrayList.get(position);
         holder.description.setText(feedBackAnnouncementObjectModel.getFeedBack());
 
         FirebaseFirestore.getInstance().collection("users")
-                .document(FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                .document(feedBackAnnouncementObjectModel.getUserId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 UserProfileObjectModel userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
@@ -81,16 +82,27 @@ public class FeedBackListStudentsRecyclerViewAdapter
                         .into(holder.userAccountImage);
                 if (userProfileObjectModel.getUserType().equals("student")){
                     FirebaseFirestore.getInstance().collection("studentProfile")
-                            .document(FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            .document(feedBackAnnouncementObjectModel.getUserId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                             StudentProfileProfileObjectModel studentProfileProfileObjectModel = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
                             holder.userName.setText(studentProfileProfileObjectModel.getfName()+" "+studentProfileProfileObjectModel.getlName());
                         }
                     });
+                }else {
+                    FirebaseFirestore.getInstance().collection("teacherProfile")
+                            .document(feedBackAnnouncementObjectModel.getUserId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                            TeacherProfileProfileObjectModel teacherProfileProfileObjectModel = documentSnapshot.toObject(TeacherProfileProfileObjectModel.class);
+                            holder.userName.setText(teacherProfileProfileObjectModel.getTeacherName());
+                        }
+                    });
                 }
             }
         });
+
+
     }
 
     @Override
