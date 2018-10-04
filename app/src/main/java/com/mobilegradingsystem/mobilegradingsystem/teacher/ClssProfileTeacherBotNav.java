@@ -74,7 +74,6 @@ public class ClssProfileTeacherBotNav extends AppCompatActivity {
 
             }
 
-
             @Override
             public void onPageSelected(int position) {
                 if (prevMenuItem != null) {

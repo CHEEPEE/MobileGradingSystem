@@ -1,5 +1,6 @@
 package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassRecordActBotNav;
+
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
 
 import javax.annotation.Nullable;
@@ -50,6 +53,14 @@ public class DashboardClassTeacherFragement extends Fragment {
         getClassCredentials();
         getStudentNumbers();
         getAnnouncementsNumber();
+        view.findViewById(R.id.midterm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ClassRecordActBotNav.class);
+                getActivity().startActivity(i);
+            }
+        });
+
         return view;
     }
 

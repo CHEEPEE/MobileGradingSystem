@@ -38,7 +38,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:tint="@color/colorMidGrey"
+        android:tint="@color/colorAccent"
         android:layout_marginTop="32dp"
         android:src="@drawable/ic_supervisor_account_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,9 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-
         android:layout_marginTop="8dp"
-
         android:textColor="@color/colorMidGrey"
         android:textSize="30sp"
         android:text="25"
@@ -89,7 +87,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:tint="@color/colorMidGrey"
+        android:tint="@color/colorGreen"
         android:layout_marginTop="32dp"
         android:src="@drawable/ic_announcement_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,9 +111,7 @@
         style="@style/TextTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="8dp"
-
         android:layout_marginTop="8dp"
         android:text="123"
         android:textColor="@color/colorMidGrey"
@@ -123,7 +119,9 @@
         app:layout_constraintStart_toStartOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
+
     <View
+        android:id="@+id/view4"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginEnd="16dp"
@@ -133,6 +131,51 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/className"
         app:layout_constraintTop_toBottomOf="@+id/announcementsNumber" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_outline_table_chart_24px"
+        android:tint="@color/colorBlue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <TextView
+        android:id="@+id/textView13"
+        style="@style/TextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Class Record"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+    <TextView
+        android:id="@+id/midterm"
+        style="@style/defaultButtonStyle"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Midterm"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        style="@style/defaultButtonStyle"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Final"
+        app:layout_constraintStart_toEndOf="@+id/midterm"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
 
 </android.support.constraint.ConstraintLayout>
