@@ -144,7 +144,7 @@ public class TeacherProfile extends AppCompatActivity {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         final EditText className,schedule,description;
         addClassDialog.show();
-        className = (EditText) addClassDialog.findViewById(R.id.className);
+        className = (EditText) addClassDialog.findViewById(R.id.announcementTitle);
         schedule = (EditText) addClassDialog.findViewById(R.id.schedule);
         description = (EditText) addClassDialog.findViewById(R.id.desciption);
         addClassDialog.findViewById(R.id.saveClass).setOnClickListener(new View.OnClickListener() {

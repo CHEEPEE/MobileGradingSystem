@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Class Participation"
+        android:text="Exam"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/type" />
 
     <TextView
-        android:id="@+id/btnAddPar"
+        android:id="@+id/bntSetMaxScore"
         style="@style/defaultButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:drawableStart="@drawable/ic_add_black_24dp"
         android:drawableTint="@color/colorBlue"
         android:gravity="center"
-        android:text="Add Participation"
+        android:text="Set Max Score"
         app:layout_constraintBottom_toBottomOf="@+id/studentlist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

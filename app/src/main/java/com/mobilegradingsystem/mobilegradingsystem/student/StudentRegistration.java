@@ -2,7 +2,6 @@ package com.mobilegradingsystem.mobilegradingsystem.student;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,7 +59,7 @@ public class StudentRegistration extends AppCompatActivity {
         fname = (EditText) findViewById(R.id.fName);
         mName = (EditText) findViewById(R.id.mName);
         lName = (EditText) findViewById(R.id.lName);
-        studentId = (EditText) findViewById(R.id.className);
+        studentId = (EditText) findViewById(R.id.announcementTitle);
         saveInfo = (TextView) findViewById(R.id.saveInfo);
 
 

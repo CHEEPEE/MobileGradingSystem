@@ -38,7 +38,7 @@ public class ClassTeacherRecyclerViewAdapter
       public ImageView viewClassProrfile,copyCode,showCode;
         public MyViewHolder(View view){
             super(view);
-            className = (TextView) view.findViewById(R.id.className);
+            className = (TextView) view.findViewById(R.id.announcementTitle);
             sched = (TextView) view.findViewById(R.id.classSched);
             des = (TextView) view.findViewById(R.id.des);
             accessCode = (TextView) view.findViewById(R.id.accessCode);
@@ -127,7 +127,6 @@ public class ClassTeacherRecyclerViewAdapter
         dialog.show();
         ImageView qrCode = (ImageView) dialog.findViewById(R.id.qrCode);
         GlideApp.with(context).load(api+code).diskCacheStrategy(DiskCacheStrategy.ALL).into(qrCode);
-
     }
 }
 

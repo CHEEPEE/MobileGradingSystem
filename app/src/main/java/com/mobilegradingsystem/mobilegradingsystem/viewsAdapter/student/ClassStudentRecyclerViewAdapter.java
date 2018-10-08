@@ -16,7 +16,6 @@ import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.student.ClassProfile;
 import com.mobilegradingsystem.mobilegradingsystem.student.ClssProfileStudentBotNav;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class ClassStudentRecyclerViewAdapter
       public TextView className,sched,des,accessCode,vieClass;
         public MyViewHolder(View view){
             super(view);
-            className = (TextView) view.findViewById(R.id.className);
+            className = (TextView) view.findViewById(R.id.announcementTitle);
             sched = (TextView) view.findViewById(R.id.classSched);
             des = (TextView) view.findViewById(R.id.des);
             vieClass=  (TextView) view.findViewById(R.id.vieClass);
@@ -65,9 +64,13 @@ public class ClassStudentRecyclerViewAdapter
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 final TeacherClassObjectModel teacherClassObjectModel = documentSnapshot.toObject(TeacherClassObjectModel.class);
-                holder.className.setText(teacherClassObjectModel.getName());
-                holder.des.setText(teacherClassObjectModel.getDescription());
-                holder.sched.setText(teacherClassObjectModel.getSched());
+              try {
+                  holder.className.setText(teacherClassObjectModel.getName());
+                  holder.des.setText(teacherClassObjectModel.getDescription());
+                  holder.sched.setText(teacherClassObjectModel.getSched());
+              }catch (NullPointerException ex){
+
+              }
 
             }
         });
@@ -79,7 +82,6 @@ public class ClassStudentRecyclerViewAdapter
                 context.startActivity(i);
             }
         });
-
     }
 
     @Override

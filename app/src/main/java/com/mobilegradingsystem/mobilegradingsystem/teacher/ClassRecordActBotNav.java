@@ -14,6 +14,8 @@ import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfile
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.DashboardClassTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.ViewStudentsTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragmentClassRecord.ClassAttendanceFragement;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.fragmentClassRecord.ClassCharacterFragement;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.fragmentClassRecord.ClassExamFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragmentClassRecord.ClassGradeFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragmentClassRecord.ClassParticipationFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragmentClassRecord.ClassProjectsFragement;
@@ -30,12 +32,16 @@ public class ClassRecordActBotNav extends AppCompatActivity {
     ClassQuizzesLongTestFragement classQuizzesLongTestFragement;
     ClassGradeFragement classGradeFragement;
     ClassAttendanceFragement classAttendanceFragement;
+    ClassCharacterFragement classCharacterFragement;
+    ClassExamFragement classExamFragement;
     ViewPager viewPager;
     ViewPagerAdapter adapter;
+    String classKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_record_act_bot_nav);
+        classKey = getIntent().getExtras().getString("key");
         viewPager = (ViewPager) findViewById(R.id.viewpager) ;
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withMenuOpened(false)
@@ -68,14 +74,21 @@ public class ClassRecordActBotNav extends AppCompatActivity {
         classQuizzesLongTestFragement = new ClassQuizzesLongTestFragement();
         classParticipationFragement = new ClassParticipationFragement();
         classAttendanceFragement = new ClassAttendanceFragement();
+        classCharacterFragement = new ClassCharacterFragement();
+        classExamFragement = new ClassExamFragement();
 
+        adapter.addFragment(classCharacterFragement);
         adapter.addFragment(classAttendanceFragement);
         adapter.addFragment(classParticipationFragement);
         adapter.addFragment(classProjectsFragement);
         adapter.addFragment(classQuizzesLongTestFragement);
+        adapter.addFragment(classExamFragement);
         adapter.addFragment(classGradeFragement);
 
         viewPager.setAdapter(adapter);
+    }
+    public String getClassKey() {
+        return classKey;
     }
 
 }

@@ -18,26 +18,25 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassRecordActBotNav;
-import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentListTeacherRecyclerViewAdapter;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters.AttendanceClassRecordRecyclerViewAdapter;
-import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters.GradeStudentListTeacherRecyclerViewAdapter;
+import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters.CharacterClassRecordRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-public class ClassGradeFragement extends Fragment {
+public class ClassCharacterFragement extends Fragment {
     FirebaseFirestore db;
     ClassRecordActBotNav act;
     ArrayList<StudentClassObjectModel> studentList = new ArrayList<>();
-    GradeStudentListTeacherRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
+    CharacterClassRecordRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
     RecyclerView studentListRecyclerView;
     BottomSheetBehavior bottomSheetBehavior;
+
     TextView classRecordCategoryName;
 
-
-    public ClassGradeFragement(){
+    public ClassCharacterFragement(){
 
     }
 
@@ -47,13 +46,11 @@ public class ClassGradeFragement extends Fragment {
         // Inflate the layout for this fragment
         act = (ClassRecordActBotNav) getActivity();
         db = FirebaseFirestore.getInstance();
-        View view = inflater.inflate(R.layout.frag_class_participation, container, false);
-        classRecordCategoryName = (TextView) view.findViewById(R.id.type);
-        classRecordCategoryName.setText("Final Grade");
-        TextView btnAddPar = (TextView) view.findViewById(R.id.btnAddPar);
-        btnAddPar.setVisibility(View.INVISIBLE);
+        View view = inflater.inflate(R.layout.frag_class_record_character_attendance, container, false);
+        classRecordCategoryName = (TextView) view.findViewById(R.id.classRecordCategoryName);
+        classRecordCategoryName.setText("Character");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        studentListTeacherRecyclerViewAdapter = new GradeStudentListTeacherRecyclerViewAdapter(getActivity(),studentList);
+        studentListTeacherRecyclerViewAdapter = new CharacterClassRecordRecyclerViewAdapter(getActivity(),studentList);
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
 
@@ -73,6 +70,4 @@ public class ClassGradeFragement extends Fragment {
             }
         });
     }
-
-
 }

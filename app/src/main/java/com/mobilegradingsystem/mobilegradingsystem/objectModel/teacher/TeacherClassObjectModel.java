@@ -15,6 +15,7 @@ public class TeacherClassObjectModel {
     private String name;
     private String sched;
     private String description;
+    private String classRecordVersionKey;
     private @ServerTimestamp
     Date timeStamp;
 
@@ -35,10 +36,12 @@ public class TeacherClassObjectModel {
       this.name = name;
       this.sched = sched;
       this.description = description;
+      this.classRecordVersionKey = "4TYJW5v4LBujNmMCNEPs";
 
     }
 
-    public String getUserId() {
+    public String getUserId()
+    {
         return userId;
     }
 
@@ -62,5 +65,7 @@ public class TeacherClassObjectModel {
         return sched;
     }
 
-
+    public String getClassRecordVersionKey() {
+        return classRecordVersionKey;
+    }
 }

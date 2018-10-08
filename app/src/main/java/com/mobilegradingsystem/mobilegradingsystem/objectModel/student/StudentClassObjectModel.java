@@ -29,7 +29,6 @@ public class StudentClassObjectModel {
        this.classCode = classCode;
     }
 
-
     public String getStudentId() {
         return studentId;
     }

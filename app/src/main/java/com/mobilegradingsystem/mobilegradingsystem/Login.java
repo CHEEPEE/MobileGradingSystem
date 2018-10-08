@@ -226,8 +226,8 @@ public class Login extends AppCompatActivity {
 
                                 Intent i = new Intent(Login.this,StudentRegistration.class);
                                 startActivity(i);
-                                finish();
                                 dialog.dismiss();
+                                finish();
                             }
                         });
             }
@@ -250,8 +250,8 @@ public class Login extends AppCompatActivity {
 
                                 Intent i = new Intent(Login.this,TeacherRegistration.class);
                                 startActivity(i);
-                                finish();
                                 dialog.dismiss();
+                                finish();
                             }
                         });
             }

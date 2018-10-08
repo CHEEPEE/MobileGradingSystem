@@ -24,7 +24,7 @@ public class ClassProfileTeacherAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_profile_teacher);
-        className = (TextView) findViewById(R.id.className);
+        className = (TextView) findViewById(R.id.announcementTitle);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();

@@ -44,7 +44,7 @@ public class DashboardClassTeacherFragement extends Fragment {
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_dashboard_class_teacher, container, false);
         studentNumbers = (TextView) view.findViewById(R.id.studentNumbers);
-        className = (TextView) view.findViewById(R.id.className);
+        className = (TextView) view.findViewById(R.id.announcementTitle);
         announcementNumber = (TextView) view.findViewById(R.id.announcementsNumber);
         studentNumbers.setText(loading);
         className.setText(loading);
@@ -57,6 +57,7 @@ public class DashboardClassTeacherFragement extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ClassRecordActBotNav.class);
+                i.putExtra("key",act.getClassKey());
                 getActivity().startActivity(i);
             }
         });
@@ -89,6 +90,8 @@ public class DashboardClassTeacherFragement extends Fragment {
                 }
             });
     }
+
+
 
 
 }

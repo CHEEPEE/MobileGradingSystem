@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
@@ -132,7 +133,9 @@ public class AnnouncementTeacherFragement extends Fragment {
         annoucementListTeacherRecyclerViewAdapter = new AnnoucementListTeacherRecyclerViewAdapter(getActivity(),announcementObjectModelArrayList);
         announcementList.setLayoutManager(new LinearLayoutManager(getActivity()));
         announcementList.setAdapter(annoucementListTeacherRecyclerViewAdapter);
-        db.collection("announcement").whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("announcement").whereEqualTo("classCode",act.getClassKey())
+                .orderBy("timeStamp", Query.Direction.DESCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 announcementObjectModelArrayList.clear();
