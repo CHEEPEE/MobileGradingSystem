@@ -54,6 +54,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.mobilegradingsystem.mobilegradingsystem.Login;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.UpdateAccount;
 import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
@@ -177,6 +178,14 @@ public class StudentProfile extends AppCompatActivity {
                 signOut();
             }
         });
+        dialog.findViewById(R.id.profileSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, UpdateAccount.class);
+                startActivity(i);
+
+            }
+        });
 
     }
 
@@ -255,6 +264,7 @@ public class StudentProfile extends AppCompatActivity {
         dialog.show();
         final EditText inptClassCode = (EditText) dialog.findViewById(R.id.inptClassCode);
         final TextView saveClass = (TextView) dialog.findViewById(R.id.saveClass);
+
         saveClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,7 +289,7 @@ public class StudentProfile extends AppCompatActivity {
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     if (queryDocumentSnapshots.getDocuments().size() == 0){
                                                         String key = db.collection("studentClasses").document().getId();
-                                                        StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),inptClassCode.getText().toString(),studentProfileProfileObjectModel.getStudentId());
+                                                        StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),inptClassCode.getText().toString(),studentProfileProfileObjectModel.getStudentId(),"pending");
                                                         db.collection("studentClasses").document(key).set(studentClassObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
@@ -311,7 +321,6 @@ public class StudentProfile extends AppCompatActivity {
 
     void scanQRCode(){
        startScanning();
-
     }
 
     @Override
@@ -341,7 +350,7 @@ public class StudentProfile extends AppCompatActivity {
                                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                 if (queryDocumentSnapshots.getDocuments().size() == 0){
                                                     String key = db.collection("studentClasses").document().getId();
-                                                    StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),result.getContents(),studentProfileProfileObjectModel.getStudentId());
+                                                    StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),result.getContents(),studentProfileProfileObjectModel.getStudentId(),"pending");
                                                     db.collection("studentClasses").document(key).set(studentClassObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {

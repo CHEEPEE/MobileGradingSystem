@@ -49,7 +49,8 @@ public class ClassProjectListStudentsAct extends AppCompatActivity {
 
     }
     void getStudents(){
-        db.collection("studentClasses").whereEqualTo("classCode",classKey).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("studentClasses")
+                .whereEqualTo("status","approved").whereEqualTo("classCode",classKey).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 studentClassObjectModelArrayList.clear();

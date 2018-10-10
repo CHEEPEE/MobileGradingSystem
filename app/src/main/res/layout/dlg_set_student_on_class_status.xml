@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
+    android:layout_width="300dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/dialog_background"
     android:layout_gravity="center"
@@ -14,42 +14,30 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Input Student Grade"
+        android:layout_marginTop="8dp"
+        android:text="Approve Student?"
         android:textColor="@color/colorBlueGrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/inputGrade"
-        style="@style/TextInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message" />
-
     <TextView
         android:id="@+id/done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
+        android:drawablePadding="10dp"
         android:drawableStart="@drawable/ic_check_black_24dp"
         android:drawableTint="@color/colorGreen"
-        android:text="Done"
         android:gravity="center"
-        android:drawablePadding="10dp"
+        android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputGrade" />
+        app:layout_constraintTop_toBottomOf="@id/message" />
 
 </android.support.constraint.ConstraintLayout>

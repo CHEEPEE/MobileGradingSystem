@@ -139,9 +139,16 @@ public class Login extends AppCompatActivity {
                                                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 //                                                   check if user is registered
                                                     if (documentSnapshot.getData()!=null){
-                                                        Intent i = new Intent(Login.this, StudentProfile.class);
-                                                        startActivity(i);
-                                                        finish();
+                                                        if(documentSnapshot.get("accoutStatus").equals("pending")){
+                                                            Intent i = new Intent(Login.this, IfAccountIsPending.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        }else {
+                                                            Intent i = new Intent(Login.this, StudentProfile.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        }
+
                                                     }else {
 //                                                        the user has not been registered
                                                         Intent i = new Intent(Login.this,StudentRegistration.class);

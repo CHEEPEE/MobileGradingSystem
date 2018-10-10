@@ -1,5 +1,6 @@
 package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -11,6 +12,8 @@ import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -37,6 +40,7 @@ public class ViewStudentsTeacherFragement extends Fragment {
     StudentListTeacherRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
     RecyclerView studentListRecyclerView;
     BottomSheetBehavior bottomSheetBehavior;
+    String studentListFromRegistrar;
 
 
     public ViewStudentsTeacherFragement(){
@@ -56,6 +60,12 @@ public class ViewStudentsTeacherFragement extends Fragment {
         studentListTeacherRecyclerViewAdapter = new StudentListTeacherRecyclerViewAdapter(getActivity(),studentList);
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudentList();
+        view.findViewById(R.id.viewStudents).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getStudentsFromRegistrar();
+            }
+        });
         return view;
     }
     void getStudentList(){
@@ -71,4 +81,30 @@ public class ViewStudentsTeacherFragement extends Fragment {
             }
         });
     }
+
+    void getStudentsFromRegistrar(){
+
+        final Dialog dialog = new Dialog(getContext());
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dlg_student_from_registrar);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.show();
+        final TextView studentList = (TextView) dialog.findViewById(R.id.studentList);
+
+        db.collection("subjectStudentList").whereEqualTo("classKey",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                studentListFromRegistrar = "";
+                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                    studentListFromRegistrar+=documentSnapshot.get("studentName")+"\n";
+                }
+                studentList.setText(studentListFromRegistrar);
+            }
+        });
+    }
+
 }

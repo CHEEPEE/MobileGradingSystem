@@ -14,6 +14,7 @@ public class StudentClassObjectModel {
    private String studentUserId;
    private String studentId;
    private String classCode;
+   private String status;
    private @ServerTimestamp
     Date timeStamp;
 
@@ -21,12 +22,13 @@ public class StudentClassObjectModel {
     public StudentClassObjectModel(){
 
     }
-    public StudentClassObjectModel(String key, String studentUserId, String classCode, String studentId
+    public StudentClassObjectModel(String key, String studentUserId, String classCode, String studentId,String status
     ){
        this.key = key;
        this.studentUserId = studentUserId;
        this.studentId = studentId;
        this.classCode = classCode;
+       this.status = status;
     }
 
     public String getStudentId() {
@@ -47,5 +49,9 @@ public class StudentClassObjectModel {
 
     public Date getTimeStamp() {
         return timeStamp;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
