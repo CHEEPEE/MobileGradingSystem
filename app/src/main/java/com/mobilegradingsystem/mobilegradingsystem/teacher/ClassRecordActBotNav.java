@@ -37,11 +37,13 @@ public class ClassRecordActBotNav extends AppCompatActivity {
     ViewPager viewPager;
     ViewPagerAdapter adapter;
     String classKey;
+    String term;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_record_act_bot_nav);
         classKey = getIntent().getExtras().getString("key");
+        term = getIntent().getExtras().getString("term");
         viewPager = (ViewPager) findViewById(R.id.viewpager) ;
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withMenuOpened(false)
@@ -89,6 +91,9 @@ public class ClassRecordActBotNav extends AppCompatActivity {
     }
     public String getClassKey() {
         return classKey;
+    }
+    public String getTerm() {
+        return term;
     }
 
 }

@@ -10,6 +10,7 @@ public class TeacherProfileProfileObjectModel {
     private String teacherId;
     private String accountStatus;
 
+
     public TeacherProfileProfileObjectModel(){
 
     }
@@ -18,11 +19,13 @@ public class TeacherProfileProfileObjectModel {
             String teacherId,
             String teacherName,
             String accountStatus
+
     ){
       this.userId = userId;
       this.teacherId = teacherId;
       this.teacherName = teacherName;
       this.accountStatus = accountStatus;
+
     }
 
     public String getUserId() {

@@ -38,6 +38,7 @@ public class ClassParticipationFragement extends Fragment {
     BottomSheetBehavior bottomSheetBehavior;
     TextView btnAddPar;
 
+
     public ClassParticipationFragement(){
 
     }
@@ -51,7 +52,7 @@ public class ClassParticipationFragement extends Fragment {
         View view = inflater.inflate(R.layout.frag_class_participation, container, false);
 
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        participationClassRecordRecyclerViewAdapter = new ParticipationClassRecordRecyclerViewAdapter(getActivity(), participationCategoryGradeObjectModelArrayList);
+        participationClassRecordRecyclerViewAdapter = new ParticipationClassRecordRecyclerViewAdapter(getActivity(), participationCategoryGradeObjectModelArrayList,act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(participationClassRecordRecyclerViewAdapter);
         btnAddPar = (TextView) view.findViewById(R.id.btnAddPar);
@@ -78,7 +79,7 @@ public class ClassParticipationFragement extends Fragment {
         dialog.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ParticipationCategoryGradeObjectModel categoryGradeObjectModel = new ParticipationCategoryGradeObjectModel(key,act.getClassKey(),Integer.parseInt(maxScore.getText().toString()));
+                final ParticipationCategoryGradeObjectModel categoryGradeObjectModel = new ParticipationCategoryGradeObjectModel(key,act.getClassKey(),Integer.parseInt(maxScore.getText().toString()),act.getTerm());
                 db.collection("participationCategory").document(key).set(categoryGradeObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -94,14 +95,19 @@ public class ClassParticipationFragement extends Fragment {
     void getParticipationCategory(){
         db.collection("participationCategory")
                 .whereEqualTo("classCode",act.getClassKey())
+                .whereEqualTo("term",act.getTerm())
                 .orderBy("timeStamp", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 participationCategoryGradeObjectModelArrayList.clear();
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
-                    ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel = documentSnapshot.toObject(ParticipationCategoryGradeObjectModel.class);
-                    participationCategoryGradeObjectModelArrayList.add(participationCategoryGradeObjectModel);
+                try {
+                    for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                        ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel = documentSnapshot.toObject(ParticipationCategoryGradeObjectModel.class);
+                        participationCategoryGradeObjectModelArrayList.add(participationCategoryGradeObjectModel);
+                    }
+                }catch (NullPointerException ex){
+
                 }
                 participationClassRecordRecyclerViewAdapter.notifyDataSetChanged();
             }

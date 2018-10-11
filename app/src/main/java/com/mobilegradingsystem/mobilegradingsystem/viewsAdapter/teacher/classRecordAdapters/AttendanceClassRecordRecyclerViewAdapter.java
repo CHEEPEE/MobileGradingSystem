@@ -41,6 +41,7 @@ public class AttendanceClassRecordRecyclerViewAdapter
         extends RecyclerView.Adapter<AttendanceClassRecordRecyclerViewAdapter.MyViewHolder> {
     private ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
     private Context context;
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView studentName,grade;
@@ -56,10 +57,11 @@ public class AttendanceClassRecordRecyclerViewAdapter
         }
     }
 
-    public AttendanceClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels){
+    public AttendanceClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels,String term){
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context =c;
+        this.term = term;
     }
 
     @Override
@@ -100,6 +102,7 @@ public class AttendanceClassRecordRecyclerViewAdapter
         });
         db.collection("attendance")
                 .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
+                .whereEqualTo("term",term)
                 .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -154,7 +157,7 @@ public class AttendanceClassRecordRecyclerViewAdapter
                                           studentClassObjectModel.getStudentId(),
                                           studentClassObjectModel.getStudentUserId(),
                                           Double.parseDouble(inputGrade.getText().toString()),
-                                          studentClassObjectModel.getClassCode());
+                                          studentClassObjectModel.getClassCode(),term);
                           db.collection("attendance").document(key)
                                   .set(studentAttendenceCharacterClassObjectModel)
                                   .addOnSuccessListener(new OnSuccessListener<Void>() {

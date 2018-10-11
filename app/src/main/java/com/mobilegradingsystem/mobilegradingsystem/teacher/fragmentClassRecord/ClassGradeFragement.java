@@ -53,7 +53,7 @@ public class ClassGradeFragement extends Fragment {
         TextView btnAddPar = (TextView) view.findViewById(R.id.btnAddPar);
         btnAddPar.setVisibility(View.INVISIBLE);
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        studentListTeacherRecyclerViewAdapter = new GradeStudentListTeacherRecyclerViewAdapter(getActivity(),studentList);
+        studentListTeacherRecyclerViewAdapter = new GradeStudentListTeacherRecyclerViewAdapter(getActivity(),studentList,act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
 
@@ -63,7 +63,8 @@ public class ClassGradeFragement extends Fragment {
 
     void getStudents(){
         db.collection("studentClasses")
-                .whereEqualTo("status","approved").whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .whereEqualTo("status","approved")
+                .whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 studentList.clear();

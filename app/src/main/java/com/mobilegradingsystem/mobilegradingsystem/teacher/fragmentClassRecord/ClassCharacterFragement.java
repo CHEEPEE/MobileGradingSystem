@@ -50,7 +50,7 @@ public class ClassCharacterFragement extends Fragment {
         classRecordCategoryName = (TextView) view.findViewById(R.id.classRecordCategoryName);
         classRecordCategoryName.setText("Character");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        studentListTeacherRecyclerViewAdapter = new CharacterClassRecordRecyclerViewAdapter(getActivity(),studentList);
+        studentListTeacherRecyclerViewAdapter = new CharacterClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
 
@@ -60,7 +60,8 @@ public class ClassCharacterFragement extends Fragment {
 
     void getStudents(){
         db.collection("studentClasses")
-                .whereEqualTo("status","approved").whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .whereEqualTo("status","approved")
+                .whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 studentList.clear();

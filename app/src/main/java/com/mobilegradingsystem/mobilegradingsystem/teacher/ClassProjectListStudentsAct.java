@@ -32,17 +32,19 @@ public class ClassProjectListStudentsAct extends AppCompatActivity {
     Context context;
     RecyclerView studentList;
     String partKey;
+    String term;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_part_list_students);
         classKey = getIntent().getExtras().getString("key");
+        term = getIntent().getExtras().getString("term");
         partKey = getIntent().getExtras().getString("partKey");
         studentList = (RecyclerView) findViewById(R.id.studentList);
         db  =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         context = this;
-        studentListTeacherRecyclerViewAdapter  = new ProjectStudentsClassRecordRecyclerViewAdapter(context,studentClassObjectModelArrayList,partKey);
+        studentListTeacherRecyclerViewAdapter  = new ProjectStudentsClassRecordRecyclerViewAdapter(context,studentClassObjectModelArrayList,partKey,term);
         studentList.setLayoutManager(new LinearLayoutManager(context));
         studentList.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();

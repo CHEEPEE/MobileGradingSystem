@@ -167,6 +167,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
+        android:id="@+id/finals"
         style="@style/defaultButtonStyle"
         android:layout_width="100dp"
         android:layout_height="wrap_content"

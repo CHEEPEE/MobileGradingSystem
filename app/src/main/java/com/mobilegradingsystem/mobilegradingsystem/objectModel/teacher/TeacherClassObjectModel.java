@@ -30,6 +30,7 @@ public class TeacherClassObjectModel {
            String sched,
            String description
 
+
     ){
       this.userId = userId;
       this.classKey = classKey;
@@ -68,4 +69,5 @@ public class TeacherClassObjectModel {
     public String getClassRecordVersionKey() {
         return classRecordVersionKey;
     }
+
 }

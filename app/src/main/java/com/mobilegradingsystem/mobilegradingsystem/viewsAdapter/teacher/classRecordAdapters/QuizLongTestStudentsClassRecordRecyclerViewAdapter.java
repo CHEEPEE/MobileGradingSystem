@@ -44,6 +44,7 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
     private ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
     private Context context;
     private String partKey;
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView studentName,grade;
@@ -59,7 +60,7 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
         }
     }
 
-    public QuizLongTestStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels, String partKey){
+    public QuizLongTestStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels, String partKey,String term){
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context =c;
@@ -109,6 +110,7 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
             }
         });
         db.collection("quizLongTest")
+                .whereEqualTo("term",term)
                 .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
                 .whereEqualTo("classCode",studentClassObjectModel.getClassCode())
 //                .orderBy("timeStamp", Query.Direction.DESCENDING)
@@ -166,7 +168,7 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
                                           studentClassObjectModel.getStudentId(),
                                           studentClassObjectModel.getStudentUserId(),
                                           Double.parseDouble(inputGrade.getText().toString()),
-                                          studentClassObjectModel.getClassCode(),partKey);
+                                          studentClassObjectModel.getClassCode(),partKey,term);
                           db.collection("quizLongTest").document(key)
                                   .set(studentAttendenceCharacterClassObjectModel)
                                   .addOnSuccessListener(new OnSuccessListener<Void>() {

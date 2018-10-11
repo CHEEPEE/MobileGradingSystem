@@ -42,6 +42,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
     private Context context;
     private ArrayList<Double> studentProjectValue = new ArrayList<>();
     private ArrayList<Double> projectTotal = new ArrayList<>();
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView studentName;
@@ -53,7 +54,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
         }
     }
 
-    public GradeStudentListTeacherRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels){
+    public GradeStudentListTeacherRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels,String term){
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context =c;
@@ -114,6 +115,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
         final StudentGradeObjectModel studentGradeObjectModel = new StudentGradeObjectModel();
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("attendance")
+                .whereEqualTo("term",term)
                 .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
                 .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -125,6 +127,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
             }
         });
         db.collection("character")
+                .whereEqualTo("term",term)
                 .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
                 .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

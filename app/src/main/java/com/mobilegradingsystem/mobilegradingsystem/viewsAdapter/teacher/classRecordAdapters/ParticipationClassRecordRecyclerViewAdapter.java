@@ -30,6 +30,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentAt
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassPartListStudentsAct;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.annotation.Nullable;
 
@@ -44,7 +45,7 @@ public class ParticipationClassRecordRecyclerViewAdapter
         extends RecyclerView.Adapter<ParticipationClassRecordRecyclerViewAdapter.MyViewHolder> {
     private ArrayList<ParticipationCategoryGradeObjectModel> participationCategoryGradeObjectModelArrayList = new ArrayList<>();
     private Context context;
-
+    private String term;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView part_date,score;
         public ConstraintLayout container;
@@ -58,10 +59,11 @@ public class ParticipationClassRecordRecyclerViewAdapter
         }
     }
 
-    public ParticipationClassRecordRecyclerViewAdapter(Context c, ArrayList<ParticipationCategoryGradeObjectModel> studentClassObjectModels) {
+    public ParticipationClassRecordRecyclerViewAdapter(Context c, ArrayList<ParticipationCategoryGradeObjectModel> studentClassObjectModels,String term) {
 
         this.participationCategoryGradeObjectModelArrayList = studentClassObjectModels;
         this.context = c;
+        this.term = term;
     }
 
     @Override
@@ -82,6 +84,7 @@ public class ParticipationClassRecordRecyclerViewAdapter
                 Intent i = new Intent(context, ClassPartListStudentsAct.class);
                 i.putExtra("key",participationCategoryGradeObjectModel.getClassCode());
                 i.putExtra("partKey",participationCategoryGradeObjectModel.getKey());
+                i.putExtra("term",term);
                 context.startActivity(i);
             }
         });

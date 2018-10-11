@@ -14,17 +14,19 @@ public class ExamGradeObjectModel {
     private Integer maxScode;
     private @ServerTimestamp
     Date timeStamp;
+    private String term;
 
 
     public ExamGradeObjectModel(){
 
     }
     public ExamGradeObjectModel(String key, String classCode,
-                                Integer maxScode
+                                Integer maxScode,String term
     ){
      this.key = key;
      this.classCode = classCode;
      this.maxScode = maxScode;
+     this.term = term;
     }
 
     public String getKey() {
@@ -43,5 +45,8 @@ public class ExamGradeObjectModel {
         return maxScode;
     }
 
+    public String getTerm() {
+        return term;
+    }
 }
 

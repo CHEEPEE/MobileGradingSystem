@@ -14,17 +14,23 @@ public class ParticipationCategoryGradeObjectModel {
     private Integer maxScode;
     private @ServerTimestamp
     Date timeStamp;
+    private String term;
 
 
     public ParticipationCategoryGradeObjectModel(){
 
     }
     public ParticipationCategoryGradeObjectModel(String key, String classCode,
-                                                 Integer maxScode
+                                                 Integer maxScode,String term
     ){
      this.key = key;
      this.classCode = classCode;
      this.maxScode = maxScode;
+     this.term = term;
+    }
+
+    public String getTerm() {
+        return term;
     }
 
     public String getKey() {
@@ -42,6 +48,7 @@ public class ParticipationCategoryGradeObjectModel {
     public Integer getMaxScode() {
         return maxScode;
     }
+
 
 }
 

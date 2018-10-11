@@ -20,6 +20,7 @@ public class StudentGradeObjectModel {
     private String classCode;
     private String gradingSystemKey;
     private String key;
+    private String term;
 
 
     public StudentGradeObjectModel(){
@@ -35,7 +36,7 @@ public class StudentGradeObjectModel {
                                    String classCode,
                                    String gradingSystemKey,
                                    String key,
-                                   String studentUserId
+                                   String studentUserId,String term
     ){
       this.studentId = studentId;
       this.character = character;
@@ -48,6 +49,11 @@ public class StudentGradeObjectModel {
       this.gradingSystemKey = gradingSystemKey;
       this.key = key;
       this.studentUserId = studentUserId;
+      this.term = term;
+    }
+
+    public String getTerm() {
+        return term;
     }
 
     public String getKey() {

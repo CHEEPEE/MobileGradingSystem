@@ -11,11 +11,12 @@ public class StudentParticipationClassObjectModel {
     private double value;
     private String classCode;
     private String partKey;
+    private String term;
 
     public StudentParticipationClassObjectModel(){
 
     }
-    public StudentParticipationClassObjectModel(String key, String studentId, String studentUserId, double value, String classCode,String partKey
+    public StudentParticipationClassObjectModel(String key, String studentId, String studentUserId, double value, String classCode,String partKey,String term
     ){
        this.key = key;
        this.studentUserId = studentUserId;
@@ -23,6 +24,7 @@ public class StudentParticipationClassObjectModel {
        this.classCode = classCode;
        this.value = value;
        this.partKey = partKey;
+       this.term = term;
     }
 
     public String getStudentUserId() {
@@ -43,6 +45,10 @@ public class StudentParticipationClassObjectModel {
 
     public double getValue() {
         return value;
+    }
+
+    public String getTerm() {
+        return term;
     }
 
     public String getPartKey() {

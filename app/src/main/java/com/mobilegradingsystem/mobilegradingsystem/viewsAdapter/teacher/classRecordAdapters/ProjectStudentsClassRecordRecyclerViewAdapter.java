@@ -44,6 +44,7 @@ public class ProjectStudentsClassRecordRecyclerViewAdapter
     private ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
     private Context context;
     private String partKey;
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView studentName,grade;
@@ -59,11 +60,12 @@ public class ProjectStudentsClassRecordRecyclerViewAdapter
         }
     }
 
-    public ProjectStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels, String partKey){
+    public ProjectStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels, String partKey,String term){
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context =c;
         this.partKey = partKey;
+        this.term = term;
     }
 
     @Override
@@ -109,6 +111,7 @@ public class ProjectStudentsClassRecordRecyclerViewAdapter
             }
         });
         db.collection("project")
+                .whereEqualTo("term",term)
                 .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
                 .whereEqualTo("classCode",studentClassObjectModel.getClassCode())
 //                .orderBy("timeStamp", Query.Direction.DESCENDING)
@@ -166,7 +169,7 @@ public class ProjectStudentsClassRecordRecyclerViewAdapter
                                           studentClassObjectModel.getStudentId(),
                                           studentClassObjectModel.getStudentUserId(),
                                           Double.parseDouble(inputGrade.getText().toString()),
-                                          studentClassObjectModel.getClassCode(),partKey);
+                                          studentClassObjectModel.getClassCode(),partKey,term);
                           db.collection("project").document(key)
                                   .set(studentAttendenceCharacterClassObjectModel)
                                   .addOnSuccessListener(new OnSuccessListener<Void>() {

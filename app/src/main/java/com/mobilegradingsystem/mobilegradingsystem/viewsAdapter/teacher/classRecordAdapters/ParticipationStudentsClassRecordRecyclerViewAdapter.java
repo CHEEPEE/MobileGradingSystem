@@ -45,6 +45,7 @@ public class ParticipationStudentsClassRecordRecyclerViewAdapter
     private ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
     private Context context;
     private String partKey;
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView studentName,grade;
@@ -60,11 +61,12 @@ public class ParticipationStudentsClassRecordRecyclerViewAdapter
         }
     }
 
-    public ParticipationStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels,String partKey){
+    public ParticipationStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels,String partKey,String term){
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context =c;
         this.partKey = partKey;
+        this.term = term;
     }
 
     @Override
@@ -110,6 +112,7 @@ public class ParticipationStudentsClassRecordRecyclerViewAdapter
             }
         });
         db.collection("participation")
+                .whereEqualTo("term",term)
                 .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
                 .whereEqualTo("classCode",studentClassObjectModel.getClassCode())
 //                .orderBy("timeStamp", Query.Direction.DESCENDING)
@@ -167,7 +170,7 @@ public class ParticipationStudentsClassRecordRecyclerViewAdapter
                                           studentClassObjectModel.getStudentId(),
                                           studentClassObjectModel.getStudentUserId(),
                                           Double.parseDouble(inputGrade.getText().toString()),
-                                          studentClassObjectModel.getClassCode(),partKey);
+                                          studentClassObjectModel.getClassCode(),partKey,term);
                           db.collection("participation").document(key)
                                   .set(studentAttendenceCharacterClassObjectModel)
                                   .addOnSuccessListener(new OnSuccessListener<Void>() {

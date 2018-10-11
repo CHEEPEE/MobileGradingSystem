@@ -48,7 +48,7 @@ public class ClassAttendanceFragement extends Fragment {
         classRecordCategoryName = (TextView) view.findViewById(R.id.classRecordCategoryName);
         classRecordCategoryName.setText("Attendance");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        attendanceClassRecordRecyclerViewAdapter = new AttendanceClassRecordRecyclerViewAdapter(getActivity(),studentList);
+        attendanceClassRecordRecyclerViewAdapter = new AttendanceClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(attendanceClassRecordRecyclerViewAdapter);
 

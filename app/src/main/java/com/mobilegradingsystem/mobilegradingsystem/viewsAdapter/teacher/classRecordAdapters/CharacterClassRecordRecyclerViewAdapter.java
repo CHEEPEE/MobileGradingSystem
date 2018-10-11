@@ -41,6 +41,7 @@ public class CharacterClassRecordRecyclerViewAdapter
         extends RecyclerView.Adapter<CharacterClassRecordRecyclerViewAdapter.MyViewHolder> {
     private ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
     private Context context;
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView studentName,grade;
@@ -56,10 +57,11 @@ public class CharacterClassRecordRecyclerViewAdapter
         }
     }
 
-    public CharacterClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels) {
+    public CharacterClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels,String term) {
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context = c;
+        this.term = term;
     }
 
     @Override
@@ -100,6 +102,7 @@ public class CharacterClassRecordRecyclerViewAdapter
         });
         db.collection("character")
                 .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
+                .whereEqualTo("term",term)
                 .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -154,7 +157,7 @@ public class CharacterClassRecordRecyclerViewAdapter
                                             studentClassObjectModel.getStudentId(),
                                             studentClassObjectModel.getStudentUserId(),
                                             Double.parseDouble(inputGrade.getText().toString()),
-                                            studentClassObjectModel.getClassCode());
+                                            studentClassObjectModel.getClassCode(),term);
                             db.collection("character").document(key)
                                     .set(studentAttendenceCharacterClassObjectModel)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {

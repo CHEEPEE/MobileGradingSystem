@@ -58,6 +58,16 @@ public class DashboardClassTeacherFragement extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ClassRecordActBotNav.class);
                 i.putExtra("key",act.getClassKey());
+                i.putExtra("term","midterm");
+                getActivity().startActivity(i);
+            }
+        });
+        view.findViewById(R.id.finals).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ClassRecordActBotNav.class);
+                i.putExtra("key",act.getClassKey());
+                i.putExtra("term","finals");
                 getActivity().startActivity(i);
             }
         });

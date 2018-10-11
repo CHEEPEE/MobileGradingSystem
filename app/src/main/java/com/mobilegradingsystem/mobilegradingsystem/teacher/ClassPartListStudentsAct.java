@@ -32,17 +32,19 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
     Context context;
     RecyclerView studentList;
     String partKey;
+    String term;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_part_list_students);
         classKey = getIntent().getExtras().getString("key");
         partKey = getIntent().getExtras().getString("partKey");
+        term = getIntent().getExtras().getString("term");
         studentList = (RecyclerView) findViewById(R.id.studentList);
         db  =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         context = this;
-        studentListTeacherRecyclerViewAdapter  = new ParticipationStudentsClassRecordRecyclerViewAdapter(context,studentClassObjectModelArrayList,partKey);
+        studentListTeacherRecyclerViewAdapter  = new ParticipationStudentsClassRecordRecyclerViewAdapter(context,studentClassObjectModelArrayList,partKey,term);
         studentList.setLayoutManager(new LinearLayoutManager(context));
         studentList.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();
@@ -50,7 +52,8 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
     }
     void getStudents(){
         db.collection("studentClasses")
-                .whereEqualTo("status","approved").whereEqualTo("classCode",classKey).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .whereEqualTo("status","approved")
+                .whereEqualTo("classCode",classKey).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 studentClassObjectModelArrayList.clear();

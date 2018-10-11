@@ -50,6 +50,7 @@ public class ClassExamFragement extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         act = (ClassRecordActBotNav) getActivity();
+
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_class_exam, container, false);
         bntSetMaxScore = (TextView) view.findViewById(R.id.bntSetMaxScore);
@@ -60,7 +61,7 @@ public class ClassExamFragement extends Fragment {
             }
         });
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        studentListTeacherRecyclerViewAdapter = new ExamStudentsClassRecordRecyclerViewAdapter(getActivity(),studentList,null);
+        studentListTeacherRecyclerViewAdapter = new ExamStudentsClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getClassKey(),act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();
@@ -69,7 +70,8 @@ public class ClassExamFragement extends Fragment {
 
     void getStudents(){
         db.collection("studentClasses")
-                .whereEqualTo("status","approved").whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .whereEqualTo("status","approved")
+                .whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 studentList.clear();
@@ -102,7 +104,7 @@ public class ClassExamFragement extends Fragment {
         dialog.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ParticipationCategoryGradeObjectModel categoryGradeObjectModel = new ParticipationCategoryGradeObjectModel(key,act.getClassKey(),Integer.parseInt(maxScore.getText().toString()));
+                final ParticipationCategoryGradeObjectModel categoryGradeObjectModel = new ParticipationCategoryGradeObjectModel(key,act.getClassKey(),Integer.parseInt(maxScore.getText().toString()),act.getTerm());
                 db.collection("examTotalScore").document(act.getClassKey()).set(categoryGradeObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

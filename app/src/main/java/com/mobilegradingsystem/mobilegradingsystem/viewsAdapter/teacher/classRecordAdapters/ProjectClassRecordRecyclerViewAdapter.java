@@ -26,6 +26,7 @@ public class ProjectClassRecordRecyclerViewAdapter
         extends RecyclerView.Adapter<ProjectClassRecordRecyclerViewAdapter.MyViewHolder> {
     private ArrayList<ParticipationCategoryGradeObjectModel> participationCategoryGradeObjectModelArrayList = new ArrayList<>();
     private Context context;
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView part_date,score;
@@ -40,10 +41,11 @@ public class ProjectClassRecordRecyclerViewAdapter
         }
     }
 
-    public ProjectClassRecordRecyclerViewAdapter(Context c, ArrayList<ParticipationCategoryGradeObjectModel> studentClassObjectModels) {
+    public ProjectClassRecordRecyclerViewAdapter(Context c, ArrayList<ParticipationCategoryGradeObjectModel> studentClassObjectModels,String term) {
 
         this.participationCategoryGradeObjectModelArrayList = studentClassObjectModels;
         this.context = c;
+        this.term = term;
     }
 
     @Override
@@ -64,6 +66,7 @@ public class ProjectClassRecordRecyclerViewAdapter
                 Intent i = new Intent(context, ClassProjectListStudentsAct.class);
                 i.putExtra("key",participationCategoryGradeObjectModel.getClassCode());
                 i.putExtra("partKey",participationCategoryGradeObjectModel.getKey());
+                i.putExtra("term",term);
                 context.startActivity(i);
             }
         });

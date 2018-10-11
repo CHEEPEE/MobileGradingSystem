@@ -45,6 +45,7 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
     private ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
     private Context context;
     private String partKey;
+    private String term;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView studentName,grade;
@@ -60,10 +61,11 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
         }
     }
 
-    public ExamStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels, String partKey){
+    public ExamStudentsClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels, String partKey,String term){
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context =c;
+        this.term = term;
         this.partKey = partKey;
     }
 
@@ -109,19 +111,29 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
                 });
             }
         });
-        db.collection("exam")
-                .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
-                .whereEqualTo("classCode",studentClassObjectModel.getClassCode())
-//                .orderBy("timeStamp", Query.Direction.DESCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("exam").document(studentClassObjectModel.getStudentUserId()+term).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                try {
                     StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
                     holder.grade.setText(attendenceClassObjectModel.getValue()+"");
+                }catch (NullPointerException ex){
+
                 }
             }
         });
+//        db.collection("exam")
+//                .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
+//                .whereEqualTo("term",term)
+//                .whereEqualTo("classCode",studentClassObjectModel.getClassCode())
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+//
+//                }
+//            }
+//        });
 
     }
 
@@ -167,8 +179,8 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
                                           studentClassObjectModel.getStudentId(),
                                           studentClassObjectModel.getStudentUserId(),
                                           Double.parseDouble(inputGrade.getText().toString()),
-                                          studentClassObjectModel.getClassCode(),partKey);
-                          db.collection("exam").document(key)
+                                          studentClassObjectModel.getClassCode(),partKey,term);
+                          db.collection("exam").document(studentClassObjectModel.getStudentUserId()+term)
                                   .set(studentAttendenceCharacterClassObjectModel)
                                   .addOnSuccessListener(new OnSuccessListener<Void>() {
                                       @Override

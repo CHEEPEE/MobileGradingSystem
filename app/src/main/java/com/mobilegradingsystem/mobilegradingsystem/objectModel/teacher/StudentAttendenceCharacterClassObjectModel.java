@@ -10,17 +10,19 @@ public class StudentAttendenceCharacterClassObjectModel {
     private String studentUserId;
     private double value;
     private String classCode;
+    private String term;
 
     public StudentAttendenceCharacterClassObjectModel(){
 
     }
-    public StudentAttendenceCharacterClassObjectModel(String key, String studentId, String studentUserId, double value, String classCode
+    public StudentAttendenceCharacterClassObjectModel(String key, String studentId, String studentUserId, double value, String classCode,String term
     ){
        this.key = key;
        this.studentUserId = studentUserId;
        this.studentId = studentId;
        this.classCode = classCode;
        this.value = value;
+       this.term = term;
     }
 
     public String getStudentUserId() {
@@ -43,4 +45,7 @@ public class StudentAttendenceCharacterClassObjectModel {
         return value;
     }
 
+    public String getTerm() {
+        return term;
+    }
 }
