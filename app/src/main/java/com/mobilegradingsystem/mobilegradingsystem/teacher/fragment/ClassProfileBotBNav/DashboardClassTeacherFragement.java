@@ -71,7 +71,6 @@ public class DashboardClassTeacherFragement extends Fragment {
                 getActivity().startActivity(i);
             }
         });
-
         return view;
     }
 

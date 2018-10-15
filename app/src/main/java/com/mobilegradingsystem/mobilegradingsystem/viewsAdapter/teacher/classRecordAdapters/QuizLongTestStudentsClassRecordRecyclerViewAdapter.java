@@ -110,16 +110,14 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
             }
         });
         db.collection("quizLongTest")
-                .whereEqualTo("term",term)
-                .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
-                .whereEqualTo("classCode",studentClassObjectModel.getClassCode())
-//                .orderBy("timeStamp", Query.Direction.DESCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .document(studentClassObjectModel.getStudentUserId()+partKey).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
-                    StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
-                    holder.grade.setText(attendenceClassObjectModel.getValue()+"");
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                StudentParticipationClassObjectModel studentParticipationClassObjectModel = documentSnapshot.toObject(StudentParticipationClassObjectModel.class);
+                try {
+                    holder.grade.setText(studentParticipationClassObjectModel.getValue()+"");
+                }catch (NullPointerException ex){
+
                 }
             }
         });
@@ -169,7 +167,7 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
                                           studentClassObjectModel.getStudentUserId(),
                                           Double.parseDouble(inputGrade.getText().toString()),
                                           studentClassObjectModel.getClassCode(),partKey,term);
-                          db.collection("quizLongTest").document(key)
+                          db.collection("quizLongTest").document(studentClassObjectModel.getStudentUserId()+partKey)
                                   .set(studentAttendenceCharacterClassObjectModel)
                                   .addOnSuccessListener(new OnSuccessListener<Void>() {
                                       @Override
