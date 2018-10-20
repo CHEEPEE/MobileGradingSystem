@@ -81,7 +81,11 @@ public class CharacterClassRecordRecyclerViewAdapter
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         StudentProfileProfileObjectModel studentProfile = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
-                        holder.studentName.setText(studentProfile.getfName() + " " + studentProfile.getlName());
+                       try{
+                           holder.studentName.setText(studentProfile.getfName() + " " + studentProfile.getlName());
+                       }catch (NullPointerException ex){
+
+                       }
                     }
                 });
 

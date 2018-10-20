@@ -344,7 +344,6 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                         }
                     }
                 });
-
     }
 
     void solveStudentTermGrade(final StudentGradeObjectModel studentGradeObjectModel, final TextView grade){
@@ -367,12 +366,10 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                 termGrade += studentGradeObjectModel.getProject()*classRecordVersion.getProjects();
                 termGrade += studentGradeObjectModel.getQuizLongTest()*classRecordVersion.getQuizLongTest();
                 System.out.println("final Grade "+termGrade);
-                grade.setText(termGrade+"" +
-                        "");
+                grade.setText(termGrade+"");
             }
         });
     }
-
     private class  ProjectValue{
         double ptotal;
         double sTotal;

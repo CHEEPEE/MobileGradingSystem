@@ -91,7 +91,7 @@ public class ClassExamFragement extends Fragment {
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         final EditText maxScore = dialog.findViewById(R.id.inputGrade);
-        db.collection("examTotalScore").document(act.getClassKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("examTotalScore").document(act.getClassKey()+act.getTerm()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (documentSnapshot.getData() != null){
@@ -105,7 +105,7 @@ public class ClassExamFragement extends Fragment {
             @Override
             public void onClick(View v) {
                 final ParticipationCategoryGradeObjectModel categoryGradeObjectModel = new ParticipationCategoryGradeObjectModel(key,act.getClassKey(),Integer.parseInt(maxScore.getText().toString()),act.getTerm());
-                db.collection("examTotalScore").document(act.getClassKey()).set(categoryGradeObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("examTotalScore").document(act.getClassKey()+act.getTerm()).set(categoryGradeObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         dialog.dismiss();

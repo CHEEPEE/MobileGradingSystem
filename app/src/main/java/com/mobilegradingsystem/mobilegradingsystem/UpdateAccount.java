@@ -2,6 +2,7 @@ package com.mobilegradingsystem.mobilegradingsystem;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +32,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
+import com.mobilegradingsystem.mobilegradingsystem.student.StudentRegistration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,7 +48,9 @@ public class UpdateAccount extends AppCompatActivity {
     private static final int storagepermision_access_code = 548;
     boolean imageSet = false;
     Uri bannerUri;
+    TextView updateProfile;
     CircleImageView circleImageView;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +61,17 @@ public class UpdateAccount extends AppCompatActivity {
                 performFileSearch();
             }
         });
+        context = this;
+        updateProfile = (TextView) findViewById(R.id.updateProfile);
         circleImageView =(CircleImageView) findViewById(R.id.circleImageView);
+        updateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, StudentRegistration.class);
+                i.putExtra("isUpdate",true);
+                startActivity(i);
+            }
+        });
         GlideApp.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(circleImageView);
     }
 

@@ -92,6 +92,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectDepartment" />
 
+    <TextView
+        android:id="@+id/selectYearLevel"
+        style="@style/TextInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Select Year Level"
+        app:layout_constraintEnd_toEndOf="@+id/selectProgram"
+        app:layout_constraintStart_toStartOf="@+id/selectProgram"
+        app:layout_constraintTop_toBottomOf="@+id/selectProgram" />
+
+    <TextView
+        android:id="@+id/selectSection"
+        style="@style/TextInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Select Section"
+        app:layout_constraintEnd_toEndOf="@+id/selectYearLevel"
+        app:layout_constraintStart_toStartOf="@+id/selectYearLevel"
+        app:layout_constraintTop_toBottomOf="@+id/selectYearLevel" />
+
     <Button
         android:id="@+id/saveInfo"
         style="@style/defaultButtonStyle"
