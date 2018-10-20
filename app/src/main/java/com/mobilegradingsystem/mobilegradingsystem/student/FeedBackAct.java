@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.FeedBackAnnouncementObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.student.FeedBackListStudentsRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -70,7 +71,17 @@ public class FeedBackAct extends AppCompatActivity {
                 saveFeedBack();
             }
         });
-        getFeedBacks();
+        db.collection("users").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                UserProfileObjectModel userProfileObjectModel  = documentSnapshot.toObject(UserProfileObjectModel.class);
+                if (userProfileObjectModel.getUserType().equals("student")){
+                    getFeedBacks();
+                }else {
+                    getFeedBacksTeacher();
+                }
+            }
+        });
     }
 
     void getFeedBacks(){
@@ -79,6 +90,7 @@ public class FeedBackAct extends AppCompatActivity {
         feedBackList.setLayoutManager(new LinearLayoutManager(this));
         db.collection("announcementFeedBack")
                 .whereEqualTo("announceCode",announcementKey)
+                .whereEqualTo("userId",mAuth.getUid())
                 .orderBy("timeStamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -89,6 +101,25 @@ public class FeedBackAct extends AppCompatActivity {
                     }
                     feedBackListStudentsRecyclerViewAdapter.notifyDataSetChanged();
                     feedBackList.scrollToPosition(feedBackAnnouncementObjectModelArrayList.size());
+            }
+        });
+    }
+    void getFeedBacksTeacher(){
+        feedBackListStudentsRecyclerViewAdapter = new FeedBackListStudentsRecyclerViewAdapter(this,feedBackAnnouncementObjectModelArrayList);
+        feedBackList.setAdapter(feedBackListStudentsRecyclerViewAdapter);
+        feedBackList.setLayoutManager(new LinearLayoutManager(this));
+        db.collection("announcementFeedBack")
+                .whereEqualTo("announceCode",announcementKey)
+                .orderBy("timeStamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                feedBackAnnouncementObjectModelArrayList.clear();
+                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                    FeedBackAnnouncementObjectModel feedBackAnnouncementObjectModel = documentSnapshot.toObject(FeedBackAnnouncementObjectModel.class);
+                    feedBackAnnouncementObjectModelArrayList.add(feedBackAnnouncementObjectModel);
+                }
+                feedBackListStudentsRecyclerViewAdapter.notifyDataSetChanged();
+                feedBackList.scrollToPosition(feedBackAnnouncementObjectModelArrayList.size());
             }
         });
     }

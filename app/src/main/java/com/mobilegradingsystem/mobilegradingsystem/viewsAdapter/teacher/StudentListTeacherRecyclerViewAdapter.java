@@ -24,6 +24,7 @@ import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.FinalTermGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
@@ -31,6 +32,8 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentCl
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -49,7 +52,7 @@ public class StudentListTeacherRecyclerViewAdapter
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView studentName,status;
+        public TextView studentName,status,grade;
         public CircleImageView userImage;
         public ConstraintLayout container;
         public MyViewHolder(View view){
@@ -58,6 +61,7 @@ public class StudentListTeacherRecyclerViewAdapter
             userImage = (CircleImageView) view.findViewById(R.id.userImage);
             status = (TextView) view.findViewById(R.id.status);
             container  = (ConstraintLayout) view.findViewById(R.id.container);
+            grade = (TextView) view.findViewById(R.id.grade);
 
         }
     }
@@ -104,6 +108,7 @@ public class StudentListTeacherRecyclerViewAdapter
                 setStatus(studentClassObjectModel);
             }
         });
+        setStudenFinalGrade(studentClassObjectModel,holder.grade);
     }
 
     @Override
@@ -120,6 +125,29 @@ public class StudentListTeacherRecyclerViewAdapter
     public void setOnItemClickListener(OnItemClickLitener mOnItemClickLitener) {
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
+
+    private void setStudenFinalGrade(final StudentClassObjectModel studentClassObjectModel, final TextView grade){
+        FirebaseFirestore.getInstance().collection("termGrade").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+"midterm").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                final FinalTermGradeObjectModel finalTermGradeObjectModelMidterm = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
+                FirebaseFirestore.getInstance().collection("termGrade").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+"finals").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                       try {
+                           FinalTermGradeObjectModel finalTermGradeObjectModelFinals = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
+                           Double finalGrade =  (finalTermGradeObjectModelMidterm.getGrade()+(2*finalTermGradeObjectModelFinals.getGrade()))/3;
+                           grade.setText(finalGrade+"");
+                       }catch (NullPointerException ex){
+                           grade.setText("No Grade(Incomplete scores)");
+                       }
+                    }
+                });
+            }
+        });
+    }
+
+
 
     private void setStatus(final StudentClassObjectModel studentClassObjectModel){
         final Dialog dialog = new Dialog(context);

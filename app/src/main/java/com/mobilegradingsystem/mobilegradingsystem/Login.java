@@ -86,7 +86,6 @@ public class Login extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -95,9 +94,6 @@ public class Login extends AppCompatActivity {
                 mAuth = FirebaseAuth.getInstance();
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-
-
-
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -152,6 +148,7 @@ public class Login extends AppCompatActivity {
                                                     }else {
 //                                                        the user has not been registered
                                                         Intent i = new Intent(Login.this,StudentRegistration.class);
+                                                        i.putExtra("isUpdate",false);
                                                         startActivity(i);
                                                         finish();
                                                     }
@@ -165,9 +162,16 @@ public class Login extends AppCompatActivity {
                                                 @Override
                                                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                                                     if (documentSnapshot.getData()!=null){
-                                                        Intent i = new Intent(Login.this, TeacherProfile.class);
-                                                        startActivity(i);
-                                                        finish();
+                                                        if (documentSnapshot.get("accountStatus").equals("pending")){
+                                                            Intent i = new Intent(Login.this, IfAccountIsPendingTeacher.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        }else {
+                                                            Intent i = new Intent(Login.this, TeacherProfile.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        }
+
                                                     }else {
                                                         Intent i = new Intent(Login.this,TeacherRegistration.class);
                                                         startActivity(i);

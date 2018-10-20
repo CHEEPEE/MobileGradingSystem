@@ -1,7 +1,6 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,7 +16,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.FinalTermGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.GradeEquivalentObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
@@ -32,7 +29,6 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentAt
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentParticipationClassObjectModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -150,12 +146,12 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                 }
             }
         });
-        db.collection("examTotalScore").document(classCode).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("examTotalScore").document(classCode+term).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                  final ExamGradeObjectModel examGradeObjectModel = documentSnapshot.toObject(ExamGradeObjectModel.class);
                 db.collection("exam")
-                        .document(studentClassObjectModel.getStudentUserId()+term).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        .document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+term).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         final StudentParticipationClassObjectModel examStudentGrade = documentSnapshot.toObject(StudentParticipationClassObjectModel.class);
@@ -168,7 +164,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                         try {
                                             int raw = (int) Math.round((examStudentGrade.getValue()/examGradeObjectModel.getMaxScode())*100);
                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
-                                                System.out.println("%D "+i);
+                                                System.out.println("exam %D "+i);
                                                 studentGradeObjectModel.setExam(Double.parseDouble(i));
                                             }
                                         }catch (NullPointerException ex){
@@ -333,7 +329,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                                                         "project : "+studentGradeObjectModel.getProject()+" "+
                                                                         "Long Test : "+studentGradeObjectModel.getQuizLongTest()
                                                                 );
-                                                                solveStudentTermGrade(studentGradeObjectModel,grade);
+                                                                solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                                                             }
                                                         }
                                                     }
@@ -346,7 +342,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                 });
     }
 
-    void solveStudentTermGrade(final StudentGradeObjectModel studentGradeObjectModel, final TextView grade){
+    void solveStudentTermGrade(final StudentGradeObjectModel studentGradeObjectModel, final TextView grade, final StudentClassObjectModel studentClassObjectModel){
         FirebaseFirestore.getInstance().collection("classRecordVersion").document("4TYJW5v4LBujNmMCNEPs").addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -367,9 +363,19 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                 termGrade += studentGradeObjectModel.getQuizLongTest()*classRecordVersion.getQuizLongTest();
                 System.out.println("final Grade "+termGrade);
                 grade.setText(termGrade+"");
+                setFinalTermGrade(termGrade,studentClassObjectModel);
             }
         });
     }
+    void setFinalTermGrade(final Double grade, StudentClassObjectModel studentClassObjectModel)
+    {
+        FinalTermGradeObjectModel finalTermGradeObjectModel = new FinalTermGradeObjectModel(studentClassObjectModel.getStudentUserId(),studentClassObjectModel.getClassCode(),term,grade);
+        FirebaseFirestore.getInstance()
+                .collection("termGrade")
+                .document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+term)
+                .set(finalTermGradeObjectModel);
+    }
+
     private class  ProjectValue{
         double ptotal;
         double sTotal;

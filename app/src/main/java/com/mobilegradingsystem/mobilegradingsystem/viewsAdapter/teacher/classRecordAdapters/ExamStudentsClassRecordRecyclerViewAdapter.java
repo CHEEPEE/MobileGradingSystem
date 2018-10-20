@@ -115,7 +115,7 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
                 });
             }
         });
-        db.collection("exam").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentId()+term).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("exam").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+term).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 try {
@@ -172,7 +172,7 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
                                           studentClassObjectModel.getStudentUserId(),
                                           Double.parseDouble(inputGrade.getText().toString()),
                                           studentClassObjectModel.getClassCode(),partKey,term);
-                          db.collection("exam").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentId()+term)
+                          db.collection("exam").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+term)
                                   .set(studentAttendenceCharacterClassObjectModel)
                                   .addOnSuccessListener(new OnSuccessListener<Void>() {
                                       @Override
