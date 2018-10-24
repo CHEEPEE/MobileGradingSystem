@@ -148,7 +148,6 @@ public class StudentListTeacherRecyclerViewAdapter
     }
 
 
-
     private void setStatus(final StudentClassObjectModel studentClassObjectModel){
         final Dialog dialog = new Dialog(context);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();

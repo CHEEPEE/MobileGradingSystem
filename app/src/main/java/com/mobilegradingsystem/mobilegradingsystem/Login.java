@@ -139,7 +139,12 @@ public class Login extends AppCompatActivity {
                                                             Intent i = new Intent(Login.this, IfAccountIsPending.class);
                                                             startActivity(i);
                                                             finish();
-                                                        }else {
+                                                        }else if(documentSnapshot.get("accoutStatus").equals("block")){
+                                                            Intent i = new Intent(Login.this, IfAccountIsBlock.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        }
+                                                        else {
                                                             Intent i = new Intent(Login.this, StudentProfile.class);
                                                             startActivity(i);
                                                             finish();
@@ -166,7 +171,12 @@ public class Login extends AppCompatActivity {
                                                             Intent i = new Intent(Login.this, IfAccountIsPendingTeacher.class);
                                                             startActivity(i);
                                                             finish();
-                                                        }else {
+                                                        } else if (documentSnapshot.get("accountStatus").equals("block")){
+                                                            Intent i = new Intent(Login.this, IfAccountIsBlockTeacher.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        }
+                                                        else {
                                                             Intent i = new Intent(Login.this, TeacherProfile.class);
                                                             startActivity(i);
                                                             finish();
