@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,6 +34,7 @@ public class ClassQuizLongTestListStudentsAct extends AppCompatActivity {
     RecyclerView studentList;
     String partKey;
     String term;
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class ClassQuizLongTestListStudentsAct extends AppCompatActivity {
         classKey = getIntent().getExtras().getString("key");
         partKey = getIntent().getExtras().getString("partKey");
         term = getIntent().getExtras().getString("term");
+        title = (TextView) findViewById(R.id.title) ;
         studentList = (RecyclerView) findViewById(R.id.studentList);
         db  =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -49,6 +52,7 @@ public class ClassQuizLongTestListStudentsAct extends AppCompatActivity {
         studentList.setLayoutManager(new LinearLayoutManager(context));
         studentList.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();
+        title.setText("Quiz and Long Test");
 
     }
     void getStudents(){

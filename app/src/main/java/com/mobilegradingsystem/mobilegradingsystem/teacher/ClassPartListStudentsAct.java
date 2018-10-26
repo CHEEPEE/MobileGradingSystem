@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -15,6 +16,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.ParticipationCategoryGradeObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.student.ClassProfile;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentListTeacherRecyclerViewAdapter;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters.ParticipationStudentsClassRecordRecyclerViewAdapter;
 
@@ -26,6 +29,7 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
     ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
     ParticipationStudentsClassRecordRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
     ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel;
+    TeacherClassObjectModel classProfile;
     FirebaseFirestore db;
     FirebaseAuth auth;
     String classKey;
@@ -33,6 +37,7 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
     RecyclerView studentList;
     String partKey;
     String term;
+    TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,7 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
         partKey = getIntent().getExtras().getString("partKey");
         term = getIntent().getExtras().getString("term");
         studentList = (RecyclerView) findViewById(R.id.studentList);
+        title = (TextView) findViewById(R.id.title);
         db  =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         context = this;
@@ -48,6 +54,8 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
         studentList.setLayoutManager(new LinearLayoutManager(context));
         studentList.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();
+        getClassProfile();
+        title.setText("Class Participation");
 
     }
     void getStudents(){
@@ -64,4 +72,15 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
             }
         });
     }
+
+    void getClassProfile(){
+        db.collection("class").document(classKey).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+             classProfile = documentSnapshot.toObject(TeacherClassObjectModel.class);
+
+            }
+        });
+    }
+
 }

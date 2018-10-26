@@ -25,6 +25,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfilePro
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentAttendenceCharacterClassObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AttendanceClassRecordRecyclerViewAdapter
         extends RecyclerView.Adapter<AttendanceClassRecordRecyclerViewAdapter.MyViewHolder> {
     private ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
+    private ArrayList<StudentProfileProfileObjectModel> studentProfiles = new ArrayList<>();
     private Context context;
     private String term;
 
@@ -57,11 +59,12 @@ public class AttendanceClassRecordRecyclerViewAdapter
         }
     }
 
-    public AttendanceClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels,String term){
+    public AttendanceClassRecordRecyclerViewAdapter(Context c, ArrayList<StudentClassObjectModel> studentClassObjectModels, String term,ArrayList<StudentProfileProfileObjectModel> studentProfiles){
 
         this.studentClassObjectModelArrayList = studentClassObjectModels;
         this.context =c;
         this.term = term;
+        this.studentProfiles = studentProfiles;
     }
 
     @Override
@@ -84,6 +87,7 @@ public class AttendanceClassRecordRecyclerViewAdapter
                       try {
                           holder.studentName.setText(studentProfile.getfName()+" "+studentProfile.getlName());
                       }catch (NullPointerException ex){
+
 
                       }
                     }
@@ -116,7 +120,6 @@ public class AttendanceClassRecordRecyclerViewAdapter
                 }
             }
         });
-
     }
 
     @Override

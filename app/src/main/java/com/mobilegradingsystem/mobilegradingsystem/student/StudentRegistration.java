@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mobilegradingsystem.mobilegradingsystem.IfAccountIsPending;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.DepartmentObjectModel;
@@ -127,7 +130,19 @@ public class StudentRegistration extends AppCompatActivity {
         if (isUpdateProfile){
             getProfileInfo();
         }
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        // your code here
+                        categoryChangeListeners();
+                    }
+                },
+                5000
+        );
     }
+
     void getProfileInfo(){
         db.collection("studentProfile").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -145,31 +160,47 @@ public class StudentRegistration extends AppCompatActivity {
         db.collection("program").document(studentProfileProfileObjectModel.getProgramKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-             selectProgram.setText(documentSnapshot.get("program").toString());
-             programKey = documentSnapshot.get("key").toString();
+           try {
+               selectProgram.setText(documentSnapshot.get("program").toString());
+               programKey = documentSnapshot.get("key").toString();
+           }catch (NullPointerException ex){
+
+           }
 
             }
         });
         db.collection("department").document(studentProfileProfileObjectModel.getDepartmentKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                selectDepartment.setText(documentSnapshot.get("department").toString());
-                departmentKey = documentSnapshot.get("key").toString();
+              try {
+                  selectDepartment.setText(documentSnapshot.get("department").toString());
+                  departmentKey = documentSnapshot.get("key").toString();
+              }catch (NullPointerException ex){
+
+              }
             }
         });
         db.collection("yearlevel").document(studentProfileProfileObjectModel.getYearLevelKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                selectYearLevel.setText(documentSnapshot.get("yearLevel").toString());
-                yearLevelKey = documentSnapshot.get("key").toString();
+              try {
+                  selectYearLevel.setText(documentSnapshot.get("yearLevel").toString());
+                  yearLevelKey = documentSnapshot.get("key").toString();
+              }catch (NullPointerException ex){
+
+              }
             }
 
         });
         db.collection("section").document(studentProfileProfileObjectModel.getSectionKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-             selectSection.setText(documentSnapshot.get("section").toString());
-             sectionLKey = documentSnapshot.get("key").toString();
+            try {
+                selectSection.setText(documentSnapshot.get("section").toString());
+                sectionLKey = documentSnapshot.get("key").toString();
+            }catch (NullPointerException ex){
+
+            }
             }
         });
     }
@@ -198,7 +229,7 @@ public class StudentRegistration extends AppCompatActivity {
         saveInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveProfile();
+                saveProfile(departmentKey,programKey,yearLevelKey,sectionLKey);
             }
         });
     }
@@ -295,26 +326,98 @@ public class StudentRegistration extends AppCompatActivity {
             }
         });
     }
-    void saveProfile(){
-        StudentProfileProfileObjectModel studentProfileProfileObjectModel
-                = new StudentProfileProfileObjectModel(mAuth.getUid()
-                ,departmentKey
-                ,programKey
-                ,fname.getText().toString()
-                ,mName.getText().toString()
-                ,lName.getText().toString()
-                ,studentId.getText().toString()
-                ,"pending"
-                ,yearLevelKey,sectionLKey
-        );
-        db.collection(Utils.studentProfile).document(mAuth.getUid()).set(studentProfileProfileObjectModel)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Intent i = new Intent(context,StudentProfile.class);
-                        startActivity(i);
-                        finish();
-                    }
-                });
+    boolean validate(String a,String b,String c,String d){
+        boolean isValid = true;
+        if (a == null || b == null || c == null || d == null){
+            isValid = false;
+        }
+        return isValid;
+    }
+    void saveProfile(String a,String b,String c,String d){
+        if (validate(a,b,c,d)){
+            StudentProfileProfileObjectModel studentProfileProfileObjectModel
+                    = new StudentProfileProfileObjectModel(mAuth.getUid()
+                    ,departmentKey
+                    ,programKey
+                    ,fname.getText().toString()
+                    ,mName.getText().toString()
+                    ,lName.getText().toString()
+                    ,studentId.getText().toString()
+                    ,"pending"
+                    ,yearLevelKey,sectionLKey
+            );
+            db.collection(Utils.studentProfile).document(mAuth.getUid()).set(studentProfileProfileObjectModel)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Intent i = new Intent(context,IfAccountIsPending.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
+        }else{
+            Toast.makeText(context,"Please Fill up Everything",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    void categoryChangeListeners(){
+        selectDepartment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                programKey = null;
+                selectProgram.setText("Select Course or Program");
+                yearLevelKey = null;
+                selectYearLevel.setText("Select Year Level");
+                sectionLKey = null;
+                selectSection.setText("Please Select Section");
+            }
+        });
+        selectProgram.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                yearLevelKey = null;
+                selectYearLevel.setText("Select Year Level");
+                sectionLKey = null;
+                selectSection.setText("Please Select Section");
+            }
+        });
+        selectYearLevel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sectionLKey = null;
+                selectSection.setText("Please Select Section");
+            }
+        });
     }
 }
