@@ -56,7 +56,7 @@ public class ClssProfileStudentBotNav extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clss_profile_teacher_bot_nav);
+        setContentView(R.layout.activity_clss_profile_student_bot_nav);
         context = ClssProfileStudentBotNav.this;
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);

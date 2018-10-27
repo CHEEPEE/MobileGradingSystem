@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/announcementTitle" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/teacherName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -46,7 +46,7 @@
         android:text="Description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/teacherName" />
 
     <TextView
         android:id="@+id/vieClass"

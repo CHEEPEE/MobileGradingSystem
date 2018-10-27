@@ -1,5 +1,6 @@
 package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
@@ -7,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +34,9 @@ public class DashboardClassTeacherFragement extends Fragment {
     ItemListDialogFragment itemListDialogFragment;
     TextView studentNumbers,className,announcementNumber;
     EditText title,desciption;
+    Dialog updateClassDialog;
     String loading = "loading...";
+    TextView settings;
 
     public DashboardClassTeacherFragement(){
 
@@ -46,6 +52,7 @@ public class DashboardClassTeacherFragement extends Fragment {
         studentNumbers = (TextView) view.findViewById(R.id.studentNumbers);
         className = (TextView) view.findViewById(R.id.announcementTitle);
         announcementNumber = (TextView) view.findViewById(R.id.announcementsNumber);
+        settings = (TextView) view.findViewById(R.id.settings);
         studentNumbers.setText(loading);
         className.setText(loading);
         announcementNumber.setText(loading);
@@ -69,6 +76,12 @@ public class DashboardClassTeacherFragement extends Fragment {
                 i.putExtra("key",act.getClassKey());
                 i.putExtra("term","finals");
                 getActivity().startActivity(i);
+            }
+        });
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatClass();
             }
         });
         return view;
@@ -98,6 +111,50 @@ public class DashboardClassTeacherFragement extends Fragment {
                     announcementNumber.setText(queryDocumentSnapshots.getDocuments().size()+"");
                 }
             });
+    }
+
+    void updatClass(){
+        updateClassDialog = new Dialog(getContext());
+        updateClassDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        updateClassDialog.setCancelable(true);
+        updateClassDialog.setContentView(R.layout.dlg_add_class_subject);
+        Window window = updateClassDialog.getWindow();
+        updateClassDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        final EditText className,schedule,description;
+        updateClassDialog.show();
+        className = (EditText) updateClassDialog.findViewById(R.id.announcementTitle);
+        schedule = (EditText) updateClassDialog.findViewById(R.id.schedule);
+        description = (EditText) updateClassDialog.findViewById(R.id.desciption);
+        db.collection("class").document(act.getClassKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                TeacherClassObjectModel teacherClassObjectModel = documentSnapshot.toObject(TeacherClassObjectModel.class);
+                className.setText(teacherClassObjectModel.getName());
+                schedule.setText(teacherClassObjectModel.getSched());
+                description.setText(teacherClassObjectModel.getDescription());
+            }
+        });
+        updateClassDialog.findViewById(R.id.saveClass).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveClass(className.getText().toString(),
+                        schedule.getText().toString(),
+                        description.getText().toString());
+            }
+        });
+    }
+
+    void saveClass(String name,String schedule,String description){
+        TeacherClassObjectModel teacherClassObjectModel =
+                new TeacherClassObjectModel(act.getClassKey(), FirebaseAuth.getInstance().getUid(),name,schedule,description);
+        db.collection("class").document(act.getClassKey()).set(teacherClassObjectModel)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        updateClassDialog.dismiss();
+                    }
+                });
     }
 
 

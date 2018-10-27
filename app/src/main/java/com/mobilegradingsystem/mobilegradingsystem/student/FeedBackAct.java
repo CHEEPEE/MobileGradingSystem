@@ -90,7 +90,6 @@ public class FeedBackAct extends AppCompatActivity {
         feedBackList.setLayoutManager(new LinearLayoutManager(this));
         db.collection("announcementFeedBack")
                 .whereEqualTo("announceCode",announcementKey)
-                .whereEqualTo("userId",mAuth.getUid())
                 .orderBy("timeStamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {

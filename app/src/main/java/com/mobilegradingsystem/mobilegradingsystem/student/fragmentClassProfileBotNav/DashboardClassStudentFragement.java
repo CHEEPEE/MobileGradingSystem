@@ -27,6 +27,8 @@ public class DashboardClassStudentFragement extends Fragment {
     ClssProfileStudentBotNav act;
     BottomSheetBehavior bottomSheetBehavior;
     ItemListDialogFragment itemListDialogFragment;
+    TextView subjectName;
+    TextView subjectSched;
     TextView studentNumbers,className,announcementNumber;
     EditText title,desciption;
     String loading = "loading...";
@@ -42,9 +44,20 @@ public class DashboardClassStudentFragement extends Fragment {
         act = (ClssProfileStudentBotNav) getActivity();
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_class_dashboard_student, container, false);
-
-
-
+        subjectName = (TextView) view.findViewById(R.id.subjectName);
+        subjectSched = (TextView) view.findViewById(R.id.sched);
+        getSubjectDetails();
         return view;
+    }
+
+    void getSubjectDetails(){
+        db.collection("class").document(act.getClassKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                TeacherClassObjectModel teacherClassObjectModel = documentSnapshot.toObject(TeacherClassObjectModel.class);
+                subjectName.setText(teacherClassObjectModel.getName());
+                subjectSched.setText(teacherClassObjectModel.getSched());
+            }
+        });
     }
 }

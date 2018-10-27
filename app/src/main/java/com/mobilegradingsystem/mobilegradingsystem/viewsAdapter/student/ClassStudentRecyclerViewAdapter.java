@@ -33,13 +33,14 @@ public class ClassStudentRecyclerViewAdapter
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-      public TextView className,sched,des,accessCode,vieClass;
+      public TextView className,sched,des,accessCode,vieClass,teacherName;
         public MyViewHolder(View view){
             super(view);
             className = (TextView) view.findViewById(R.id.announcementTitle);
             sched = (TextView) view.findViewById(R.id.classSched);
             des = (TextView) view.findViewById(R.id.des);
             vieClass=  (TextView) view.findViewById(R.id.vieClass);
+            teacherName = (TextView) view.findViewById(R.id.teacherName);
 
         }
     }
@@ -58,7 +59,7 @@ public class ClassStudentRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final StudentClassObjectModel studentClassObjectModel = studentClassObjectModelArrayList.get(position);
         db.collection("class").document(studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -80,6 +81,17 @@ public class ClassStudentRecyclerViewAdapter
                 Intent i = new Intent(context, ClssProfileStudentBotNav.class);
                 i.putExtra("classKey",studentClassObjectModel.getClassCode());
                 context.startActivity(i);
+            }
+        });
+        db.collection("class").document(studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                db.collection("teacherProfile").document(documentSnapshot.get("userId").toString()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        holder.teacherName.setText(documentSnapshot.get("teacherName").toString());
+                    }
+                });
             }
         });
     }
