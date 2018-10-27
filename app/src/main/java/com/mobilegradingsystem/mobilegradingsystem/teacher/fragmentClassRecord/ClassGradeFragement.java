@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.FinalTermGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassRecordActBotNav;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
@@ -76,5 +77,25 @@ public class ClassGradeFragement extends Fragment {
         });
     }
 
+    private void setStudenFinalGrade(final StudentClassObjectModel studentClassObjectModel, final TextView grade){
+        FirebaseFirestore.getInstance().collection("termGrade").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+"midterm").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                final FinalTermGradeObjectModel finalTermGradeObjectModelMidterm = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
+                FirebaseFirestore.getInstance().collection("termGrade").document(studentClassObjectModel.getClassCode()+studentClassObjectModel.getStudentUserId()+"finals").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        try {
+                            FinalTermGradeObjectModel finalTermGradeObjectModelFinals = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
+                            Double finalGrade =  (finalTermGradeObjectModelMidterm.getGrade()+(2*finalTermGradeObjectModelFinals.getGrade()))/3;
+                            grade.setText(finalGrade+"");
+                        }catch (NullPointerException ex){
+                            grade.setText("No Grade(Incomplete scores)");
+                        }
+                    }
+                });
+            }
+        });
+    }
 
 }
