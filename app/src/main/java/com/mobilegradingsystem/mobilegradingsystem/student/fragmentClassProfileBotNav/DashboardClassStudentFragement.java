@@ -97,6 +97,7 @@ public class DashboardClassStudentFragement extends Fragment {
                             FinalTermGradeObjectModel finalTermGradeObjectModelFinals = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
                             Double finalGrade =  (finalTermGradeObjectModelMidterm.getGrade()+(2*finalTermGradeObjectModelFinals.getGrade()))/3;
                             tentativeFinal.setText(finalTermGradeObjectModelFinals.getGrade()+"");
+                            System.out.println(finalTermGradeObjectModelMidterm.getGrade()+" "+(finalTermGradeObjectModelFinals.getGrade()));
                             fGrade.setText(finalGrade+"");
                         }catch (NullPointerException ex){
                             fGrade.setText("No Grade(Incomplete scores)");
