@@ -40,14 +40,5 @@ public class IfAccountIsPendingTeacher extends AppCompatActivity {
         });
         updateProfile = (TextView) findViewById(R.id.updateProfile);
         updateProfile.setVisibility(View.INVISIBLE);
-//        updateProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(IfAccountIsPendingTeacher.this, StudentRegistration.class);
-//                i.putExtra("isUpdate",true);
-//                startActivity(i);
-//            }
-//        });
-
     }
 }

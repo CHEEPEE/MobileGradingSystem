@@ -181,7 +181,6 @@ public class GradeStudentListTeacherRecyclerViewAdapter
             }
         });
 
-
         db.collection("projectCategory")
                 .whereEqualTo("classCode",classCode)
                 .whereEqualTo("term",term)

@@ -125,6 +125,14 @@ public class TeacherProfile extends AppCompatActivity {
         dialog.show();
         TextView profileSetting,logout;
         profileSetting = (TextView) dialog.findViewById(R.id.profileSettings);
+        profileSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,TeacherRegistration.class);
+                startActivity(i);
+                dialog.dismiss();
+            }
+        });
         logout = (TextView) dialog.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
