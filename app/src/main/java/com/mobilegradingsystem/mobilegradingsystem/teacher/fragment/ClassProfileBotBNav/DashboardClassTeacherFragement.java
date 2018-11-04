@@ -125,7 +125,7 @@ public class DashboardClassTeacherFragement extends Fragment {
         updateClassDialog.show();
         className = (EditText) updateClassDialog.findViewById(R.id.announcementTitle);
         schedule = (EditText) updateClassDialog.findViewById(R.id.schedule);
-        description = (EditText) updateClassDialog.findViewById(R.id.desciption);
+        description = (EditText) updateClassDialog.findViewById(R.id.addFeedback);
         db.collection("class").document(act.getClassKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {

@@ -3,7 +3,6 @@ package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,27 +11,14 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.mobilegradingsystem.mobilegradingsystem.R;
-import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.ParticipationCategoryGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.FeedBackAct;
 
 import java.util.ArrayList;
-
-import javax.annotation.Nullable;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -117,7 +103,7 @@ public class AnnoucementListTeacherRecyclerViewAdapter
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialog.show();
         final EditText announcementTitle  = (EditText) dialog.findViewById(R.id.announcementTitle);
-        final EditText description = (EditText) dialog.findViewById(R.id.desciption);
+        final EditText description = (EditText) dialog.findViewById(R.id.addFeedback);
         try{
             announcementTitle.setText(announcementObjectModel.getTitle());
             description.setText(announcementObjectModel.getDescription());

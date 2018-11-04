@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.student.fragmentClassProfileBotNav.AnnouncementClassStudentFragement;
 import com.mobilegradingsystem.mobilegradingsystem.student.fragmentClassProfileBotNav.DashboardClassStudentFragement;
+import com.mobilegradingsystem.mobilegradingsystem.student.fragmentClassProfileBotNav.FeedbackingClassStudentFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.AnnouncementTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.DashboardClassTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.ViewStudentsTeacherFragement;
@@ -32,6 +33,7 @@ public class ClssProfileStudentBotNav extends AppCompatActivity {
     String classKey;
     DashboardClassStudentFragement dashboardClassStudentFragement;
     AnnouncementClassStudentFragement announcementClassStudentFragement;
+    FeedbackingClassStudentFragement feedbackingClassStudentFragement;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -45,8 +47,8 @@ public class ClssProfileStudentBotNav extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_notifications:
-
+                case R.id.navigation_feedback:
+                    viewPager.setCurrentItem(2);
                     return true;
             }
             return false;
@@ -107,9 +109,10 @@ public class ClssProfileStudentBotNav extends AppCompatActivity {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         dashboardClassStudentFragement = new DashboardClassStudentFragement();
         announcementClassStudentFragement = new AnnouncementClassStudentFragement();
+        feedbackingClassStudentFragement = new FeedbackingClassStudentFragement();
         adapter.addFragment(dashboardClassStudentFragement);
         adapter.addFragment(announcementClassStudentFragement);
-
+        adapter.addFragment(feedbackingClassStudentFragement);
         viewPager.setAdapter(adapter);
     }
     public String getClassKey() {

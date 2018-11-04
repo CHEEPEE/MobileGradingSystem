@@ -154,7 +154,7 @@ public class TeacherProfile extends AppCompatActivity {
         addClassDialog.show();
         className = (EditText) addClassDialog.findViewById(R.id.announcementTitle);
         schedule = (EditText) addClassDialog.findViewById(R.id.schedule);
-        description = (EditText) addClassDialog.findViewById(R.id.desciption);
+        description = (EditText) addClassDialog.findViewById(R.id.addFeedback);
         addClassDialog.findViewById(R.id.saveClass).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

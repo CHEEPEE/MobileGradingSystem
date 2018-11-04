@@ -115,4 +115,6 @@ public class ClassAttendanceFragement extends Fragment {
         studentListRecyclerView.setAdapter(attendanceClassRecordRecyclerViewAdapter);
         attendanceClassRecordRecyclerViewAdapter.notifyDataSetChanged();
     }
+
+
 }
