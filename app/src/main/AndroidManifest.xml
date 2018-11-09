@@ -55,10 +55,11 @@
         <activity android:name=".teacher.ClassProjectListStudentsAct" />
         <activity android:name=".teacher.ClassQuizLongTestListStudentsAct" />
         <activity android:name=".IfAccountIsPending" />
-        <activity android:name=".UpdateAccount"></activity>
-        <activity android:name=".IfAccountIsPendingTeacher"/>
-        <activity android:name=".IfAccountIsBlock"/>
-        <activity android:name=".IfAccountIsBlockTeacher"/>
+        <activity android:name=".UpdateAccount" />
+        <activity android:name=".IfAccountIsPendingTeacher" />
+        <activity android:name=".IfAccountIsBlock" />
+        <activity android:name=".IfAccountIsBlockTeacher" />
+        <activity android:name=".teacher.FeedBackStudentList"></activity>
     </application>
 
 </manifest>

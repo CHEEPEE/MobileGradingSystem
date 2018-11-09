@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -116,6 +117,7 @@ public class AnnouncementTeacherFragement extends Fragment {
     }
 
     void saveAnnouncement(){
+        save.setClickable(false);
         String getTitle =title.getText().toString();
         String des = desciption.getText().toString();
         String key = db.collection("announcement").document().getId();
@@ -125,6 +127,12 @@ public class AnnouncementTeacherFragement extends Fragment {
             @Override
             public void onSuccess(Void aVoid) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                save.setClickable(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                save.setClickable(true);
             }
         });
     }

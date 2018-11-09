@@ -24,6 +24,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherCl
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassRecordActBotNav;
 
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.FeedBackStudentList;
 
 import javax.annotation.Nullable;
 
@@ -32,7 +33,7 @@ public class DashboardClassTeacherFragement extends Fragment {
     ClssProfileTeacherBotNav act;
     BottomSheetBehavior bottomSheetBehavior;
     ItemListDialogFragment itemListDialogFragment;
-    TextView studentNumbers,className,announcementNumber;
+    TextView studentNumbers,className,announcementNumber,feedbacks;
     EditText title,desciption;
     Dialog updateClassDialog;
     String loading = "loading...";
@@ -53,6 +54,7 @@ public class DashboardClassTeacherFragement extends Fragment {
         className = (TextView) view.findViewById(R.id.announcementTitle);
         announcementNumber = (TextView) view.findViewById(R.id.announcementsNumber);
         settings = (TextView) view.findViewById(R.id.settings);
+        feedbacks = (TextView) view.findViewById(R.id.feedbacks);
         studentNumbers.setText(loading);
         className.setText(loading);
         announcementNumber.setText(loading);
@@ -75,6 +77,14 @@ public class DashboardClassTeacherFragement extends Fragment {
                 Intent i = new Intent(getActivity(), ClassRecordActBotNav.class);
                 i.putExtra("key",act.getClassKey());
                 i.putExtra("term","finals");
+                getActivity().startActivity(i);
+            }
+        });
+        feedbacks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), FeedBackStudentList.class);
+                i.putExtra("classCode",act.getClassKey());
                 getActivity().startActivity(i);
             }
         });

@@ -174,11 +174,9 @@
                 style="@style/defaultButtonStyle"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="Midterm"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/imageView6"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -187,12 +185,10 @@
                 style="@style/defaultButtonStyle"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="Final"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/midterm"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -201,16 +197,28 @@
                 style="@style/TextTitle"
                 android:layout_width="96dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:drawablePadding="5dp"
                 android:drawableStart="@drawable/ic_settings_black_24dp"
                 android:gravity="center"
                 android:text="Settings"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/midterm" />
+
+            <TextView
+                android:id="@+id/feedbacks"
+                style="@style/TextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:drawablePadding="5dp"
+                android:drawableStart="@drawable/ic_feedback_black_24dp"
+                android:gravity="center"
+                android:text="FeedBacks"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

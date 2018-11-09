@@ -70,8 +70,10 @@
         app:layout_constraintEnd_toStartOf="@+id/feedBack"
         app:layout_constraintTop_toBottomOf="@+id/description"
         app:layout_constraintVertical_bias="0.0" />
+
     <TextView
 
+        android:id="@+id/feedBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -81,8 +83,7 @@
         android:drawableStart="@drawable/ic_outline_feedback_24px"
         android:drawableTint="@color/colorGreen"
         android:gravity="center"
-        android:id="@+id/feedBack"
-        android:text="Feedback"
+        android:text="Comment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
