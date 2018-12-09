@@ -4,44 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:elevation="5dp"
-    android:background="@color/colorWhite"
+    android:layout_margin="32dp"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_background"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView12"
-        style="@style/TextTitle"
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Add Announcement"
+        android:layout_marginTop="16dp"
+        android:text="Add Student"
+        style="@style/TextTitle"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/closeSheet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_close_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView12"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView12" />
-
-    <EditText
-        android:id="@+id/title"
-        style="@style/TextInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:hint="Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <EditText
         android:id="@+id/studentId"
@@ -52,24 +33,28 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
-        android:lines="6"
-        android:hint="Description"
+        android:hint="Student ID"
+        android:inputType="text"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
-        android:id="@+id/btnSave"
+        android:id="@+id/saveStudent"
         style="@style/defaultButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="Save Announcement"
+        android:layout_marginTop="24dp"
+        android:text="Add Student"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/studentId"
         app:layout_constraintStart_toStartOf="@+id/studentId"
         app:layout_constraintTop_toBottomOf="@+id/studentId" />
+
+
 </android.support.constraint.ConstraintLayout>

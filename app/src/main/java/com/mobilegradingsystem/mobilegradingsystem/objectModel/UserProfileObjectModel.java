@@ -11,18 +11,20 @@ public class UserProfileObjectModel {
     private String contactNumber;
     private String email;
     private String userType;
+    private String userSchoolId;
 
     public UserProfileObjectModel(){
 
     }
     public UserProfileObjectModel(String userId,
-                                  String userImage, String userName, String contactNumber, String email,String userType){
+                                  String userImage, String userName, String contactNumber, String email,String userType,String userSchoolId){
         this.userId=userId;
         this.userImage=userImage;
         this.userName= userName;
         this.contactNumber= contactNumber;
         this.email=email;
         this.userType = userType;
+        this.userSchoolId = userSchoolId;
     }
 
     public String getContactNumber() {
@@ -47,5 +49,9 @@ public class UserProfileObjectModel {
 
     public String getUserType() {
         return userType;
+    }
+
+    public String getUserSchoolId() {
+        return userSchoolId;
     }
 }

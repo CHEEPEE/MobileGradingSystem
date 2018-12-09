@@ -103,7 +103,7 @@ public class AnnoucementListTeacherRecyclerViewAdapter
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialog.show();
         final EditText announcementTitle  = (EditText) dialog.findViewById(R.id.announcementTitle);
-        final EditText description = (EditText) dialog.findViewById(R.id.addFeedback);
+        final EditText description = (EditText) dialog.findViewById(R.id.studentId);
         try{
             announcementTitle.setText(announcementObjectModel.getTitle());
             description.setText(announcementObjectModel.getDescription());

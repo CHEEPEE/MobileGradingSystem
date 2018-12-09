@@ -59,7 +59,8 @@
         <activity android:name=".IfAccountIsPendingTeacher" />
         <activity android:name=".IfAccountIsBlock" />
         <activity android:name=".IfAccountIsBlockTeacher" />
-        <activity android:name=".teacher.FeedBackStudentList"></activity>
+        <activity android:name=".teacher.FeedBackStudentList" />
+        <activity android:name=".teacher.RegisterStudent"></activity>
     </application>
 
 </manifest>

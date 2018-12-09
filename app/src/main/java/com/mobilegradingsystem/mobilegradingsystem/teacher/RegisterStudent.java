@@ -1,10 +1,9 @@
-package com.mobilegradingsystem.mobilegradingsystem.student;
+package com.mobilegradingsystem.mobilegradingsystem.teacher;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,16 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.mobilegradingsystem.mobilegradingsystem.IfAccountIsPending;
 import com.mobilegradingsystem.mobilegradingsystem.R;
-import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.DepartmentObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.SectionObjectModel;
@@ -43,7 +39,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class StudentRegistration extends AppCompatActivity {
+public class RegisterStudent extends AppCompatActivity {
+    String classKey;
     TextView selectDepartment,selectProgram;
     ArrayList<DepartmentObjectModel> departmentObjectModelArrayList = new ArrayList<>();
     ArrayList<ProgramsObjectModel> programsObjectModels =  new ArrayList<>();
@@ -54,26 +51,27 @@ public class StudentRegistration extends AppCompatActivity {
     String departmentKey;
     String yearLevelKey;
     String sectionLKey;
-    FirebaseAuth mAuth;
     ProgramsRecyclerViewAdapter programsRecyclerViewAdapter;
-    EditText fname,mName,lName,studentId;
+    EditText fname,mName,lName,studentId,email;
+    TempUserObject tempUserObject;
+
     TextView saveInfo,selectYearLevel,selectSection;
     StudentProfileProfileObjectModel studentProfileProfileObjectModel;
     boolean isUpdateProfile = false;
-    TempUserObject tempUserObject;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_registration);
+        setContentView(R.layout.activity_register_student);
+        classKey = getIntent().getExtras().getString("classKey");
+        email = (EditText) findViewById(R.id.email);
+        tempUserObject = new TempUserObject();
         selectDepartment = (TextView) findViewById(R.id.selectDepartment);
         selectProgram = (TextView) findViewById(R.id.selectProgram);
         selectYearLevel = (TextView) findViewById(R.id.selectYearLevel);
         selectSection = (TextView) findViewById(R.id.selectSection);
         db = FirebaseFirestore.getInstance();
-        tempUserObject = new TempUserObject();
-        mAuth = FirebaseAuth.getInstance();
-        context  = StudentRegistration.this;
+
+        context  = RegisterStudent.this;
         isUpdateProfile = getIntent().getExtras().getBoolean("isUpdate");
 
         fname = (EditText) findViewById(R.id.fName);
@@ -81,8 +79,7 @@ public class StudentRegistration extends AppCompatActivity {
         lName = (EditText) findViewById(R.id.lName);
         studentId = (EditText) findViewById(R.id.announcementTitle);
         saveInfo = (TextView) findViewById(R.id.saveInfo);
-
-
+        studentId.setText(getIntent().getExtras().getString("studentId"));
         selectDepartment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,10 +124,12 @@ public class StudentRegistration extends AppCompatActivity {
                 selectProgram();
             }
         });
-
-        if (isUpdateProfile){
-            getProfileInfo();
-        }
+        saveInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveProfile(departmentKey,programKey,yearLevelKey,sectionLKey);
+            }
+        });
 
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
@@ -144,70 +143,9 @@ public class StudentRegistration extends AppCompatActivity {
         );
     }
 
-    void getProfileInfo(){
-        db.collection("studentProfile").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                studentProfileProfileObjectModel = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
-                setInfoToFields();
-            }
-        });
-    }
-    void setInfoToFields(){
-        studentId.setText(studentProfileProfileObjectModel.getStudentId());
-        fname.setText(studentProfileProfileObjectModel.getfName());
-        mName.setText(studentProfileProfileObjectModel.getmNme());
-        lName.setText(studentProfileProfileObjectModel.getlName());
-        db.collection("program").document(studentProfileProfileObjectModel.getProgramKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-           try {
-               selectProgram.setText(documentSnapshot.get("program").toString());
-               programKey = documentSnapshot.get("key").toString();
-           }catch (NullPointerException ex){
-
-           }
-
-            }
-        });
-        db.collection("department").document(studentProfileProfileObjectModel.getDepartmentKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-              try {
-                  selectDepartment.setText(documentSnapshot.get("department").toString());
-                  departmentKey = documentSnapshot.get("key").toString();
-              }catch (NullPointerException ex){
-
-              }
-            }
-        });
-        db.collection("yearlevel").document(studentProfileProfileObjectModel.getYearLevelKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-              try {
-                  selectYearLevel.setText(documentSnapshot.get("yearLevel").toString());
-                  yearLevelKey = documentSnapshot.get("key").toString();
-              }catch (NullPointerException ex){
-
-              }
-            }
-
-        });
-        db.collection("section").document(studentProfileProfileObjectModel.getSectionKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-            try {
-                selectSection.setText(documentSnapshot.get("section").toString());
-                sectionLKey = documentSnapshot.get("key").toString();
-            }catch (NullPointerException ex){
-
-            }
-            }
-        });
-    }
 
     void selectDepartmentDialog(){
-        final Dialog dialog = new Dialog(StudentRegistration.this);
+        final Dialog dialog = new Dialog(RegisterStudent.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dlg_select_department);
@@ -227,12 +165,6 @@ public class StudentRegistration extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        saveInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveProfile(departmentKey,programKey,yearLevelKey,sectionLKey);
-            }
-        });
     }
 
     void getPrograms(){
@@ -250,7 +182,7 @@ public class StudentRegistration extends AppCompatActivity {
     }
 
     void selectProgram(){
-        final Dialog dialog = new Dialog(StudentRegistration.this);
+        final Dialog dialog = new Dialog(RegisterStudent.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dlg_select_program);
@@ -335,27 +267,52 @@ public class StudentRegistration extends AppCompatActivity {
         return isValid;
     }
     void saveProfile(String a,String b,String c,String d){
+        String key = db.collection("tempCreateUsers").document().getId();
         if (validate(a,b,c,d)){
-            StudentProfileProfileObjectModel studentProfileProfileObjectModel
-                    = new StudentProfileProfileObjectModel(mAuth.getUid()
-                    ,departmentKey
-                    ,programKey
-                    ,fname.getText().toString()
-                    ,mName.getText().toString()
-                    ,lName.getText().toString()
-                    ,studentId.getText().toString()
-                    ,"pending"
-                    ,yearLevelKey,sectionLKey
-            );
-            db.collection(Utils.studentProfile).document(mAuth.getUid()).set(studentProfileProfileObjectModel)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Intent i = new Intent(context,IfAccountIsPending.class);
-                            startActivity(i);
-                            finish();
-                        }
-                    });
+//            TempUserObject tempUserObject
+//                    = new TempUserObject(email.getText().toString(),key
+//                    ,departmentKey
+//                    ,programKey
+//                    ,fname.getText().toString()
+//                    ,mName.getText().toString()
+//                    ,lName.getText().toString()
+//                    ,studentId.getText().toString()
+//                    ,"pending"
+//                    ,yearLevelKey,sectionLKey
+//            );
+            tempUserObject.setEmail(email.getText().toString());
+            tempUserObject.setPassword(key);
+            tempUserObject.setUserType("student");
+            tempUserObject.setUserSchoolId(getIntent().getExtras().getString("studentId"));
+            tempUserObject.setfName(fname.getText().toString());
+            tempUserObject.setmName(mName.getText().toString());
+            tempUserObject.setlName(lName.getText().toString());
+            tempUserObject.setDepartmentKey(departmentKey);
+            tempUserObject.setProgramKey(programKey);
+            tempUserObject.setSectionKey(sectionLKey);
+            tempUserObject.setStudentId(getIntent().getExtras().getString("studentId"));
+            tempUserObject.setYearLevelKey(yearLevelKey);
+            tempUserObject.setUserName(fname.getText().toString()+" "+mName.getText().toString()+" "+lName.getText().toString());
+            tempUserObject.setAccountStatus("active");
+            tempUserObject.setClassCode(classKey);
+            Toast.makeText(context,"Triggered",Toast.LENGTH_SHORT).show();
+            db.collection("tempCreateUsers").whereEqualTo("email",email.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                    if (queryDocumentSnapshots.getDocuments().size()==0){
+                        db.collection("tempCreateUsers").document(email.getText().toString())
+                                .set(tempUserObject).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                finish();
+                            }
+                        });
+                    }else {
+                        Toast.makeText(context,"Email alerady Exist",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }else{
             Toast.makeText(context,"Please Fill up Everything",Toast.LENGTH_SHORT).show();
         }

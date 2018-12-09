@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".teacher.RegisterStudent">
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Student Registration"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/email"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:hint="Email"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/announcementTitle"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:hint="Student ID"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <EditText
+        android:id="@+id/fName"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="First Name"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/announcementTitle"
+        app:layout_constraintStart_toStartOf="@+id/announcementTitle"
+        app:layout_constraintTop_toBottomOf="@+id/announcementTitle" />
+
+    <EditText
+        android:id="@+id/mName"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Middle Name"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+        app:layout_constraintStart_toStartOf="@+id/fName"
+        app:layout_constraintTop_toBottomOf="@+id/fName" />
+
+    <EditText
+        android:id="@+id/lName"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Last Name"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+        app:layout_constraintStart_toStartOf="@+id/mName"
+        app:layout_constraintTop_toBottomOf="@+id/mName" />
+
+    <TextView
+        android:id="@+id/selectDepartment"
+        style="@style/TextInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Select Department"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lName" />
+
+    <TextView
+        style="@style/TextInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:id="@+id/selectProgram"
+        android:text="Select Program"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectDepartment" />
+
+    <TextView
+        android:id="@+id/selectYearLevel"
+        style="@style/TextInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Select Year Level"
+        app:layout_constraintEnd_toEndOf="@+id/selectProgram"
+        app:layout_constraintStart_toStartOf="@+id/selectProgram"
+        app:layout_constraintTop_toBottomOf="@+id/selectProgram" />
+
+    <TextView
+        android:id="@+id/selectSection"
+        style="@style/TextInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Select Section"
+        app:layout_constraintEnd_toEndOf="@+id/selectYearLevel"
+        app:layout_constraintStart_toStartOf="@+id/selectYearLevel"
+        app:layout_constraintTop_toBottomOf="@+id/selectYearLevel" />
+
+    <Button
+        android:id="@+id/saveInfo"
+        style="@style/defaultButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Save"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

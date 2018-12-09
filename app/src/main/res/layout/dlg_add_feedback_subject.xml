@@ -25,7 +25,7 @@
 
 
     <EditText
-        android:id="@+id/addFeedback"
+        android:id="@+id/studentId"
         style="@style/TextInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,9 +53,9 @@
         android:layout_marginTop="24dp"
         android:text="Save Class/Subject"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/addFeedback"
-        app:layout_constraintStart_toStartOf="@+id/addFeedback"
-        app:layout_constraintTop_toBottomOf="@+id/addFeedback" />
+        app:layout_constraintEnd_toEndOf="@+id/studentId"
+        app:layout_constraintStart_toStartOf="@+id/studentId"
+        app:layout_constraintTop_toBottomOf="@+id/studentId" />
 
 
 </android.support.constraint.ConstraintLayout>

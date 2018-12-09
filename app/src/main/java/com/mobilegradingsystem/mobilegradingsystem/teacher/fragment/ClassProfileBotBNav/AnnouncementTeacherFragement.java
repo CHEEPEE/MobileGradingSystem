@@ -43,7 +43,6 @@ public class AnnouncementTeacherFragement extends Fragment {
     public AnnouncementTeacherFragement(){
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class AnnouncementTeacherFragement extends Fragment {
         View view = inflater.inflate(R.layout.frag_announcement_teaher, container, false);
         announcementList = (RecyclerView) view.findViewById(R.id.announcementList);
         title = (EditText) view.findViewById(R.id.title);
-        desciption = (EditText) view.findViewById(R.id.addFeedback);
+        desciption = (EditText) view.findViewById(R.id.studentId);
         save = (TextView) view.findViewById(R.id.btnSave);
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.nestedScrollView));
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {

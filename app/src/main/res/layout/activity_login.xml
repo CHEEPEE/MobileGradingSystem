@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
 
     tools:context=".Login">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/lw_pol"
-        android:scaleType="centerCrop"
-        />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -23,40 +17,75 @@
         android:id="@+id/textView2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/lato_light"
-        android:text="Mobile Grading System"
-        android:textAlignment="center"
-        android:textAllCaps="true"
+        android:layout_marginBottom="70dp"
+        android:layout_marginStart="32dp"
         android:paddingBottom="5dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
         android:paddingTop="5dp"
+        android:text="Mobile Grading System"
+        android:textAllCaps="true"
         android:textColor="#333333"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35000002" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/userId"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+        android:id="@+id/textView30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="62dp"
-        android:background="@drawable/box"
-        android:paddingBottom="5dp"
-        android:paddingLeft="25dp"
-        android:id="@+id/getStarted"
-        android:paddingRight="25dp"
-        android:paddingTop="5dp"
-        android:text="Get Started"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Some Text Here"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/userId"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:hint="User ID"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout2" />
+
+
+    <EditText
+        android:id="@+id/password"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userId" />
+
+    <TextView
+        android:id="@+id/login"
+        style="@style/defaultButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="70dp"
+        android:text="Login"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
 </android.support.constraint.ConstraintLayout>

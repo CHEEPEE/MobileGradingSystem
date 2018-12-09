@@ -18,6 +18,8 @@ public class TeacherClassObjectModel {
     private String classRecordVersionKey;
     private @ServerTimestamp
     Date timeStamp;
+    private String semester;
+    private String schoolYear;
 
 
     public TeacherClassObjectModel(){
@@ -28,7 +30,9 @@ public class TeacherClassObjectModel {
            String userId,
            String name,
            String sched,
-           String description
+           String description,
+           String semester,
+           String schoolYear
 
 
     ){
@@ -38,7 +42,8 @@ public class TeacherClassObjectModel {
       this.sched = sched;
       this.description = description;
       this.classRecordVersionKey = "4TYJW5v4LBujNmMCNEPs";
-
+      this.semester = semester;
+      this.schoolYear = schoolYear;
     }
 
     public String getUserId()
@@ -64,6 +69,14 @@ public class TeacherClassObjectModel {
 
     public String getSched() {
         return sched;
+    }
+
+    public String getSchoolYear() {
+        return schoolYear;
+    }
+
+    public String getSemester() {
+        return semester;
     }
 
     public String getClassRecordVersionKey() {

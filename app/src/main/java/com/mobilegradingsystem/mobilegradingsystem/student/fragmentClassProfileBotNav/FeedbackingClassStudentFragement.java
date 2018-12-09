@@ -2,7 +2,6 @@ package com.mobilegradingsystem.mobilegradingsystem.student.fragmentClassProfile
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,12 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.FeedbacksObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.FinalTermGradeObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.ParticipationCategoryGradeObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.ClssProfileStudentBotNav;
-import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.ItemListDialogFragment;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.FeedbackRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -52,7 +46,7 @@ public class FeedbackingClassStudentFragement extends Fragment {
         act = (ClssProfileStudentBotNav) getActivity();
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_student_feedback, container, false);
-        addFeedback = (TextView) view.findViewById(R.id.addFeedback);
+        addFeedback = (TextView) view.findViewById(R.id.studentId);
         feedback = (RecyclerView) view.findViewById(R.id.feedbackList);
         addFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +89,7 @@ public class FeedbackingClassStudentFragement extends Fragment {
         Window window = dialog.getWindow();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        final EditText addFeddback = (EditText) dialog.findViewById(R.id.addFeedback);
+        final EditText addFeddback = (EditText) dialog.findViewById(R.id.studentId);
         final TextView saveFeedback = (TextView) dialog.findViewById(R.id.saveFeedback);
         final String key = db.collection("feedbacks").document().getId();
 

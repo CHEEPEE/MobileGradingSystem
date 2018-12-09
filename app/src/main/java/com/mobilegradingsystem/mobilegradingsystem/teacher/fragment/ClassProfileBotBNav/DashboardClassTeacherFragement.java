@@ -38,6 +38,7 @@ public class DashboardClassTeacherFragement extends Fragment {
     Dialog updateClassDialog;
     String loading = "loading...";
     TextView settings;
+    TeacherClassObjectModel oldClassModel;
 
     public DashboardClassTeacherFragement(){
 
@@ -135,11 +136,13 @@ public class DashboardClassTeacherFragement extends Fragment {
         updateClassDialog.show();
         className = (EditText) updateClassDialog.findViewById(R.id.announcementTitle);
         schedule = (EditText) updateClassDialog.findViewById(R.id.schedule);
-        description = (EditText) updateClassDialog.findViewById(R.id.addFeedback);
+        description = (EditText) updateClassDialog.findViewById(R.id.studentId);
+
         db.collection("class").document(act.getClassKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 TeacherClassObjectModel teacherClassObjectModel = documentSnapshot.toObject(TeacherClassObjectModel.class);
+                oldClassModel = documentSnapshot.toObject(TeacherClassObjectModel.class);
                 className.setText(teacherClassObjectModel.getName());
                 schedule.setText(teacherClassObjectModel.getSched());
                 description.setText(teacherClassObjectModel.getDescription());
@@ -157,7 +160,7 @@ public class DashboardClassTeacherFragement extends Fragment {
 
     void saveClass(String name,String schedule,String description){
         TeacherClassObjectModel teacherClassObjectModel =
-                new TeacherClassObjectModel(act.getClassKey(), FirebaseAuth.getInstance().getUid(),name,schedule,description);
+                new TeacherClassObjectModel(act.getClassKey(), FirebaseAuth.getInstance().getUid(),name,schedule,description,oldClassModel.getSemester(),oldClassModel.getSchoolYear());
         db.collection("class").document(act.getClassKey()).set(teacherClassObjectModel)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

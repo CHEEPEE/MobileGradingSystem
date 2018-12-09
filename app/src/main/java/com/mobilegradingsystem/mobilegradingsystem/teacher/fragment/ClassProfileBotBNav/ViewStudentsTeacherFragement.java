@@ -1,18 +1,17 @@
 package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
-import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.student.ClassStudentRecyclerViewAdapter;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.RegisterStudent;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentListTeacherRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -41,6 +39,7 @@ public class ViewStudentsTeacherFragement extends Fragment {
     RecyclerView studentListRecyclerView;
     BottomSheetBehavior bottomSheetBehavior;
     String studentListFromRegistrar;
+    TextView addStudent;
 
 
     public ViewStudentsTeacherFragement(){
@@ -54,12 +53,18 @@ public class ViewStudentsTeacherFragement extends Fragment {
         act = (ClssProfileTeacherBotNav) getActivity();
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_view_students_teacher, container, false);
-
+        addStudent = (TextView) view.findViewById(R.id.addStudent);
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentListRecyvlerView);
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         studentListTeacherRecyclerViewAdapter = new StudentListTeacherRecyclerViewAdapter(getActivity(),studentList);
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudentList();
+        addStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStudentToClass();
+            }
+        });
         view.findViewById(R.id.viewStudents).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +85,61 @@ public class ViewStudentsTeacherFragement extends Fragment {
                 studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    void checkStudentRegistered(final String userSchoolId){
+        db.collection("users").whereEqualTo("userSchoolId",userSchoolId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (queryDocumentSnapshots.getDocuments().size() == 0){
+                    Intent i = new Intent(getActivity(), RegisterStudent.class);
+                    i.putExtra("classKey",act.getClassKey());
+                    i.putExtra("studentId",userSchoolId);
+                    getActivity().startActivity(i);
+                }else if(queryDocumentSnapshots.getDocuments().size()>1){
+                    Toast.makeText(getContext(),"Hi Developer, You should Check this one Dup: "+queryDocumentSnapshots.getDocuments().size(),Toast.LENGTH_SHORT).show();
+                }else{
+
+                }
+            }
+        });
+    }
+
+    void registerStudent(String studentId){
+        final Dialog dialog = new Dialog(getContext());
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dlg_add_student_to_subject);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        dialog.show();
+    }
+
+
+    void addStudentToClass(){
+        final Dialog dialog = new Dialog(getContext());
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dlg_add_student_to_subject);
+        Window window = dialog.getWindow();
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        TextView saveStudent = (TextView) dialog.findViewById(R.id.saveStudent);
+        final EditText studentId = (EditText) dialog.findViewById(R.id.studentId);
+        saveStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (studentId.getText().toString().trim()!=""){
+                    checkStudentRegistered(studentId.getText().toString());
+                }
+            }
+        });
+        dialog.show();
     }
 
     void getStudentsFromRegistrar(){

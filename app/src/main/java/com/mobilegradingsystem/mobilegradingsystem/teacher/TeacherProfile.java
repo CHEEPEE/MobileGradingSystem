@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherPr
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.ClassTeacherRecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
@@ -52,6 +54,7 @@ public class TeacherProfile extends AppCompatActivity {
     Context context;
     Dialog addClassDialog;
     RecyclerView classList;
+    String semester = null;
     ClassTeacherRecyclerViewAdapter classTeacherRecyclerViewAdapter;
     ArrayList<TeacherClassObjectModel> teacherClassObjectModelArrayList = new ArrayList<>();
 
@@ -85,6 +88,7 @@ public class TeacherProfile extends AppCompatActivity {
 
             }
         });
+
         accountImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,14 +129,15 @@ public class TeacherProfile extends AppCompatActivity {
         dialog.show();
         TextView profileSetting,logout;
         profileSetting = (TextView) dialog.findViewById(R.id.profileSettings);
-        profileSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context,TeacherRegistration.class);
-                startActivity(i);
-                dialog.dismiss();
-            }
-        });
+        profileSetting.setVisibility(View.GONE);
+//        profileSetting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(context,TeacherRegistration.class);
+//                startActivity(i);
+//                dialog.dismiss();
+//            }
+//        });
         logout = (TextView) dialog.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,29 +152,49 @@ public class TeacherProfile extends AppCompatActivity {
         addClassDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         addClassDialog.setCancelable(true);
         addClassDialog.setContentView(R.layout.dlg_add_class_subject);
+
         Window window = addClassDialog.getWindow();
         addClassDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         final EditText className,schedule,description;
         addClassDialog.show();
+        final CheckBox fSem,sSem;
+        fSem = (CheckBox) addClassDialog.findViewById(R.id.firstSem);
+        sSem = (CheckBox) addClassDialog.findViewById(R.id.secondSem);
+        fSem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sSem.setChecked(false);
+                semester = "1";
+            }
+        });
+        sSem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fSem.setChecked(false);
+                semester = "2";
+            }
+        });
         className = (EditText) addClassDialog.findViewById(R.id.announcementTitle);
         schedule = (EditText) addClassDialog.findViewById(R.id.schedule);
-        description = (EditText) addClassDialog.findViewById(R.id.addFeedback);
+        description = (EditText) addClassDialog.findViewById(R.id.studentId);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        final String schoolYear = year+" - "+(year+1);
         addClassDialog.findViewById(R.id.saveClass).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveClass(className.getText().toString(),
                         schedule.getText().toString(),
-                        description.getText().toString());
+                        description.getText().toString(),semester,schoolYear);
             }
         });
     }
 
-    void saveClass(String name,String schedule,String description){
+    void saveClass(String name,String schedule,String description,String semester,String schoolYear){
         String key  = db.collection("class").document().getId();
 
         TeacherClassObjectModel teacherClassObjectModel =
-                new TeacherClassObjectModel(key,mAuth.getUid(),name,schedule,description);
+                new TeacherClassObjectModel(key,mAuth.getUid(),name,schedule,description,semester,schoolYear);
         db.collection("class").document(key).set(teacherClassObjectModel)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
