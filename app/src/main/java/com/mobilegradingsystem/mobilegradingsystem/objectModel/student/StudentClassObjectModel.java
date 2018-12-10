@@ -10,7 +10,6 @@ import java.util.Date;
 
 public class StudentClassObjectModel {
    private String key;
-
    private String studentUserId;
    private String studentId;
    private String classCode;

@@ -16,13 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.RegisterStudent;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentListTeacherRecyclerViewAdapter;
@@ -40,6 +43,7 @@ public class ViewStudentsTeacherFragement extends Fragment {
     BottomSheetBehavior bottomSheetBehavior;
     String studentListFromRegistrar;
     TextView addStudent;
+    Dialog addStudentToClassDialog;
 
 
     public ViewStudentsTeacherFragement(){
@@ -91,15 +95,43 @@ public class ViewStudentsTeacherFragement extends Fragment {
         db.collection("users").whereEqualTo("userSchoolId",userSchoolId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
                 if (queryDocumentSnapshots.getDocuments().size() == 0){
                     Intent i = new Intent(getActivity(), RegisterStudent.class);
                     i.putExtra("classKey",act.getClassKey());
                     i.putExtra("studentId",userSchoolId);
                     getActivity().startActivity(i);
+                    addStudentToClassDialog.dismiss();
                 }else if(queryDocumentSnapshots.getDocuments().size()>1){
                     Toast.makeText(getContext(),"Hi Developer, You should Check this one Dup: "+queryDocumentSnapshots.getDocuments().size(),Toast.LENGTH_SHORT).show();
-                }else{
+                }else if(queryDocumentSnapshots.getDocuments().size() == 1){
 
+                    for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+
+                       final UserProfileObjectModel userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
+
+                        db.collection("studentClasses").whereEqualTo("studentUserId",userProfileObjectModel.getUserId()).whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                if (queryDocumentSnapshots.getDocuments().size() >=1){
+                                    Toast.makeText(getContext(),"You cannot add the same student on the same class",Toast.LENGTH_SHORT).show();
+                                }else {
+                                    String studentClassKey = db.collection("studentClasses").document().getId();
+                                    StudentClassObjectModel studentClassObjectModel =
+                                            new StudentClassObjectModel(studentClassKey,userProfileObjectModel.getUserId(),act.getClassKey(),userProfileObjectModel.getUserSchoolId(),"approved");
+                                    db.collection("studentClasses")
+                                            .document(studentClassKey).set(studentClassObjectModel)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    addStudentToClassDialog.dismiss();
+                                                }
+                                            });
+                                }
+                            }
+                        });
+
+                    }
                 }
             }
         });
@@ -120,17 +152,17 @@ public class ViewStudentsTeacherFragement extends Fragment {
 
 
     void addStudentToClass(){
-        final Dialog dialog = new Dialog(getContext());
+        addStudentToClassDialog = new Dialog(getContext());
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.dlg_add_student_to_subject);
-        Window window = dialog.getWindow();
+        addStudentToClassDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        addStudentToClassDialog.setCancelable(true);
+        addStudentToClassDialog.setContentView(R.layout.dlg_add_student_to_subject);
+        Window window = addStudentToClassDialog.getWindow();
 
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        addStudentToClassDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        TextView saveStudent = (TextView) dialog.findViewById(R.id.saveStudent);
-        final EditText studentId = (EditText) dialog.findViewById(R.id.studentId);
+        TextView saveStudent = (TextView) addStudentToClassDialog.findViewById(R.id.saveStudent);
+        final EditText studentId = (EditText) addStudentToClassDialog.findViewById(R.id.studentId);
         saveStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +171,7 @@ public class ViewStudentsTeacherFragement extends Fragment {
                 }
             }
         });
-        dialog.show();
+        addStudentToClassDialog.show();
     }
 
     void getStudentsFromRegistrar(){

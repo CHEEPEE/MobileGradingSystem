@@ -293,7 +293,7 @@ public class RegisterStudent extends AppCompatActivity {
             tempUserObject.setStudentId(getIntent().getExtras().getString("studentId"));
             tempUserObject.setYearLevelKey(yearLevelKey);
             tempUserObject.setUserName(fname.getText().toString()+" "+mName.getText().toString()+" "+lName.getText().toString());
-            tempUserObject.setAccountStatus("active");
+            tempUserObject.setAccountStatus("approved");
             tempUserObject.setClassCode(classKey);
             Toast.makeText(context,"Triggered",Toast.LENGTH_SHORT).show();
             db.collection("tempCreateUsers").whereEqualTo("email",email.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
