@@ -1,6 +1,8 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +30,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjec
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.FinalTermGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.TempUserObject;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
@@ -105,7 +109,9 @@ public class StudentListTeacherRecyclerViewAdapter
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStatus(studentClassObjectModel);
+//                setStatus(studentClassObjectModel);
+                getAccountDetails(studentClassObjectModel);
+
             }
         });
         setStudenFinalGrade(studentClassObjectModel,holder.grade);
@@ -147,6 +153,53 @@ public class StudentListTeacherRecyclerViewAdapter
         });
     }
 
+    private void getAccountDetails(final StudentClassObjectModel studentClassObjectModel){
+        final Dialog dialog = new Dialog(context);
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dlg_student_details);
+        TextView removeStudent = (TextView) dialog.findViewById(R.id.removeStudent);
+        final TextView studentName = (TextView) dialog.findViewById(R.id.studentName);
+        final TextView studentId = (TextView) dialog.findViewById(R.id.studentId);
+        final TextView password = (TextView) dialog.findViewById(R.id.password);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.show();
+        studentId.setText(studentClassObjectModel.getStudentId());
+        db.collection("tempCreateUsers").whereEqualTo("userSchoolId",studentClassObjectModel.getStudentId()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                    final TempUserObject tempUserObject = documentSnapshot.toObject(TempUserObject.class);
+                    studentName.setText(tempUserObject.getfName()+" "+tempUserObject.getlName());
+                    password.setText(tempUserObject.getPassword());
+                    password.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            copyToClibBoard(tempUserObject.getPassword());
+                        }
+                    });
+                }
+            }
+        });
+
+        removeStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setStatus(studentClassObjectModel);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    void copyToClibBoard(String code){
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("userId", code);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(context,"Copy to Clipboard "+code,Toast.LENGTH_SHORT).show();
+    }
 
     private void setStatus(final StudentClassObjectModel studentClassObjectModel){
         final Dialog dialog = new Dialog(context);

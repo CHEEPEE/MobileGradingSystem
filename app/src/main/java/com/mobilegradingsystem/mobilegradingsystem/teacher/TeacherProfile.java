@@ -129,15 +129,14 @@ public class TeacherProfile extends AppCompatActivity {
         dialog.show();
         TextView profileSetting,logout;
         profileSetting = (TextView) dialog.findViewById(R.id.profileSettings);
-        profileSetting.setVisibility(View.GONE);
-//        profileSetting.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(context,TeacherRegistration.class);
-//                startActivity(i);
-//                dialog.dismiss();
-//            }
-//        });
+        profileSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,TeacherUpdateProfile.class);
+                startActivity(i);
+                dialog.dismiss();
+            }
+        });
         logout = (TextView) dialog.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +176,7 @@ public class TeacherProfile extends AppCompatActivity {
         });
         className = (EditText) addClassDialog.findViewById(R.id.announcementTitle);
         schedule = (EditText) addClassDialog.findViewById(R.id.schedule);
-        description = (EditText) addClassDialog.findViewById(R.id.studentId);
+        description = (EditText) addClassDialog.findViewById(R.id.inputName);
         int year = Calendar.getInstance().get(Calendar.YEAR);
         final String schoolYear = year+" - "+(year+1);
         addClassDialog.findViewById(R.id.saveClass).setOnClickListener(new View.OnClickListener() {

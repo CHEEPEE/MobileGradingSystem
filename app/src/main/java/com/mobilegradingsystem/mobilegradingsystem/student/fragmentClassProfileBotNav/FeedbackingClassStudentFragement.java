@@ -46,7 +46,7 @@ public class FeedbackingClassStudentFragement extends Fragment {
         act = (ClssProfileStudentBotNav) getActivity();
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_student_feedback, container, false);
-        addFeedback = (TextView) view.findViewById(R.id.studentId);
+        addFeedback = (TextView) view.findViewById(R.id.inputName);
         feedback = (RecyclerView) view.findViewById(R.id.feedbackList);
         addFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +89,7 @@ public class FeedbackingClassStudentFragement extends Fragment {
         Window window = dialog.getWindow();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        final EditText addFeddback = (EditText) dialog.findViewById(R.id.studentId);
+        final EditText addFeddback = (EditText) dialog.findViewById(R.id.inputName);
         final TextView saveFeedback = (TextView) dialog.findViewById(R.id.saveFeedback);
         final String key = db.collection("feedbacks").document().getId();
 

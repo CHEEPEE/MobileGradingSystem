@@ -136,7 +136,7 @@ public class DashboardClassTeacherFragement extends Fragment {
         updateClassDialog.show();
         className = (EditText) updateClassDialog.findViewById(R.id.announcementTitle);
         schedule = (EditText) updateClassDialog.findViewById(R.id.schedule);
-        description = (EditText) updateClassDialog.findViewById(R.id.studentId);
+        description = (EditText) updateClassDialog.findViewById(R.id.inputName);
 
         db.collection("class").document(act.getClassKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override

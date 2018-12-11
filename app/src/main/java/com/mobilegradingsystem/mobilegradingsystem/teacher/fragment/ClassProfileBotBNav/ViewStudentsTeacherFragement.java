@@ -25,7 +25,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
-import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.RegisterStudent;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentListTeacherRecyclerViewAdapter;
@@ -161,8 +160,8 @@ public class ViewStudentsTeacherFragement extends Fragment {
 
         addStudentToClassDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        TextView saveStudent = (TextView) addStudentToClassDialog.findViewById(R.id.saveStudent);
-        final EditText studentId = (EditText) addStudentToClassDialog.findViewById(R.id.studentId);
+        TextView saveStudent = (TextView) addStudentToClassDialog.findViewById(R.id.confirmButton);
+        final EditText studentId = (EditText) addStudentToClassDialog.findViewById(R.id.inputName);
         saveStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

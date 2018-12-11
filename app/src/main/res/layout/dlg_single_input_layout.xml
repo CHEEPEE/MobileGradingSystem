@@ -8,7 +8,6 @@
     android:layout_gravity="center"
     android:background="@drawable/dialog_background"
     android:layout_height="wrap_content">
-
     <TextView
         android:id="@+id/modalTitle"
         android:layout_width="wrap_content"
@@ -16,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Add Feedback"
+        android:text="Modal Title"
         style="@style/TextTitle"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,9 +32,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
-        android:hint="Desciption"
-        android:inputType="textMultiLine"
-        android:lines="10"
+        android:hint="Hint"
+        android:inputType="text"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -43,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/modalTitle" />
 
     <TextView
-        android:id="@+id/saveFeedback"
+        android:id="@+id/confirmButton"
         style="@style/defaultButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,11 +49,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Save Class/Subject"
+        android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/inputName"
         app:layout_constraintStart_toStartOf="@+id/inputName"
         app:layout_constraintTop_toBottomOf="@+id/inputName" />
-
-
 </android.support.constraint.ConstraintLayout>

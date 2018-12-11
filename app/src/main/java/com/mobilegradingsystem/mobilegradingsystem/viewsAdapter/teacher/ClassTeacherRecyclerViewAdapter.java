@@ -41,10 +41,10 @@ public class ClassTeacherRecyclerViewAdapter
             className = (TextView) view.findViewById(R.id.announcementTitle);
             sched = (TextView) view.findViewById(R.id.classSched);
             des = (TextView) view.findViewById(R.id.des);
-            accessCode = (TextView) view.findViewById(R.id.accessCode);
+//            accessCode = (TextView) view.findViewById(R.id.accessCode);
             viewClassProrfile = (ImageView) view.findViewById(R.id.viewClassProrfile);
-            copyCode = (ImageView) view.findViewById(R.id.copyCode);
-            showCode = (ImageView) view.findViewById(R.id.showCode);
+//            copyCode = (ImageView) view.findViewById(R.id.copyCode);
+//            showCode = (ImageView) view.findViewById(R.id.showCode);
         }
     }
 
@@ -67,7 +67,7 @@ public class ClassTeacherRecyclerViewAdapter
         holder.className.setText(teacherClassObjectModel.getName());
         holder.sched.setText(teacherClassObjectModel.getSched());
         holder.des.setText(teacherClassObjectModel.getDescription());
-        holder.accessCode.setText(teacherClassObjectModel.getClassKey());
+//        holder.accessCode.setText(teacherClassObjectModel.getClassKey());
         holder.viewClassProrfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,18 +76,18 @@ public class ClassTeacherRecyclerViewAdapter
                 context.startActivity(i);
             }
         });
-        holder.copyCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                copyToClibBoard(teacherClassObjectModel.getClassKey());
-            }
-        });
-        holder.showCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewQRCode(teacherClassObjectModel.getClassKey());
-            }
-        });
+//        holder.copyCode.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                copyToClibBoard(teacherClassObjectModel.getClassKey());
+//            }
+//        });
+//        holder.showCode.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewQRCode(teacherClassObjectModel.getClassKey());
+//            }
+//        });
     }
     @Override
     public int getItemCount() {

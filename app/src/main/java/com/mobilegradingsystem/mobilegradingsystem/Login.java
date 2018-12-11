@@ -50,8 +50,9 @@ public class Login extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private TextView getstarted;
     EditText userSchoolId,password;
-    TextView login;
+    TextView login,forgotPassword;
     FirebaseFirestore firestore;
+    Dialog inputEmailDialog;
 
     @Override
     protected void onStart() {
@@ -72,6 +73,8 @@ public class Login extends AppCompatActivity {
         userSchoolId = (EditText) findViewById(R.id.userId);
         password = (EditText) findViewById(R.id.password);
         login = (TextView) findViewById(R.id.login);
+        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+
         firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
@@ -103,6 +106,12 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgetPasswordModal();
+            }
+        });
     }
 
     private void authWithEmail(String email,String password){
@@ -131,7 +140,6 @@ public class Login extends AppCompatActivity {
         Log.d(TAG, "signInWithEmail:success");
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-
             FirebaseFirestore.getInstance()
                     .collection("users").document(mAuth.getUid())
                     .addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -147,11 +155,11 @@ public class Login extends AppCompatActivity {
                                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 //                                                   check if user is registered
                                             if (documentSnapshot.getData() != null) {
-                                                if (documentSnapshot.get("accoutStatus").equals("pending")) {
+                                                if (documentSnapshot.get("accountStatus").equals("pending")) {
                                                     Intent i = new Intent(Login.this, IfAccountIsPending.class);
                                                     startActivity(i);
                                                     finish();
-                                                } else if (documentSnapshot.get("accoutStatus").equals("block")) {
+                                                } else if (documentSnapshot.get("accountStatus").equals("block")) {
                                                     Intent i = new Intent(Login.this, IfAccountIsBlock.class);
                                                     startActivity(i);
                                                     finish();
@@ -160,7 +168,6 @@ public class Login extends AppCompatActivity {
                                                     startActivity(i);
                                                     finish();
                                                 }
-
                                             } else {
 //                                                        the user has not been registered
                                                 Intent i = new Intent(Login.this, StudentRegistration.class);
@@ -202,7 +209,7 @@ public class Login extends AppCompatActivity {
 
                                 }
                             } else {
-                                selectUserTypeDialog();
+//                                selectUserTypeDialog();
                             }
                         }
                     });
@@ -225,13 +232,45 @@ public class Login extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
-
-
                 // ...
             }
         }else {
             loading(false);
         }
+    }
+
+    private void forgetPasswordModal(){
+        inputEmailDialog = new Dialog(Login.this);
+        inputEmailDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        inputEmailDialog.setCancelable(true);
+        inputEmailDialog.setContentView(R.layout.dlg_single_input_layout);
+
+        Window window = inputEmailDialog.getWindow();
+        inputEmailDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        final EditText email = (EditText) inputEmailDialog.findViewById(R.id.inputName);
+        TextView confirm = (TextView) inputEmailDialog.findViewById(R.id.confirmButton);
+        TextView modalTitle = (TextView) inputEmailDialog.findViewById(R.id.modalTitle);
+        modalTitle.setText("Input Email Address");
+        email.setHint("Email");
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!email.getText().toString().equals("")){
+                    mAuth.sendPasswordResetEmail(email.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Utils.message("Password Reset email has been sent",Login.this);
+                                        inputEmailDialog.dismiss();
+                                    }
+                                }
+                            });
+                }
+            }
+        });
+        inputEmailDialog.show();
     }
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
