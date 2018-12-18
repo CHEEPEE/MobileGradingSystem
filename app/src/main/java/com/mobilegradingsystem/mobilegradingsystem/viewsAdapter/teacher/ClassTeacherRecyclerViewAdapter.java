@@ -34,13 +34,15 @@ public class ClassTeacherRecyclerViewAdapter
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-      public TextView className,sched,des,accessCode;
+      public TextView className,sched,des,accessCode,schoolYear,semester;
       public ImageView viewClassProrfile,copyCode,showCode;
         public MyViewHolder(View view){
             super(view);
             className = (TextView) view.findViewById(R.id.announcementTitle);
             sched = (TextView) view.findViewById(R.id.classSched);
             des = (TextView) view.findViewById(R.id.des);
+            schoolYear = (TextView) view.findViewById(R.id.schoolYear);
+            semester  = (TextView) view.findViewById(R.id.semester);
 //            accessCode = (TextView) view.findViewById(R.id.accessCode);
             viewClassProrfile = (ImageView) view.findViewById(R.id.viewClassProrfile);
 //            copyCode = (ImageView) view.findViewById(R.id.copyCode);
@@ -67,6 +69,12 @@ public class ClassTeacherRecyclerViewAdapter
         holder.className.setText(teacherClassObjectModel.getName());
         holder.sched.setText(teacherClassObjectModel.getSched());
         holder.des.setText(teacherClassObjectModel.getDescription());
+        try {
+            holder.schoolYear.setText(teacherClassObjectModel.getSchoolYear());
+            holder.semester.setText(teacherClassObjectModel.getSemester().equals("1")?"1st Semester":"Second Semester");
+        }catch (NullPointerException ex){
+
+        }
 //        holder.accessCode.setText(teacherClassObjectModel.getClassKey());
         holder.viewClassProrfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +84,7 @@ public class ClassTeacherRecyclerViewAdapter
                 context.startActivity(i);
             }
         });
+
 //        holder.copyCode.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

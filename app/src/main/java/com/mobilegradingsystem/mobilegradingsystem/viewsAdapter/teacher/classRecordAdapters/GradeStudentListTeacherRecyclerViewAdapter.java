@@ -130,6 +130,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                 for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                     StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
                     studentGradeObjectModel.setAttendance(attendenceClassObjectModel.getValue());
+                    solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                 }
             }
         });
@@ -143,6 +144,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                 for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                     StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
                     studentGradeObjectModel.setCharacter(attendenceClassObjectModel.getValue());
+                    solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                 }
             }
         });
@@ -165,7 +167,8 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                             int raw = (int) Math.round((examStudentGrade.getValue()/examGradeObjectModel.getMaxScode())*100);
                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
                                                 System.out.println("exam %D "+i);
-                                                studentGradeObjectModel.setExam(Double.parseDouble(i));
+                                                studentGradeObjectModel.setExam(Double.parseDouble(i)*.95);
+                                                solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                                             }
                                         }catch (NullPointerException ex){
 
@@ -219,7 +222,8 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                                             int raw = (int) Math.round((projectValue1.getsTotal()/projectValue1.getPtotal())*100);
                                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
                                                                 System.out.println("%D "+i);
-                                                                studentGradeObjectModel.setProject(Double.parseDouble(i));
+                                                                studentGradeObjectModel.setProject(Double.parseDouble(i)*.95);
+                                                                solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                                                             }
                                                         }
                                                     }
@@ -269,7 +273,8 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                                             int raw = (int) Math.round((projectValue1.getsTotal()/projectValue1.getPtotal())*100);
                                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
                                                                 System.out.println("%D "+i);
-                                                                studentGradeObjectModel.setQuizLongTest(Double.parseDouble(i));
+                                                                studentGradeObjectModel.setQuizLongTest(Double.parseDouble(i)*.95);
+                                                                solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                                                             }
                                                         }
                                                     }
@@ -319,7 +324,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                                             int raw = (int) Math.round((projectValue1.getsTotal()/projectValue1.getPtotal())*100);
                                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
                                                                 System.out.println("%D "+i);
-                                                                studentGradeObjectModel.setClassParticipation(Double.parseDouble(i));
+                                                                studentGradeObjectModel.setClassParticipation(Double.parseDouble(i)*.95);
                                                                 System.out.println("Stude Grade Object Model"+
                                                                         "attendance : "+studentGradeObjectModel.getAttendance()+" "+
                                                                         "Character : "+studentGradeObjectModel.getCharacter()+" "+
@@ -339,6 +344,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                         }
                     }
                 });
+
     }
 
     void solveStudentTermGrade(final StudentGradeObjectModel studentGradeObjectModel, final TextView grade, final StudentClassObjectModel studentClassObjectModel){

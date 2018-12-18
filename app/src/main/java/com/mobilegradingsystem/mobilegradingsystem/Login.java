@@ -54,11 +54,6 @@ public class Login extends AppCompatActivity {
     FirebaseFirestore firestore;
     Dialog inputEmailDialog;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        signIn();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +63,7 @@ public class Login extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
         userSchoolId = (EditText) findViewById(R.id.userId);
         password = (EditText) findViewById(R.id.password);
@@ -106,6 +101,7 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
+        signIn();
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +122,9 @@ public class Login extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Utils.message(task.getException().toString(),Login.this);
+                            login.setText("Login");
+                            login.setClickable(true);
 
                         }
 
@@ -136,10 +135,15 @@ public class Login extends AppCompatActivity {
 
 
     private void signIn() {
-
-        Log.d(TAG, "signInWithEmail:success");
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
+        boolean isUser = false;
+        try {
+            isUser = !user.getUid().toString().equals("");
+        }catch (NullPointerException e){
+            System.out.println("isUser:" +isUser);
+        }
+        if (isUser) {
+            Log.d(TAG, "signInWithEmail:success");
             FirebaseFirestore.getInstance()
                     .collection("users").document(mAuth.getUid())
                     .addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -227,7 +231,7 @@ public class Login extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 mAuth = FirebaseAuth.getInstance();
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
+//                firebaseAuthWithGoogle(account);
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -310,74 +314,71 @@ public class Login extends AppCompatActivity {
 
 
 
-    void selectUserTypeDialog(){
-        final Dialog dialog = new Dialog(Login.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_select_user);
-        Window window = dialog.getWindow();
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.show();
-        dialog.findViewById(R.id.student).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//    void selectUserTypeDialog(){
+//        final Dialog dialog = new Dialog(Login.this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setCancelable(false);
+//        dialog.setContentView(R.layout.dialog_select_user);
+//        Window window = dialog.getWindow();
+//        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        dialog.show();
+//        dialog.findViewById(R.id.student).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                UserProfileObjectModel userProfileObjectModel
+//                        = new UserProfileObjectModel(mAuth.getUid(),
+//                        mAuth.getCurrentUser().getPhotoUrl().toString(),
+//                        mAuth.getCurrentUser().getDisplayName(),
+//                        mAuth.getCurrentUser().getPhoneNumber(),
+//                        mAuth.getCurrentUser().getEmail(),"student",null);
+//                FirebaseFirestore.getInstance()
+//                        .collection("users")
+//                        .document(mAuth.getUid()).set(userProfileObjectModel)
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//
+//                                Intent i = new Intent(Login.this,StudentRegistration.class);
+//                                startActivity(i);
+//                                dialog.dismiss();
+//                                finish();
+//                            }
+//                        });
+//            }
+//        });
+//        dialog.findViewById(R.id.teacher).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                UserProfileObjectModel userProfileObjectModel
+//                        = new UserProfileObjectModel(mAuth.getUid(),
+//                        mAuth.getCurrentUser().getPhotoUrl().toString(),
+//                        mAuth.getCurrentUser().getDisplayName(),
+//                        mAuth.getCurrentUser().getPhoneNumber(),
+//                        mAuth.getCurrentUser().getEmail(),"teacher",null);
+//                FirebaseFirestore.getInstance()
+//                        .collection("users")
+//                        .document(mAuth.getUid()).set(userProfileObjectModel)
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//
+//                                Intent i = new Intent(Login.this,TeacherRegistration.class);
+//                                startActivity(i);
+//                                dialog.dismiss();
+//                                finish();
+//                            }
+//                        });
+//            }
+//        });
+//        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialog) {
+//
+//            }
+//        });
+//    }
 
-                UserProfileObjectModel userProfileObjectModel
-                        = new UserProfileObjectModel(mAuth.getUid(),
-                        mAuth.getCurrentUser().getPhotoUrl().toString(),
-                        mAuth.getCurrentUser().getDisplayName(),
-                        mAuth.getCurrentUser().getPhoneNumber(),
-                        mAuth.getCurrentUser().getEmail(),"student",null);
-                FirebaseFirestore.getInstance()
-                        .collection("users")
-                        .document(mAuth.getUid()).set(userProfileObjectModel)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                                Intent i = new Intent(Login.this,StudentRegistration.class);
-                                startActivity(i);
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-            }
-        });
-        dialog.findViewById(R.id.teacher).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserProfileObjectModel userProfileObjectModel
-                        = new UserProfileObjectModel(mAuth.getUid(),
-                        mAuth.getCurrentUser().getPhotoUrl().toString(),
-                        mAuth.getCurrentUser().getDisplayName(),
-                        mAuth.getCurrentUser().getPhoneNumber(),
-                        mAuth.getCurrentUser().getEmail(),"teacher",null);
-                FirebaseFirestore.getInstance()
-                        .collection("users")
-                        .document(mAuth.getUid()).set(userProfileObjectModel)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                                Intent i = new Intent(Login.this,TeacherRegistration.class);
-                                startActivity(i);
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-            }
-        });
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-
-            }
-        });
-    }
-
-    private void forgotPassword(String email){
-
-    }
 
 }

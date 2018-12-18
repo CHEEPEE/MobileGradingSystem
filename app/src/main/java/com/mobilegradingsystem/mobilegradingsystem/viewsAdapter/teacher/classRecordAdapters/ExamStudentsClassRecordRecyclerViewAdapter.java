@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
@@ -110,7 +111,14 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         ExamGradeObjectModel participationCategoryGradeObjectModel = documentSnapshot.toObject(ExamGradeObjectModel.class);
-                        setGradeDialog(studentClassObjectModel,participationCategoryGradeObjectModel);
+                        try {
+                            if(participationCategoryGradeObjectModel.getMaxScode()!= null){
+                                setGradeDialog(studentClassObjectModel,participationCategoryGradeObjectModel);
+                            }
+                        }catch (NullPointerException ex){
+                            Utils.message("Set Exam max Score first",context);
+                        }
+
                     }
                 });
             }
