@@ -11,6 +11,7 @@ import java.util.Date;
 public class FeedbacksObjectModel {
     private String key;
     private String feedback;
+    private float rating;
     private String studentUserId;
     private String classCode;
     private @ServerTimestamp
@@ -22,12 +23,13 @@ public class FeedbacksObjectModel {
     public FeedbacksObjectModel(String key,
                                 String feedback,
                                 String studentUserId,
-                                String classCode
+                                String classCode,float rating
     ){
         this.key = key;
         this.feedback = feedback;
         this.studentUserId = studentUserId;
         this.classCode = classCode;
+        this.rating = rating;
     }
 
     public String getClassCode() {
@@ -50,5 +52,11 @@ public class FeedbacksObjectModel {
         return feedback;
     }
 
+    public void setClassCode(String classCode) {
+        this.classCode = classCode;
+    }
 
+    public float getRating() {
+        return rating;
+    }
 }

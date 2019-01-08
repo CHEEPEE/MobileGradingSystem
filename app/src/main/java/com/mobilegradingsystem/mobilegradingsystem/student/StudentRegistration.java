@@ -345,7 +345,7 @@ public class StudentRegistration extends AppCompatActivity {
                     ,lName.getText().toString()
                     ,studentId.getText().toString()
                     ,"pending"
-                    ,yearLevelKey,sectionLKey
+                    ,yearLevelKey,sectionLKey,null
             );
             db.collection(Utils.studentProfile).document(mAuth.getUid()).set(studentProfileProfileObjectModel)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -359,7 +359,6 @@ public class StudentRegistration extends AppCompatActivity {
         }else{
             Toast.makeText(context,"Please Fill up Everything",Toast.LENGTH_SHORT).show();
         }
-
     }
 
     void categoryChangeListeners(){

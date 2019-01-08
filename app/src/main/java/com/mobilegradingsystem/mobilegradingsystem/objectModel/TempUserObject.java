@@ -16,6 +16,7 @@ public class TempUserObject {
     private String accountStatus;
     private String userName;
     private String classCode;
+    private String phoneNumber;
 
 
 
@@ -25,6 +26,14 @@ public class TempUserObject {
     }
     public TempUserObject(String email,String password,String userType,String userSchoolId){
 
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getUserSchoolId() {

@@ -101,7 +101,17 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
-        signIn();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        // your code here
+                        signIn();
+                    }
+                },
+                5000
+        );
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

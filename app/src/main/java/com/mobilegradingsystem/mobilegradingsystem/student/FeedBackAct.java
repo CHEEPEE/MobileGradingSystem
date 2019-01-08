@@ -107,6 +107,7 @@ public class FeedBackAct extends AppCompatActivity {
         feedBackListStudentsRecyclerViewAdapter = new FeedBackListStudentsRecyclerViewAdapter(this,feedBackAnnouncementObjectModelArrayList);
         feedBackList.setAdapter(feedBackListStudentsRecyclerViewAdapter);
         feedBackList.setLayoutManager(new LinearLayoutManager(this));
+
         db.collection("announcementFeedBack")
                 .whereEqualTo("announceCode",announcementKey)
                 .orderBy("timeStamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {

@@ -26,18 +26,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentRegistration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -64,6 +70,7 @@ public class UpdateAccount extends AppCompatActivity {
         context = this;
         updateProfile = (TextView) findViewById(R.id.updateProfile);
         circleImageView =(CircleImageView) findViewById(R.id.circleImageView);
+        updateProfile.setVisibility(View.INVISIBLE);
         updateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +79,14 @@ public class UpdateAccount extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        GlideApp.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(circleImageView);
+        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                UserProfileObjectModel userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
+                GlideApp.with(context).load(userProfileObjectModel.getUserImage()).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(circleImageView);
+            }
+        });
+
     }
 
     public void performFileSearch() {

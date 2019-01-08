@@ -52,7 +52,7 @@ public class RegisterStudent extends AppCompatActivity {
     String yearLevelKey;
     String sectionLKey;
     ProgramsRecyclerViewAdapter programsRecyclerViewAdapter;
-    EditText fname,mName,lName,studentId,email;
+    EditText fname,mName,lName,studentId,email,mobileNumber;
     TempUserObject tempUserObject;
 
     TextView saveInfo,selectYearLevel,selectSection;
@@ -77,6 +77,7 @@ public class RegisterStudent extends AppCompatActivity {
         fname = (EditText) findViewById(R.id.fName);
         mName = (EditText) findViewById(R.id.mName);
         lName = (EditText) findViewById(R.id.lName);
+        mobileNumber = (EditText) findViewById(R.id.mobileNumber);
         studentId = (EditText) findViewById(R.id.announcementTitle);
         saveInfo = (TextView) findViewById(R.id.saveInfo);
         studentId.setText(getIntent().getExtras().getString("studentId"));
@@ -210,7 +211,6 @@ public class RegisterStudent extends AppCompatActivity {
         final ArrayList<YearLevelObjectModel> yearLevelObjectModels = new ArrayList<>();
         final List<String> yearLevel = new ArrayList<>();
         // add a list
-        final String[] animals = {"horse", "cow", "camel", "sheep", "goat"};
         db.collection("yearlevel").whereEqualTo("program",programKey).orderBy("yearLevel", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -261,7 +261,7 @@ public class RegisterStudent extends AppCompatActivity {
     }
     boolean validate(String a,String b,String c,String d){
         boolean isValid = true;
-        if (a == null || b == null || c == null || d == null){
+        if (a == null || b == null || c == null || d == null || mobileNumber.getText().toString().equals(null)){
             isValid = false;
         }
         return isValid;
@@ -290,6 +290,7 @@ public class RegisterStudent extends AppCompatActivity {
             tempUserObject.setDepartmentKey(departmentKey);
             tempUserObject.setProgramKey(programKey);
             tempUserObject.setSectionKey(sectionLKey);
+            tempUserObject.setPhoneNumber(mobileNumber.getText().toString());
             tempUserObject.setStudentId(getIntent().getExtras().getString("studentId"));
             tempUserObject.setYearLevelKey(yearLevelKey);
             tempUserObject.setUserName(fname.getText().toString()+" "+mName.getText().toString()+" "+lName.getText().toString());
@@ -299,7 +300,6 @@ public class RegisterStudent extends AppCompatActivity {
             db.collection("tempCreateUsers").whereEqualTo("email",email.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
                     if (queryDocumentSnapshots.getDocuments().size()==0){
                         db.collection("tempCreateUsers").document(email.getText().toString())
                                 .set(tempUserObject).addOnSuccessListener(new OnSuccessListener<Void>() {

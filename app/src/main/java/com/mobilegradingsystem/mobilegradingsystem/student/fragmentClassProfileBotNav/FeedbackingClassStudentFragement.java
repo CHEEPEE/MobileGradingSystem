@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +35,10 @@ public class FeedbackingClassStudentFragement extends Fragment {
     TextView addFeedback;
     ArrayList<FeedbacksObjectModel> feedbacksObjectModels = new ArrayList<>();
     RecyclerView feedback;
+    TextView averageRating;
+    RatingBar averageRatingBar;
+    FeedbacksObjectModel feedbackObjectModelGlobal = new FeedbacksObjectModel();
+    boolean hasFeedBack = false;
     FeedbackRecyclerViewAdapter feedbackRecyclerViewAdapter;
     public FeedbackingClassStudentFragement(){
 
@@ -47,6 +52,8 @@ public class FeedbackingClassStudentFragement extends Fragment {
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_student_feedback, container, false);
         addFeedback = (TextView) view.findViewById(R.id.inputName);
+        averageRating = (TextView) view.findViewById(R.id.aveRating);
+        averageRatingBar = (RatingBar) view.findViewById(R.id.aveRatingBar);
         feedback = (RecyclerView) view.findViewById(R.id.feedbackList);
         addFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,18 +71,44 @@ public class FeedbackingClassStudentFragement extends Fragment {
     }
 
     void getFeedbacks(){
+
         db.collection("feedbacks")
                 .whereEqualTo("classCode",act.getClassKey())
                 .whereEqualTo("studentUserId",FirebaseAuth.getInstance().getUid())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                addFeedback.setClickable(true);
+                if (queryDocumentSnapshots.getDocuments().size() == 0){
+                    addFeedback.setText("Add Feedback");
+
+                }else {
+                    addFeedback.setText("Update Feedback");
+                    for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                        feedbackObjectModelGlobal = documentSnapshot.toObject(FeedbacksObjectModel.class);
+                    }
+                    hasFeedBack = true;
+                }
+            }
+        });
+
+        db.collection("feedbacks")
+                .whereEqualTo("classCode",act.getClassKey())
+//                .whereEqualTo("studentUserId",FirebaseAuth.getInstance().getUid())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         feedbacksObjectModels.clear();
+                        float total = 0;
                         for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                             FeedbacksObjectModel feedbacksObjectModel = documentSnapshot.toObject(FeedbacksObjectModel.class);
                             feedbacksObjectModels.add(feedbacksObjectModel);
                             System.out.println(feedbacksObjectModel.getFeedback());
+                            total+=feedbacksObjectModel.getRating();
                         }
+                        averageRating.setText((total/queryDocumentSnapshots.getDocuments().size())+"");
+                        averageRatingBar.setRating((total/queryDocumentSnapshots.getDocuments().size()));
+
                         feedbackRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 });
@@ -90,32 +123,68 @@ public class FeedbackingClassStudentFragement extends Fragment {
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         final EditText addFeddback = (EditText) dialog.findViewById(R.id.inputName);
+        final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.ratingBar);
+        ratingBar.setRating(0);
         final TextView saveFeedback = (TextView) dialog.findViewById(R.id.saveFeedback);
-        final String key = db.collection("feedbacks").document().getId();
 
-        saveFeedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveFeedback.setClickable(false);
-                if (addFeddback.getText().toString().trim().length() != 0){
-                    FeedbacksObjectModel feedbacksObjectModel = new FeedbacksObjectModel(key,
-                            addFeddback.getText().toString(),
-                            FirebaseAuth.getInstance().getUid(),
-                            act.getClassKey()
-                    );
-                    db.collection("feedbacks")
-                            .document(key)
-                            .set(feedbacksObjectModel)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            dialog.dismiss();
+
+
+        if (hasFeedBack){
+//            update feedback
+              addFeddback.setText(feedbackObjectModelGlobal.getFeedback());
+              ratingBar.setRating(feedbackObjectModelGlobal.getRating());
+                saveFeedback.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        saveFeedback.setClickable(false);
+                        if (addFeddback.getText().toString().trim().length() != 0){
+                            FeedbacksObjectModel feedbacksObjectModel = new FeedbacksObjectModel(feedbackObjectModelGlobal.getKey(),
+                                    addFeddback.getText().toString(),
+                                    FirebaseAuth.getInstance().getUid(),
+                                    act.getClassKey(),ratingBar.getRating()
+                            );
+                            db.collection("feedbacks")
+                                    .document(feedbackObjectModelGlobal.getKey())
+                                    .set(feedbacksObjectModel)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            dialog.dismiss();
+                                        }
+                                    });
                         }
-                    });
-                }
 
-            }
-        });
+                    }
+                });
+        }else {
+//            add Feedback
+            final String key = db.collection("feedbacks").document().getId();
+            saveFeedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    saveFeedback.setClickable(false);
+                    if (addFeddback.getText().toString().trim().length() != 0){
+                        FeedbacksObjectModel feedbacksObjectModel = new FeedbacksObjectModel(key,
+                                addFeddback.getText().toString(),
+                                FirebaseAuth.getInstance().getUid(),
+                                act.getClassKey(),ratingBar.getRating()
+                        );
+                        db.collection("feedbacks")
+                                .document(key)
+                                .set(feedbacksObjectModel)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                    }
+                }
+            });
+        }
+
         dialog.show();
     }
 }

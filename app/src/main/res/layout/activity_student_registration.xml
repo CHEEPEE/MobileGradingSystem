@@ -68,53 +68,85 @@
         app:layout_constraintStart_toStartOf="@+id/mName"
         app:layout_constraintTop_toBottomOf="@+id/mName" />
 
-    <TextView
-        android:id="@+id/selectDepartment"
-        style="@style/TextInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <View
+        android:id="@+id/centerView"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Select Department"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/editText3"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:hint="Mobile Number"
+        android:inputType="phone"
+        android:textSize="14sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lName" />
 
     <TextView
+        android:id="@+id/selectDepartment"
         style="@style/TextInput"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:id="@+id/selectProgram"
-        android:text="Select Program"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Department"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/centerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectDepartment" />
+        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+
+    <TextView
+        android:id="@+id/selectProgram"
+        style="@style/TextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Program"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/editText3"
+        app:layout_constraintStart_toEndOf="@+id/centerView"
+        app:layout_constraintTop_toTopOf="@+id/selectDepartment" />
 
     <TextView
         android:id="@+id/selectYearLevel"
         style="@style/TextInput"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Select Year Level"
-        app:layout_constraintEnd_toEndOf="@+id/selectProgram"
-        app:layout_constraintStart_toStartOf="@+id/selectProgram"
-        app:layout_constraintTop_toBottomOf="@+id/selectProgram" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Year Level"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/centerView"
+        app:layout_constraintStart_toStartOf="@+id/selectDepartment"
+        app:layout_constraintTop_toBottomOf="@+id/selectDepartment" />
 
     <TextView
         android:id="@+id/selectSection"
         style="@style/TextInput"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Select Section"
-        app:layout_constraintEnd_toEndOf="@+id/selectYearLevel"
-        app:layout_constraintStart_toStartOf="@+id/selectYearLevel"
-        app:layout_constraintTop_toBottomOf="@+id/selectYearLevel" />
+        android:layout_marginTop="8dp"
+        android:text="Section"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/selectProgram"
+        app:layout_constraintStart_toEndOf="@+id/centerView"
+        app:layout_constraintTop_toBottomOf="@+id/selectProgram" />
 
     <Button
         android:id="@+id/saveInfo"

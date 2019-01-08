@@ -104,6 +104,7 @@ public class StudentProfile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         context = StudentProfile.this;
         menuContainer = (ConstraintLayout) findViewById(R.id.menuContainer);
+        menuContainer.setVisibility(View.INVISIBLE);
         classList = (RecyclerView) findViewById(R.id.classList);
         db = FirebaseFirestore.getInstance();
 

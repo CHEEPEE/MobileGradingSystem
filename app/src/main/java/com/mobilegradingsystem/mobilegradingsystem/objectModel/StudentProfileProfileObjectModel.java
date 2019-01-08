@@ -15,6 +15,7 @@ public class StudentProfileProfileObjectModel {
     private String accoutStatus;
     private String yearLevelKey;
     private String sectionKey;
+    private String phoneNumber;
 
     public StudentProfileProfileObjectModel(){
 
@@ -29,7 +30,8 @@ public class StudentProfileProfileObjectModel {
             String studentId,
             String accoutStatus,
             String yearLevelKey,
-            String sectionKey
+            String sectionKey,
+            String phoneNumber
     ){
       this.userId = userId;
       this.departmentKey = departmentKey;
@@ -41,6 +43,16 @@ public class StudentProfileProfileObjectModel {
       this.accoutStatus = accoutStatus;
       this.yearLevelKey = yearLevelKey;
       this.sectionKey = sectionKey;
+      this.phoneNumber = phoneNumber;
+
+    }
+
+    public void setYearLevelKey(String yearLevelKey) {
+        this.yearLevelKey = yearLevelKey;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getUserId() {
