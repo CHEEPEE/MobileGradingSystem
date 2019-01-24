@@ -33,7 +33,7 @@ public class ClassStudentRecyclerViewAdapter
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-      public TextView className,sched,des,accessCode,vieClass,teacherName;
+      public TextView className,sched,des,accessCode,vieClass,teacherName,schoolYear,semester;
         public MyViewHolder(View view){
             super(view);
             className = (TextView) view.findViewById(R.id.announcementTitle);
@@ -41,7 +41,8 @@ public class ClassStudentRecyclerViewAdapter
             des = (TextView) view.findViewById(R.id.des);
             vieClass=  (TextView) view.findViewById(R.id.vieClass);
             teacherName = (TextView) view.findViewById(R.id.teacherName);
-
+            schoolYear = (TextView) view.findViewById(R.id.schoolYear);
+            semester = (TextView) view.findViewById(R.id.semester);
         }
     }
 
@@ -69,12 +70,14 @@ public class ClassStudentRecyclerViewAdapter
                   holder.className.setText(teacherClassObjectModel.getName());
                   holder.des.setText(teacherClassObjectModel.getDescription());
                   holder.sched.setText(teacherClassObjectModel.getSched());
+                  holder.schoolYear.setText(teacherClassObjectModel.getSchoolYear());
+                  holder.semester.setText(teacherClassObjectModel.getSemester().equals("1")?"1st Semester":"2nd Semester");
               }catch (NullPointerException ex){
 
               }
-
             }
         });
+
         holder.vieClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

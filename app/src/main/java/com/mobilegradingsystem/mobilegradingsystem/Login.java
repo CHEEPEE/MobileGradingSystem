@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,7 @@ import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentRegistration;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherProfile;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherRegistration;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import javax.annotation.Nullable;
 
@@ -53,7 +55,7 @@ public class Login extends AppCompatActivity {
     TextView login,forgotPassword;
     FirebaseFirestore firestore;
     Dialog inputEmailDialog;
-
+    ConstraintLayout laodingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class Login extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         login = (TextView) findViewById(R.id.login);
         forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        laodingIndicator = (ConstraintLayout) findViewById(R.id.loading_layout);
 
         firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -108,6 +111,7 @@ public class Login extends AppCompatActivity {
                     public void run() {
                         // your code here
                         signIn();
+
                     }
                 },
                 5000
@@ -145,6 +149,7 @@ public class Login extends AppCompatActivity {
 
 
     private void signIn() {
+
         FirebaseUser user = mAuth.getCurrentUser();
         boolean isUser = false;
         try {
@@ -152,7 +157,9 @@ public class Login extends AppCompatActivity {
         }catch (NullPointerException e){
             System.out.println("isUser:" +isUser);
         }
+//        laodingIndicator.setVisibility(View.INVISIBLE);
         if (isUser) {
+
             Log.d(TAG, "signInWithEmail:success");
             FirebaseFirestore.getInstance()
                     .collection("users").document(mAuth.getUid())

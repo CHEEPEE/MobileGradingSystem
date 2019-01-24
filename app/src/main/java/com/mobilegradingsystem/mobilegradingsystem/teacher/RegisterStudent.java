@@ -48,7 +48,7 @@ public class RegisterStudent extends AppCompatActivity {
     DepartmentRecyclerViewAdapter departmentRecyclerViewAdapter;
     Context context;
     String programKey;
-    String departmentKey;
+    final static String departmentKey = "Dd9LNYTPVFpwJlIkv3fe";
     String yearLevelKey;
     String sectionLKey;
     ProgramsRecyclerViewAdapter programsRecyclerViewAdapter;
@@ -122,6 +122,7 @@ public class RegisterStudent extends AppCompatActivity {
         selectProgram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getPrograms();
                 selectProgram();
             }
         });
@@ -160,7 +161,7 @@ public class RegisterStudent extends AppCompatActivity {
         departmentRecyclerViewAdapter.setOnItemClickListener(new DepartmentRecyclerViewAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position, DepartmentObjectModel departmentObjectModel) {
-                departmentKey = departmentObjectModel.getKey();
+//                departmentKey = departmentObjectModel.getKey();
                 selectDepartment.setText(departmentObjectModel.getDepartment());
                 getPrograms();
                 dialog.dismiss();

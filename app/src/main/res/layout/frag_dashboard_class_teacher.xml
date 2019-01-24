@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="M/W 1:30 PM - 5:00 PM"
+                android:text=""
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/announcementTitle"
                 app:layout_constraintTop_toBottomOf="@+id/announcementTitle" />
@@ -195,7 +195,7 @@
             <TextView
                 android:id="@+id/settings"
                 style="@style/TextTitle"
-                android:layout_width="96dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
