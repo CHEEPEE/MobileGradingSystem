@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/E:/android-studio-3.0/plugins/android/lib/android.jar!/images/material_design_icons/communication/ic_rss_feed_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/E:/android-studio-3.0/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_edit_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_rss_feed_black_24dp" />
+                            <entry key="outputName" value="ic_edit_black_24dp" />
                             <entry key="sourceFile" value="D:\D\outline-visibility-24px.svg" />
                           </map>
                         </option>

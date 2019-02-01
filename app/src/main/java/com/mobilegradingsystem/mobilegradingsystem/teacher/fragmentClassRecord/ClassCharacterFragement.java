@@ -48,7 +48,7 @@ public class ClassCharacterFragement extends Fragment {
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_class_record_character_attendance, container, false);
         classRecordCategoryName = (TextView) view.findViewById(R.id.classRecordCategoryName);
-        classRecordCategoryName.setText("Character");
+        classRecordCategoryName.setText("Character ("+(act.getClassRecordVersion().getCharacter()*100)+"%)");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
         studentListTeacherRecyclerViewAdapter = new CharacterClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

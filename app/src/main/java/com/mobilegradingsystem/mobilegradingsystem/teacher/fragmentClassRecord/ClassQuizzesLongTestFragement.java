@@ -60,7 +60,8 @@ public class ClassQuizzesLongTestFragement extends Fragment {
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(participationClassRecordRecyclerViewAdapter);
         btnAddPar = (TextView) view.findViewById(R.id.btnAddPar);
-        type.setText("Quiz and Long Test");
+        type.setText("Quiz and Long Test ("+(act.getClassRecordVersion().getQuizLongTest()*100)+"%)");
+        btnAddPar.setText("Add Quiz/Long Test");
         btnAddPar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +83,7 @@ public class ClassQuizzesLongTestFragement extends Fragment {
         final String key = db.collection("quizLongTestCategory").document().getId();
         final EditText maxScore = dialog.findViewById(R.id.inputGrade);
         final TextView done = dialog.findViewById(R.id.done);
-        done.setText("Add Quiz/Long Test");
+//        done.setText("Add Quiz/Long Test");
         dialog.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

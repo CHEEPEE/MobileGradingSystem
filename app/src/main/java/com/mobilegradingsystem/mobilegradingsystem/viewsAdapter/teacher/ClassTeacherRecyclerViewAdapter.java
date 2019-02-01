@@ -73,7 +73,6 @@ public class ClassTeacherRecyclerViewAdapter
             holder.schoolYear.setText(teacherClassObjectModel.getSchoolYear());
             holder.semester.setText(teacherClassObjectModel.getSemester().equals("1")?"1st Semester":"Second Semester");
         }catch (NullPointerException ex){
-
         }
 //        holder.accessCode.setText(teacherClassObjectModel.getClassKey());
         holder.viewClassProrfile.setOnClickListener(new View.OnClickListener() {

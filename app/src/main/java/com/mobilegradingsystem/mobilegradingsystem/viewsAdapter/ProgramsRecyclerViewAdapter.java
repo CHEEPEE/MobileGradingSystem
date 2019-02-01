@@ -22,7 +22,6 @@ public class ProgramsRecyclerViewAdapter
         extends RecyclerView.Adapter<ProgramsRecyclerViewAdapter.MyViewHolder> {
     private ArrayList<ProgramsObjectModel> programsObjectModelArrayList = new ArrayList<>();
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder{
       public ImageView addImage;
       public ImageView galleryImage;

@@ -50,7 +50,7 @@ public class ClassGradeFragement extends Fragment {
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_class_participation, container, false);
         classRecordCategoryName = (TextView) view.findViewById(R.id.type);
-        classRecordCategoryName.setText("Final Grade");
+        classRecordCategoryName.setText((act.getTerm().equals("midterm")?"Midterm":"Tentative Final")+" Grade");
         TextView btnAddPar = (TextView) view.findViewById(R.id.btnAddPar);
         btnAddPar.setVisibility(View.INVISIBLE);
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);

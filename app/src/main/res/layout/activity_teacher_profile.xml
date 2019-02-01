@@ -18,16 +18,57 @@
         app:layout_constraintTop_toTopOf="@+id/account_image" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/account_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="24dp"
         android:layout_marginTop="8dp"
+        android:src="@drawable/ic_account_circle_black_24dp"
         app:civ_border_color="@color/colorLightGrey"
         app:civ_border_width="3dp"
-        android:id="@+id/account_image"
-        android:src="@drawable/ic_account_circle_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+
+        android:background="@drawable/badge_bg_accent"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="School Year"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/filter"
+        app:layout_constraintEnd_toStartOf="@+id/filter"
+        app:layout_constraintTop_toTopOf="@+id/filter" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Semester"
+        android:background="@drawable/badge_bg_primary"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView32"
+        app:layout_constraintEnd_toStartOf="@+id/textView32"
+        app:layout_constraintTop_toTopOf="@+id/textView32" />
+    <ImageView
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_filter_list_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_image" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/classList"
@@ -36,8 +77,9 @@
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StudentName"></android.support.v7.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/filter"></android.support.v7.widget.RecyclerView>
 
     <TextView
         android:id="@+id/addClass"

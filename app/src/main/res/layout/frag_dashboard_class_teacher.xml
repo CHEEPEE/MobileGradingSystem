@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
 
-                android:text="Students"
+                android:text="Number Of Students"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -200,11 +200,26 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:drawablePadding="5dp"
-                android:drawableStart="@drawable/ic_settings_black_24dp"
+                android:drawableStart="@drawable/ic_edit_black_24dp"
                 android:gravity="center"
-                android:text="Settings"
+                android:text="Edit"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/midterm" />
+
+            <TextView
+                android:id="@+id/delete"
+                style="@style/TextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:drawablePadding="5dp"
+                android:drawableStart="@drawable/ic_delete_black_24dp"
+                android:drawableTint="@color/colorRed"
+                android:gravity="center"
+                android:text="Delete"
+                android:textColor="@color/colorRed"
+                app:layout_constraintStart_toEndOf="@+id/settings"
+                app:layout_constraintTop_toTopOf="@+id/settings" />
 
             <TextView
                 android:id="@+id/feedbacks"

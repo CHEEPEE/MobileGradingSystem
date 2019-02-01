@@ -89,12 +89,17 @@ public class ClassStudentRecyclerViewAdapter
         db.collection("class").document(studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                db.collection("teacherProfile").document(documentSnapshot.get("userId").toString()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                        holder.teacherName.setText(documentSnapshot.get("teacherName").toString());
-                    }
-                });
+               try {
+                   db.collection("teacherProfile").document(documentSnapshot.get("userId").toString()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                       @Override
+                       public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                           holder.teacherName.setText(documentSnapshot.get("teacherName").toString());
+                       }
+                   });
+               }catch (NullPointerException ex){
+                   studentClassObjectModelArrayList.remove(position);
+                   notifyDataSetChanged();
+               }
             }
         });
     }
@@ -117,6 +122,8 @@ public class ClassStudentRecyclerViewAdapter
     private void addMenuDialog(){
 
     }
+
+
 }
 
 

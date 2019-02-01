@@ -129,9 +129,16 @@ public class RegisterStudent extends AppCompatActivity {
         saveInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveProfile(departmentKey,programKey,yearLevelKey,sectionLKey);
+//                saveProfile(departmentKey,programKey,yearLevelKey,sectionLKey);
+                if (validate(departmentKey,programKey,yearLevelKey,sectionLKey)){
+                    isEmailExist();
+                }else {
+                    Toast.makeText(context,"Please Fill up Everything",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
+
 
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
@@ -270,6 +277,7 @@ public class RegisterStudent extends AppCompatActivity {
     void saveProfile(String a,String b,String c,String d){
         String key = db.collection("tempCreateUsers").document().getId();
         if (validate(a,b,c,d)){
+
 //            TempUserObject tempUserObject
 //                    = new TempUserObject(email.getText().toString(),key
 //                    ,departmentKey
@@ -281,6 +289,8 @@ public class RegisterStudent extends AppCompatActivity {
 //                    ,"pending"
 //                    ,yearLevelKey,sectionLKey
 //            );
+
+
             tempUserObject.setEmail(email.getText().toString());
             tempUserObject.setPassword(key);
             tempUserObject.setUserType("student");
@@ -316,6 +326,23 @@ public class RegisterStudent extends AppCompatActivity {
             });
         }else{
             Toast.makeText(context,"Please Fill up Everything",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    void isEmailExist(){
+        if (isValidEmail(email.getText().toString())){
+            db.collection("users").whereEqualTo("email",email.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if (queryDocumentSnapshots.getDocuments().size()==0){
+                        saveProfile(departmentKey,programKey,yearLevelKey,sectionLKey);
+                    }else {
+                        Toast.makeText(context,"Email Already Exist",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }else {
+            Toast.makeText(context,"Email Not Valid",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -378,5 +405,11 @@ public class RegisterStudent extends AppCompatActivity {
                 selectSection.setText("Please Select Section");
             }
         });
+    }
+    boolean isValidEmail(String email){
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
     }
 }

@@ -40,7 +40,7 @@
         android:drawableStart="@drawable/ic_add_black_24dp"
         android:drawableTint="@color/colorBlue"
         android:gravity="center"
-        android:text="Add Score"
+        android:text="Add Class Participation"
         app:layout_constraintBottom_toBottomOf="@+id/studentlist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

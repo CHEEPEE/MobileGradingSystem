@@ -60,7 +60,8 @@ public class ClassProjectsFragement extends Fragment {
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(participationClassRecordRecyclerViewAdapter);
         btnAddPar = (TextView) view.findViewById(R.id.btnAddPar);
-        type.setText("Projects");
+        type.setText("Projects ("+(act.getClassRecordVersion().getProjects()*100)+"%)");
+        btnAddPar.setText("Add Project");
         btnAddPar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +83,7 @@ public class ClassProjectsFragement extends Fragment {
         final String key = db.collection("projectCategory").document().getId();
         final EditText maxScore = dialog.findViewById(R.id.inputGrade);
         final TextView done = dialog.findViewById(R.id.done);
-        done.setText("Add Project");
+
         dialog.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

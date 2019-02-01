@@ -28,6 +28,8 @@ import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentL
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters.CharacterClassRecordRecyclerViewAdapter;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters.ExamStudentsClassRecordRecyclerViewAdapter;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -40,6 +42,7 @@ public class ClassExamFragement extends Fragment {
     RecyclerView studentListRecyclerView;
     BottomSheetBehavior bottomSheetBehavior;
     TextView bntSetMaxScore;
+    TextView type;
 
     public ClassExamFragement(){
 
@@ -53,6 +56,8 @@ public class ClassExamFragement extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_class_exam, container, false);
+        type = (TextView) view.findViewById(R.id.type);
+        type.setText("Exam ("+(act.getClassRecordVersion().getExam()*100)+"%)");
         bntSetMaxScore = (TextView) view.findViewById(R.id.bntSetMaxScore);
         bntSetMaxScore.setOnClickListener(new View.OnClickListener() {
             @Override

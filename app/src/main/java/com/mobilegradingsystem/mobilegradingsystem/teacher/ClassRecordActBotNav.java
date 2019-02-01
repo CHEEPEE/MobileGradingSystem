@@ -9,7 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.ClassRecordVersion;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.AnnouncementTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.DashboardClassTeacherFragement;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfileBotBNav.ViewStudentsTeacherFragement;
@@ -38,7 +42,9 @@ public class ClassRecordActBotNav extends AppCompatActivity {
     ViewPagerAdapter adapter;
     String classKey;
     String term;
+    ClassRecordVersion classRecordVersion;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_record_act_bot_nav);
@@ -67,7 +73,17 @@ public class ClassRecordActBotNav extends AppCompatActivity {
                 }
             }
         });
-        setupViewPager(viewPager);
+
+        FirebaseFirestore.getInstance().collection("classRecordVersion").document("4TYJW5v4LBujNmMCNEPs").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ClassRecordVersion cv = documentSnapshot.toObject(ClassRecordVersion.class);
+                classRecordVersion = cv;
+                setupViewPager(viewPager);
+            }
+        });
+
+
     }
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -96,4 +112,7 @@ public class ClassRecordActBotNav extends AppCompatActivity {
         return term;
     }
 
+    public ClassRecordVersion getClassRecordVersion() {
+        return classRecordVersion;
+    }
 }

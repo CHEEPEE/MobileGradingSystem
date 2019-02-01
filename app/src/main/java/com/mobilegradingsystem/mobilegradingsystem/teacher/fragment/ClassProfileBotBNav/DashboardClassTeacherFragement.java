@@ -20,6 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.Utils;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassRecordActBotNav;
 
@@ -38,6 +40,7 @@ public class DashboardClassTeacherFragement extends Fragment {
     Dialog updateClassDialog;
     String loading = "loading...";
     TextView settings;
+    TextView delete;
     TeacherClassObjectModel oldClassModel;
 
     public DashboardClassTeacherFragement(){
@@ -55,6 +58,7 @@ public class DashboardClassTeacherFragement extends Fragment {
         className = (TextView) view.findViewById(R.id.announcementTitle);
         announcementNumber = (TextView) view.findViewById(R.id.announcementsNumber);
         settings = (TextView) view.findViewById(R.id.settings);
+        delete = (TextView) view.findViewById(R.id.delete);
         feedbacks = (TextView) view.findViewById(R.id.feedbacks);
         studentNumbers.setText(loading);
         className.setText(loading);
@@ -89,6 +93,12 @@ public class DashboardClassTeacherFragement extends Fragment {
                 getActivity().startActivity(i);
             }
         });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                deleteClass();
+            }
+        });
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,12 +108,36 @@ public class DashboardClassTeacherFragement extends Fragment {
         return view;
     }
 
+
+    void deleteClass(){
+        db.collection("class").document(act.getClassKey()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                db.collection("studentClasses").whereEqualTo("classCode",act.getClassKey()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                            StudentClassObjectModel studentClassObjectModel = documentSnapshot.toObject(StudentClassObjectModel.class);
+                            db.collection("studentClasses").document(studentClassObjectModel.getKey()).delete();
+                        }
+                    }
+                });
+                getActivity().finish();
+                Utils.message("Class/Subject Deleted",getContext());
+            }
+        });
+    }
+
     void getClassCredentials(){
         db.collection("class").document(act.getClassKey()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 TeacherClassObjectModel teacherClassObjectModel = documentSnapshot.toObject(TeacherClassObjectModel.class);
-                className.setText(teacherClassObjectModel.getName());
+                try {
+                    className.setText(teacherClassObjectModel.getName());
+                }catch (NullPointerException ex){
+
+                }
             }
         });
     }

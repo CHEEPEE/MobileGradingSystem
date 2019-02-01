@@ -35,6 +35,7 @@ public class ClassParticipationFragement extends Fragment {
     ArrayList<ParticipationCategoryGradeObjectModel> participationCategoryGradeObjectModelArrayList = new ArrayList<>();
     ParticipationClassRecordRecyclerViewAdapter participationClassRecordRecyclerViewAdapter;
     RecyclerView studentListRecyclerView;
+    TextView type;
     BottomSheetBehavior bottomSheetBehavior;
     TextView btnAddPar;
 
@@ -50,12 +51,14 @@ public class ClassParticipationFragement extends Fragment {
         act = (ClassRecordActBotNav) getActivity();
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_class_participation, container, false);
-
+        type = (TextView) view.findViewById(R.id.type);
+        type.setText("Class Participation ("+(act.getClassRecordVersion().getClassParticipation()*100)+"%)");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
         participationClassRecordRecyclerViewAdapter = new ParticipationClassRecordRecyclerViewAdapter(getActivity(), participationCategoryGradeObjectModelArrayList,act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(participationClassRecordRecyclerViewAdapter);
         btnAddPar = (TextView) view.findViewById(R.id.btnAddPar);
+        btnAddPar.setText("Add Class Participation");
         btnAddPar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +79,8 @@ public class ClassParticipationFragement extends Fragment {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         final String key = db.collection("participationCategory").document().getId();
         final EditText maxScore = dialog.findViewById(R.id.inputGrade);
+        TextView message = (TextView) dialog.findViewById(R.id.message);
+
         dialog.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

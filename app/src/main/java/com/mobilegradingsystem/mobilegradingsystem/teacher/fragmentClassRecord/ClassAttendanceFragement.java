@@ -53,7 +53,7 @@ public class ClassAttendanceFragement extends Fragment {
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.frag_class_record_character_attendance, container, false);
         classRecordCategoryName = (TextView) view.findViewById(R.id.classRecordCategoryName);
-        classRecordCategoryName.setText("Attendance");
+        classRecordCategoryName.setText("Attendance ("+(act.getClassRecordVersion().getAttendance()*100)+"%)");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
         search = (EditText) view.findViewById(R.id.search);
         attendanceClassRecordRecyclerViewAdapter = new AttendanceClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getTerm(),studentProfileProfileObjectModels);

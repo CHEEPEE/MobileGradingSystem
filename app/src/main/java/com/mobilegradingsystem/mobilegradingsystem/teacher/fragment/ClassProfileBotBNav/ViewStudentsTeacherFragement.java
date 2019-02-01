@@ -113,7 +113,11 @@ public class ViewStudentsTeacherFragement extends Fragment {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                                 if (queryDocumentSnapshots.getDocuments().size() >=1){
-                                    Toast.makeText(getContext(),"You cannot add the same student on the same class",Toast.LENGTH_SHORT).show();
+                                    try {
+                                        Toast.makeText(getContext(),"You cannot add the same student on the same class",Toast.LENGTH_SHORT).show();
+                                    }catch (NullPointerException ex){
+
+                                    }
                                 }else {
                                     String studentClassKey = db.collection("studentClasses").document().getId();
                                     StudentClassObjectModel studentClassObjectModel =
@@ -166,6 +170,8 @@ public class ViewStudentsTeacherFragement extends Fragment {
             @Override
             public void onClick(View v) {
                 if (studentId.getText().toString().trim()!=""){
+                    //check if email exist
+
                     checkStudentRegistered(studentId.getText().toString());
                 }
             }
