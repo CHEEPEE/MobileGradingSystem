@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/className"
         style="@style/TextTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,8 +26,8 @@
         android:layout_marginTop="8dp"
         android:text="Additional Info"
         android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintStart_toStartOf="@+id/className"
+        app:layout_constraintTop_toBottomOf="@+id/className" />
 
     <View
         android:id="@+id/view5"
@@ -38,15 +38,14 @@
         android:background="@color/colorLightGrey"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/character"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:fontFamily="sans-serif"
-        android:text="Attendance"
+        android:text="Character"
         android:textAllCaps="false"
         android:textColor="@color/colorMidGrey"
         android:textStyle="bold"
@@ -54,7 +53,21 @@
         app:layout_constraintTop_toBottomOf="@+id/view5" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="Attendance"
+        android:textAllCaps="false"
+        android:textColor="@color/colorMidGrey"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/character" />
+
+    <TextView
+        android:id="@+id/classParticipation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -65,10 +78,10 @@
         android:textColor="@color/colorMidGrey"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintTop_toBottomOf="@+id/attendance" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/projects"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -79,10 +92,10 @@
         android:textColor="@color/colorMidGrey"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        app:layout_constraintTop_toBottomOf="@+id/classParticipation" />
 
     <TextView
-        android:id="@+id/textView22"
+        android:id="@+id/quizesAndLongTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -93,9 +106,10 @@
         android:textColor="@color/colorMidGrey"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView21" />
+        app:layout_constraintTop_toBottomOf="@id/projects" />
 
     <TextView
+        android:id="@+id/exam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -106,7 +120,19 @@
         android:textColor="@color/colorMidGrey"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+        app:layout_constraintTop_toBottomOf="@+id/quizesAndLongTest" />
+
+    <TextView
+        android:id="@+id/grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Grade"
+        android:textColor="@color/colorMidGrey"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exam" />
 
 
 </android.support.constraint.ConstraintLayout>

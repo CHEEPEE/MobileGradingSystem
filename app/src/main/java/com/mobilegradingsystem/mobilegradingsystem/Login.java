@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,7 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login.setText("Loading");
+
                 login.setClickable(false);
                 firestore.collection("users").whereEqualTo("userSchoolId", userSchoolId.getText().toString()).addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -111,6 +112,8 @@ public class Login extends AppCompatActivity {
                     public void run() {
                         // your code here
                         signIn();
+                        loading(false);
+
 
                     }
                 },
@@ -122,6 +125,14 @@ public class Login extends AppCompatActivity {
                 forgetPasswordModal();
             }
         });
+    }
+
+    void loading(Boolean load){
+        try {
+            findViewById(R.id.loading_layout).setVisibility(load?View.VISIBLE:View.INVISIBLE);
+        }catch (AndroidRuntimeException e){
+
+        }
     }
 
     private void authWithEmail(String email,String password){
@@ -152,6 +163,7 @@ public class Login extends AppCompatActivity {
 
         FirebaseUser user = mAuth.getCurrentUser();
         boolean isUser = false;
+        login.setText("Logging In");
         try {
             isUser = !user.getUid().toString().equals("");
         }catch (NullPointerException e){
@@ -318,16 +330,16 @@ public class Login extends AppCompatActivity {
                     }
                 });
     }
-    private void loading(boolean loading){
-        if (loading){
-//            findViewById(R.id.loadingIndicator).setVisibility(View.VISIBLE);
-            getstarted.setVisibility(View.GONE);
-
-        }else {
-//            findViewById(R.id.loadingIndicator).setVisibility(View.GONE);
-            getstarted.setVisibility(View.VISIBLE);
-        }
-    }
+//    private void loading(boolean loading){
+//        if (loading){
+////            findViewById(R.id.loadingIndicator).setVisibility(View.VISIBLE);
+//            getstarted.setVisibility(View.GONE);
+//
+//        }else {
+////            findViewById(R.id.loadingIndicator).setVisibility(View.GONE);
+//            getstarted.setVisibility(View.VISIBLE);
+//        }
+//    }
 
 
 

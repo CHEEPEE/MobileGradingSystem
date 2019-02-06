@@ -93,6 +93,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:text="First Sem."
+        android:visibility="invisible"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/modalTitle" />
@@ -102,6 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:visibility="invisible"
         android:text="Second Sem."
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/firstSem"

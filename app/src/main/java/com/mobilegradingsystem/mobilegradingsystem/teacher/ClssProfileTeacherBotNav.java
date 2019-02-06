@@ -99,6 +99,8 @@ public class ClssProfileTeacherBotNav extends AppCompatActivity {
         });
 
         setupViewPager(viewPager);
+
+
     }
 
     private void setupViewPager(ViewPager viewPager) {

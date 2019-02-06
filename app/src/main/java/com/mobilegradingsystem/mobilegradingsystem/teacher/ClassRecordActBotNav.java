@@ -28,6 +28,8 @@ import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.ViewPagerAdapter
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
+import java.lang.reflect.Array;
+
 public class ClassRecordActBotNav extends AppCompatActivity {
 
     SlidingRootNav slidingRootNav;
@@ -42,6 +44,9 @@ public class ClassRecordActBotNav extends AppCompatActivity {
     ViewPagerAdapter adapter;
     String classKey;
     String term;
+    TextView[] sideNaveMenus = new TextView[7];
+    String[] sideMenus = {"snCharacter","snAttendance","snClassParticipation","snProject","snQuizeAndLongTest","snExam","snGrades"};
+    int[] sideMenusId = {R.id.character,R.id.attendance,R.id.classParticipation,R.id.projects,R.id.quizesAndLongTest,R.id.exam,R.id.grade};
     ClassRecordVersion classRecordVersion;
     @Override
 
@@ -63,6 +68,8 @@ public class ClassRecordActBotNav extends AppCompatActivity {
                 .withContentClickableWhenMenuOpened(true)
                 .inject();
 
+
+
         findViewById(R.id.toggleMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,12 +81,25 @@ public class ClassRecordActBotNav extends AppCompatActivity {
             }
         });
 
+
         FirebaseFirestore.getInstance().collection("classRecordVersion").document("4TYJW5v4LBujNmMCNEPs").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 ClassRecordVersion cv = documentSnapshot.toObject(ClassRecordVersion.class);
                 classRecordVersion = cv;
                 setupViewPager(viewPager);
+                for (int i = 0;i<sideMenus.length;i++){
+                    sideNaveMenus[i] = (TextView) findViewById(sideMenusId[i]);
+                    final int index = i;
+                    sideNaveMenus[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewPager.setCurrentItem(index);
+                            slidingRootNav.closeMenu();
+                        }
+                    });
+                }
+
             }
         });
 
