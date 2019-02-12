@@ -224,8 +224,4 @@ public class DashboardClassTeacherFragement extends Fragment {
                     }
                 });
     }
-
-
-
-
 }

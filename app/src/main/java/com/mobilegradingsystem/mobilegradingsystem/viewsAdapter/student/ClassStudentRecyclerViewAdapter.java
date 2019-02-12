@@ -97,7 +97,7 @@ public class ClassStudentRecyclerViewAdapter
                        }
                    });
                }catch (NullPointerException ex){
-                   studentClassObjectModelArrayList.remove(position);
+//                   studentClassObjectModelArrayList.remove(position);
                    notifyDataSetChanged();
                }
             }

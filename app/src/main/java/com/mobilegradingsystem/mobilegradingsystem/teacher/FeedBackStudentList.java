@@ -61,7 +61,7 @@ public class FeedBackStudentList extends AppCompatActivity {
                     total += feedbacksObjectModel.getRating();
                 }
 
-                averageRating.setText((total/queryDocumentSnapshots.getDocuments().size())+"");
+                averageRating.setText(((total/queryDocumentSnapshots.getDocuments().size())+"").equals("NaN")?"0":(total/queryDocumentSnapshots.getDocuments().size())+"");
                 averageRatingBar.setRating((total/queryDocumentSnapshots.getDocuments().size()));
 
                 feedbackRecyclerViewAdapter.notifyDataSetChanged();

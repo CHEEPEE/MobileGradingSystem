@@ -187,7 +187,7 @@ public class TeacherProfile extends AppCompatActivity {
         description = (EditText) addClassDialog.findViewById(R.id.inputName);
         int year = Calendar.getInstance().get(Calendar.YEAR);
         final String schoolYear = year+" - "+(year+1);
-        final TextView saveClass=(TextView) findViewById(R.id.saveClass);
+        final TextView saveClass=(TextView) addClassDialog.findViewById(R.id.saveClass);
 
         addClassDialog.findViewById(R.id.saveClass).setOnClickListener(new View.OnClickListener() {
             @Override

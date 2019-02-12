@@ -7,11 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +47,8 @@ import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherProfile;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherRegistration;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.lang.reflect.Type;
+
 import javax.annotation.Nullable;
 
 public class Login extends AppCompatActivity {
@@ -57,6 +64,7 @@ public class Login extends AppCompatActivity {
     FirebaseFirestore firestore;
     Dialog inputEmailDialog;
     ConstraintLayout laodingIndicator;
+    CheckBox passwordVisibility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,8 @@ public class Login extends AppCompatActivity {
         login = (TextView) findViewById(R.id.login);
         forgotPassword = (TextView) findViewById(R.id.forgotPassword);
         laodingIndicator = (ConstraintLayout) findViewById(R.id.loading_layout);
+        passwordVisibility = (CheckBox) findViewById(R.id.passwordVisibility);
+
 
         firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -83,7 +93,7 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                login.setText("Logging In");
                 login.setClickable(false);
                 firestore.collection("users").whereEqualTo("userSchoolId", userSchoolId.getText().toString()).addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -125,6 +135,13 @@ public class Login extends AppCompatActivity {
                 forgetPasswordModal();
             }
         });
+        passwordVisibility.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                showPassword(isChecked);
+                Utils.message("isShow password? "+isChecked,Login.this);
+            }
+        });
     }
 
     void loading(Boolean load){
@@ -163,7 +180,7 @@ public class Login extends AppCompatActivity {
 
         FirebaseUser user = mAuth.getCurrentUser();
         boolean isUser = false;
-        login.setText("Logging In");
+
         try {
             isUser = !user.getUid().toString().equals("");
         }catch (NullPointerException e){
@@ -329,6 +346,10 @@ public class Login extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+    private void showPassword(Boolean show){
+       password.setTransformationMethod(show? HideReturnsTransformationMethod.getInstance(): PasswordTransformationMethod.getInstance());
+
     }
 //    private void loading(boolean loading){
 //        if (loading){

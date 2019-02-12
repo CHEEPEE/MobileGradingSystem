@@ -29,6 +29,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.Participa
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentAttendenceCharacterClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassPartListStudentsAct;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -76,7 +77,7 @@ public class ParticipationClassRecordRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel = participationCategoryGradeObjectModelArrayList.get(position);
-        holder.part_date.setText(participationCategoryGradeObjectModel.getTimeStamp()+"");
+        holder.part_date.setText(new SimpleDateFormat("E MMM dd yyyy @ hh:mm a").format(participationCategoryGradeObjectModel.getTimeStamp()));
         holder.score.setText(participationCategoryGradeObjectModel.getMaxScode()+"");
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
