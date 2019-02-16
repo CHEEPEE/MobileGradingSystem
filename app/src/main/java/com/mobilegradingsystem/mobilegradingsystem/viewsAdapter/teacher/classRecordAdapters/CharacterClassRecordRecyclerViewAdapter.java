@@ -104,15 +104,26 @@ public class CharacterClassRecordRecyclerViewAdapter
                 setGradeDialog(studentClassObjectModel);
             }
         });
-        db.collection("character")
-                .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
-                .whereEqualTo("term",term)
-                .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+//        db.collection("character")
+//                .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
+//                .whereEqualTo("term",term)
+//                .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+//                    StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
+//                    holder.grade.setText(attendenceClassObjectModel.getValue()+"");
+//                }
+//            }
+//        });
+        db.collection("character").document(studentClassObjectModel.getStudentId()+term+studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                try {
                     StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
                     holder.grade.setText(attendenceClassObjectModel.getValue()+"");
+                }catch (NullPointerException ex){
+
                 }
             }
         });
@@ -155,7 +166,7 @@ public class CharacterClassRecordRecyclerViewAdapter
                         } else if (Integer.parseInt(inputGrade.getText().toString()) > 95) {
                             inputGrade.setError("Grade should not be more than 95");
                         } else {
-                            String key = db.collection("character").document().getId();
+                            String key = studentClassObjectModel.getStudentId()+term+studentClassObjectModel.getClassCode();
                             StudentAttendenceCharacterClassObjectModel studentAttendenceCharacterClassObjectModel =
                                     new StudentAttendenceCharacterClassObjectModel(key,
                                             studentClassObjectModel.getStudentId(),

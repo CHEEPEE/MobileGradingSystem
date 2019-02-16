@@ -132,7 +132,7 @@ public class TeacherProfile extends AppCompatActivity {
         profileSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,TeacherUpdateProfile.class);
+                Intent i = new Intent(context,UserUpdatePassword.class);
                 startActivity(i);
                 dialog.dismiss();
             }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -154,7 +155,11 @@ public class ParticipationStudentsClassRecordRecyclerViewAdapter
        Window window = dialog.getWindow();
        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-       dialog.show();
+        try {
+            dialog.show();
+        }catch (WindowManager.BadTokenException ex){
+
+        }
        final EditText inputGrade = (EditText) dialog.findViewById(R.id.inputGrade);
        dialog.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
            @Override

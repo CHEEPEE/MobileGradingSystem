@@ -1,7 +1,9 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -77,7 +80,11 @@ public class ParticipationClassRecordRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel = participationCategoryGradeObjectModelArrayList.get(position);
-        holder.part_date.setText(new SimpleDateFormat("E MMM dd yyyy @ hh:mm a").format(participationCategoryGradeObjectModel.getTimeStamp()));
+        try {
+            holder.part_date.setText(new SimpleDateFormat("E MMM dd yyyy @ hh:mm a").format(participationCategoryGradeObjectModel.getTimeStamp()));
+        }catch (NullPointerException ex){
+
+        }
         holder.score.setText(participationCategoryGradeObjectModel.getMaxScode()+"");
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +96,26 @@ public class ParticipationClassRecordRecyclerViewAdapter
                 context.startActivity(i);
             }
         });
+        holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                try {
+                    new AlertDialog.Builder(context)
+                            .setTitle("Delete")
+                            .setMessage("Proceed to delete "+ new SimpleDateFormat("E MMM dd yyyy @ hh:mm a").format(participationCategoryGradeObjectModel.getTimeStamp()))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    participationCategoryGradeObjectModel.deleteParticipation("participationCategory",participationCategoryGradeObjectModel.getKey());
+                                }})
+                            .setNegativeButton(android.R.string.no, null).show();
+                }catch (NullPointerException ex){
+
+                }
+                return true;
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {

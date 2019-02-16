@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
@@ -27,6 +28,8 @@ import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentL
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters.AttendanceClassRecordRecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.annotation.Nullable;
 
@@ -83,21 +86,30 @@ public class ClassAttendanceFragement extends Fragment {
         db.collection("studentClasses")
                 .whereEqualTo("classCode",act.getClassKey())
                 .whereEqualTo("status","approved")
+                .orderBy("lName")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 studentList.clear();
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
-                    StudentClassObjectModel studentClassObjectModel = documentSnapshot.toObject(StudentClassObjectModel.class);
-                    studentList.add(documentSnapshot.toObject(StudentClassObjectModel.class));
-                    db.collection("studentProfile").document(studentClassObjectModel.getStudentUserId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                            StudentProfileProfileObjectModel studentProfile = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
-                            studentProfileProfileObjectModels.add(studentProfile);
-                            attendanceClassRecordRecyclerViewAdapter.notifyDataSetChanged();
-                        }
-                    });
+                try {
+                    for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                        StudentClassObjectModel studentClassObjectModel = documentSnapshot.toObject(StudentClassObjectModel.class);
+                        studentList.add(documentSnapshot.toObject(StudentClassObjectModel.class));
+                        db.collection("studentProfile").document(studentClassObjectModel.getStudentUserId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                StudentProfileProfileObjectModel studentProfile = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
+                                studentProfileProfileObjectModels.add(studentProfile);
+                                attendanceClassRecordRecyclerViewAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+
+
+
+
+                }catch (NullPointerException ex){
+
                 }
 
             }

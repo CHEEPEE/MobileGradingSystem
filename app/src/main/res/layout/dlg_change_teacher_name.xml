@@ -1,55 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/dialog_background"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_margin="32dp"
     android:layout_gravity="center"
+    android:background="@drawable/dialog_background"
     android:layout_height="wrap_content">
 
-
     <TextView
-        android:id="@+id/message"
-        style="@style/TextTitle"
+        android:id="@+id/modalTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Input Student Score"
-        android:textColor="@color/colorBlueGrey"
+        android:text="Change Name"
+        style="@style/TextTitle"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <EditText
-        android:id="@+id/inputGrade"
+        android:id="@+id/inputName"
         style="@style/TextInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:inputType="number"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:hint="Teacher Name"
+        android:inputType="text"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message" />
+        app:layout_constraintTop_toBottomOf="@+id/modalTitle" />
 
     <TextView
-        android:id="@+id/done"
+        android:id="@+id/confirmButton"
+        style="@style/defaultButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:drawableStart="@drawable/ic_check_black_24dp"
-        android:drawableTint="@color/colorGreen"
+        android:layout_marginTop="24dp"
         android:text="Save"
-        android:gravity="center"
-        android:drawablePadding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputGrade" />
+        app:layout_constraintEnd_toEndOf="@+id/inputName"
+        app:layout_constraintStart_toStartOf="@+id/inputName"
+        app:layout_constraintTop_toBottomOf="@+id/inputName" />
+
 
 </android.support.constraint.ConstraintLayout>

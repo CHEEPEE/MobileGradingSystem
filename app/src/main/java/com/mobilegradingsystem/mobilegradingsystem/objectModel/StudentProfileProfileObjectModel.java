@@ -94,4 +94,44 @@ public class StudentProfileProfileObjectModel {
     public String getYearLevelKey() {
         return yearLevelKey;
     }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setSectionKey(String sectionKey) {
+        this.sectionKey = sectionKey;
+    }
+
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
+
+    public void setDepartmentKey(String departmentKey) {
+        this.departmentKey = departmentKey;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setAccoutStatus(String accoutStatus) {
+        this.accoutStatus = accoutStatus;
+    }
+
+    public void setmNme(String mNme) {
+        this.mNme = mNme;
+    }
+
+    public void setProgramKey(String programKey) {
+        this.programKey = programKey;
+    }
 }

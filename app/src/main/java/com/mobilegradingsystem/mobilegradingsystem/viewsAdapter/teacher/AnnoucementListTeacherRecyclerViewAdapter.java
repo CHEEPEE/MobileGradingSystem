@@ -1,7 +1,9 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,10 +12,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.AnnouncementObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.FeedBackAct;
@@ -31,7 +35,7 @@ public class AnnoucementListTeacherRecyclerViewAdapter
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title,description,feedBack,date,update;
+        public TextView title,description,feedBack,date,update,deleteAnnouncement;
 
         public MyViewHolder(View view){
             super(view);
@@ -40,6 +44,7 @@ public class AnnoucementListTeacherRecyclerViewAdapter
             feedBack = (TextView) view.findViewById(R.id.feedBack);
             date = (TextView) view.findViewById(R.id.date);
             update = (TextView) view.findViewById(R.id.update);
+            deleteAnnouncement = (TextView) view.findViewById(R.id.deleteAnnouncement);
         }
     }
 
@@ -62,6 +67,25 @@ public class AnnoucementListTeacherRecyclerViewAdapter
         holder.title.setText(announcementObjectModel.getTitle());
         holder.description.setText(announcementObjectModel.getDescription());
         holder.date.setText(announcementObjectModel.getTimeStamp()+"");
+        holder.deleteAnnouncement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Delete Announcement?")
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                FirebaseFirestore.getInstance().collection("announcement")
+                                        .document(announcementObjectModel.getKey()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Utils.message("Announcement Deleted",context);
+                                    }
+                                });
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
+            }
+        });
         holder.feedBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

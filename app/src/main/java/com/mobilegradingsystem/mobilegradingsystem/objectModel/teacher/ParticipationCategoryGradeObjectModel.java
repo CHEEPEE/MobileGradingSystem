@@ -1,5 +1,6 @@
 package com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
@@ -27,6 +28,9 @@ public class ParticipationCategoryGradeObjectModel {
      this.classCode = classCode;
      this.maxScode = maxScode;
      this.term = term;
+    }
+    public void deleteParticipation(String category,String key){
+        FirebaseFirestore.getInstance().collection(category).document(key).delete();
     }
 
     public String getTerm() {

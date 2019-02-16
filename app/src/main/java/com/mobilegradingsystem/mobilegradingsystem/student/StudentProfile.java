@@ -61,6 +61,8 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectMod
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.UpdateProfilePicture;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.UserUpdatePassword;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.ProgramsRecyclerViewAdapter;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.student.ClassStudentRecyclerViewAdapter;
 
@@ -182,7 +184,15 @@ public class StudentProfile extends AppCompatActivity {
         dialog.findViewById(R.id.profileSettings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UpdateAccount.class);
+                Intent i = new Intent(context, UserUpdatePassword.class);
+                startActivity(i);
+
+            }
+        });
+        dialog.findViewById(R.id.profilePicture).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, UpdateProfilePicture.class);
                 startActivity(i);
 
             }

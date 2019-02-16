@@ -83,15 +83,17 @@ public class AttendanceClassRecordRecyclerViewAdapter
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
                         StudentProfileProfileObjectModel studentProfile = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
-                      try {
-                          holder.studentName.setText(studentProfile.getfName()+" "+studentProfile.getlName());
-                      }catch (NullPointerException ex){
+                        try{
+                            holder.studentName.setText(studentProfile.getfName() + " " + studentProfile.getlName());
+                        }catch (NullPointerException ex){
 
-
-                      }
+                        }
                     }
                 });
+
+
 
         FirebaseFirestore.getInstance().collection("users")
                 .document(studentClassObjectModel.getStudentUserId())
@@ -108,15 +110,26 @@ public class AttendanceClassRecordRecyclerViewAdapter
                 setGradeDialog(studentClassObjectModel);
             }
         });
-        db.collection("attendance")
-                .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
-                .whereEqualTo("term",term)
-                .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+//        db.collection("attendance")
+//                .whereEqualTo("studentUserId",studentClassObjectModel.getStudentUserId())
+//                .whereEqualTo("term",term)
+//                .whereEqualTo("classCode",studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+//                    StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
+//                    holder.grade.setText(attendenceClassObjectModel.getValue()+"");
+//                }
+//            }
+//        });
+        db.collection("attendance").document(studentClassObjectModel.getStudentId()+term+studentClassObjectModel.getClassCode()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                try {
                     StudentAttendenceCharacterClassObjectModel attendenceClassObjectModel = documentSnapshot.toObject(StudentAttendenceCharacterClassObjectModel.class);
                     holder.grade.setText(attendenceClassObjectModel.getValue()+"");
+                }catch (NullPointerException ex){
+
                 }
             }
         });
@@ -158,7 +171,7 @@ public class AttendanceClassRecordRecyclerViewAdapter
                       }else if (Integer.parseInt(inputGrade.getText().toString())>95){
                           inputGrade.setError("Grade should not be more than 95");
                       }else {
-                          String key = db.collection("attendance").document().getId();
+                          String key = studentClassObjectModel.getStudentId()+term+studentClassObjectModel.getClassCode();
                           StudentAttendenceCharacterClassObjectModel studentAttendenceCharacterClassObjectModel =
                                   new StudentAttendenceCharacterClassObjectModel(key,
                                           studentClassObjectModel.getStudentId(),

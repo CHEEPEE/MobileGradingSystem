@@ -61,7 +61,7 @@
         <activity android:name=".IfAccountIsBlockTeacher" />
         <activity android:name=".teacher.FeedBackStudentList" />
         <activity android:name=".teacher.RegisterStudent" />
-        <activity android:name=".teacher.TeacherUpdateProfile"></activity>
+        <activity android:name=".teacher.UserUpdatePassword"></activity>
         <activity android:name=".teacher.UpdateProfilePicture"/>
     </application>
 

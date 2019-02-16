@@ -2,6 +2,7 @@ package com.mobilegradingsystem.mobilegradingsystem.teacher;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,11 +11,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,7 +42,10 @@ import com.google.firebase.storage.UploadTask;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.ParticipationCategoryGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentRegistration;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,9 +63,10 @@ public class UpdateProfilePicture extends AppCompatActivity {
     private static final int storagepermision_access_code = 548;
     boolean imageSet = false;
     Uri bannerUri;
-    TextView updateProfile;
+    TextView updateProfile,teacherName,changeNameButton;
     CircleImageView circleImageView;
     Context context;
+    UserProfileObjectModel userProfileObjectModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +81,14 @@ public class UpdateProfilePicture extends AppCompatActivity {
         updateProfile = (TextView) findViewById(R.id.updateProfile);
         circleImageView =(CircleImageView) findViewById(R.id.circleImageView);
         updateProfile.setVisibility(View.INVISIBLE);
+        teacherName = (TextView) findViewById(R.id.teacherName);
+        changeNameButton = (TextView) findViewById(R.id.changeTeacherNameButton);
+        changeNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeTeacherNameDialog();
+            }
+        });
         updateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,10 +97,18 @@ public class UpdateProfilePicture extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        changeNameButton.setVisibility(View.INVISIBLE);
+        teacherName.setVisibility(View.INVISIBLE);
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                UserProfileObjectModel userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
+                 userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
+//                 if (userProfileObjectModel.getUserType().equals("teacher")){
+//                     teacherName.setText(userProfileObjectModel.getUserName());
+//                 }else {
+//                     teacherName.setText(updateProfile.);
+//                 }
+//
                 GlideApp.with(context).load(userProfileObjectModel.getUserImage()).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(circleImageView);
             }
         });
@@ -232,6 +257,39 @@ public class UpdateProfilePicture extends AppCompatActivity {
             });
         }
 
+    }
+    private void changeTeacherNameDialog(){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dlg_change_teacher_name);
+        Window window = dialog.getWindow();
+        final EditText inputName = (EditText) dialog.findViewById(R.id.inputName);
+        final TextView confrimButton = (TextView) dialog.findViewById(R.id.confirmButton);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        inputName.setText(userProfileObjectModel.getUserName());
+        confrimButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inputName.getText().toString().length() == 0){
+                    inputName.setError("Name should not be empty");
+                }else {
+                    saveTeacherName(inputName.getText().toString(),dialog);
+                }
+            }
+        });
+
+        dialog.show();
+    }
+    void saveTeacherName(final String newTeacherName,Dialog dialog){
+        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid()).update("userName",newTeacherName).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                FirebaseFirestore.getInstance().collection("teacherProfile").document(FirebaseAuth.getInstance().getUid()).update("teacherName",newTeacherName);
+                FirebaseFirestore.getInstance().collection("tempCreateUsers").document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).update("userName",newTeacherName);
+            }
+        });
     }
     private String getFileName(Uri uri) {
 

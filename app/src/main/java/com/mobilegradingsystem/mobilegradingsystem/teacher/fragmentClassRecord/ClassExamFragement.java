@@ -76,7 +76,9 @@ public class ClassExamFragement extends Fragment {
     void getStudents(){
         db.collection("studentClasses")
                 .whereEqualTo("status","approved")
-                .whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .whereEqualTo("classCode",act.getClassKey())
+                .orderBy("lName")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 studentList.clear();

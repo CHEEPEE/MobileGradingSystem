@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.objectModel.StudentProfileProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClssProfileTeacherBotNav;
@@ -30,6 +31,7 @@ import com.mobilegradingsystem.mobilegradingsystem.teacher.RegisterStudent;
 import com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.StudentListTeacherRecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -77,24 +79,27 @@ public class ViewStudentsTeacherFragement extends Fragment {
         return view;
     }
     void getStudentList(){
-        db.collection("studentClasses").whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("studentClasses").whereEqualTo("classCode",act.getClassKey()).orderBy("lName").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                studentList.clear();
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
-                    StudentClassObjectModel studentClassObjectModel = documentSnapshot.toObject(StudentClassObjectModel.class);
-                    studentList.add(studentClassObjectModel);
-                }
-                studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+               try {
+                   studentList.clear();
+                   for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                       StudentClassObjectModel studentClassObjectModel = documentSnapshot.toObject(StudentClassObjectModel.class);
+                       studentList.add(studentClassObjectModel);
+                   }
+                   studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+               }catch (NullPointerException ex){
+                   
+               }
             }
         });
     }
 
     void checkStudentRegistered(final String userSchoolId){
-        db.collection("users").whereEqualTo("userSchoolId",userSchoolId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("users").whereEqualTo("userSchoolId",userSchoolId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if (queryDocumentSnapshots.getDocuments().size() == 0){
                     Intent i = new Intent(getActivity(), RegisterStudent.class);
                     i.putExtra("classKey",act.getClassKey());
@@ -107,11 +112,11 @@ public class ViewStudentsTeacherFragement extends Fragment {
 
                     for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
 
-                       final UserProfileObjectModel userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
+                        final UserProfileObjectModel userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
 
-                        db.collection("studentClasses").whereEqualTo("studentUserId",userProfileObjectModel.getUserId()).whereEqualTo("classCode",act.getClassKey()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        db.collection("studentClasses").whereEqualTo("studentUserId",userProfileObjectModel.getUserId()).whereEqualTo("classCode",act.getClassKey()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
-                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 if (queryDocumentSnapshots.getDocuments().size() >=1){
                                     try {
                                         Toast.makeText(getContext(),"You cannot add the same student on the same class",Toast.LENGTH_SHORT).show();
@@ -119,7 +124,7 @@ public class ViewStudentsTeacherFragement extends Fragment {
 
                                     }
                                 }else {
-                                    String studentClassKey = db.collection("studentClasses").document().getId();
+                                    final String studentClassKey = db.collection("studentClasses").document().getId();
                                     StudentClassObjectModel studentClassObjectModel =
                                             new StudentClassObjectModel(studentClassKey,userProfileObjectModel.getUserId(),act.getClassKey(),userProfileObjectModel.getUserSchoolId(),"approved");
                                     db.collection("studentClasses")
@@ -130,6 +135,18 @@ public class ViewStudentsTeacherFragement extends Fragment {
                                                     addStudentToClassDialog.dismiss();
                                                 }
                                             });
+                                    db.collection("studentProfile").document(userProfileObjectModel.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            db.collection("studentClasses")
+                                                    .document(studentClassKey).update(documentSnapshot.getData()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                             }
                         });
@@ -171,7 +188,6 @@ public class ViewStudentsTeacherFragement extends Fragment {
             public void onClick(View v) {
                 if (studentId.getText().toString().trim()!=""){
                     //check if email exist
-
                     checkStudentRegistered(studentId.getText().toString());
                 }
             }

@@ -1,6 +1,8 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.ProgramsObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.ParticipationCategoryGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassPartListStudentsAct;
@@ -59,7 +63,11 @@ public class ProjectClassRecordRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel = participationCategoryGradeObjectModelArrayList.get(position);
-        holder.part_date.setText(new SimpleDateFormat("E MMM dd yyyy @ hh:mm a").format(participationCategoryGradeObjectModel.getTimeStamp()));
+        try {
+            holder.part_date.setText(new SimpleDateFormat("E MMM dd yyyy @ hh:mm a").format(participationCategoryGradeObjectModel.getTimeStamp()));
+        }catch (NullPointerException ex){
+
+        }
         holder.score.setText(participationCategoryGradeObjectModel.getMaxScode()+"");
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +77,25 @@ public class ProjectClassRecordRecyclerViewAdapter
                 i.putExtra("partKey",participationCategoryGradeObjectModel.getKey());
                 i.putExtra("term",term);
                 context.startActivity(i);
+            }
+        });
+        holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+              try {
+                  new AlertDialog.Builder(context)
+                          .setTitle("Delete")
+                          .setMessage("Proceed to delete "+ new SimpleDateFormat("E MMM dd yyyy @ hh:mm a").format(participationCategoryGradeObjectModel.getTimeStamp()))
+
+                          .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                              public void onClick(DialogInterface dialog, int whichButton) {
+                                  participationCategoryGradeObjectModel.deleteParticipation("projectCategory",participationCategoryGradeObjectModel.getKey());
+                              }})
+                          .setNegativeButton(android.R.string.no, null).show();
+              }catch (NullPointerException ex){
+
+              }
+                return true;
             }
         });
     }
