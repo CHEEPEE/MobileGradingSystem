@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +30,7 @@ import javax.annotation.Nullable;
 
 public class ClassPartListStudentsAct extends AppCompatActivity {
     ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
+    ArrayList<StudentClassObjectModel> filteredList = new ArrayList<>();
     ParticipationStudentsClassRecordRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
     ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel;
     TeacherClassObjectModel classProfile;
@@ -38,6 +42,8 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
     String partKey;
     String term;
     TextView title;
+    EditText search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +56,29 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
         db  =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         context = this;
-        studentListTeacherRecyclerViewAdapter  = new ParticipationStudentsClassRecordRecyclerViewAdapter(context,studentClassObjectModelArrayList,partKey,term);
+        studentListTeacherRecyclerViewAdapter  = new ParticipationStudentsClassRecordRecyclerViewAdapter(context,filteredList,partKey,term);
         studentList.setLayoutManager(new LinearLayoutManager(context));
         studentList.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();
         getClassProfile();
         title.setText("Class Participation");
+        search = (EditText) findViewById(R.id.search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
 
     }
     void getStudents(){
@@ -70,9 +93,28 @@ public class ClassPartListStudentsAct extends AppCompatActivity {
                 for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                     studentClassObjectModelArrayList.add(documentSnapshot.toObject(StudentClassObjectModel.class));
                 }
+                filter("");
                 studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    void filter(String filter){
+        if (!filter.equals("")){
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentClassObjectModelArrayList){
+                if (studentClassObjectModel.getfName().contains(filter) || studentClassObjectModel.getlName().contains(filter)){
+                    filteredList.add(studentClassObjectModel);
+                }
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }else {
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentClassObjectModelArrayList){
+                filteredList.add(studentClassObjectModel);
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 
     void getClassProfile(){

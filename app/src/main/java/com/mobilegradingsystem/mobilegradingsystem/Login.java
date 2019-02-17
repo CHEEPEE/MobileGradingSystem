@@ -139,7 +139,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showPassword(isChecked);
-                Utils.message("isShow password? "+isChecked,Login.this);
+//                Utils.message("isShow password? "+isChecked,Login.this);
             }
         });
     }
@@ -192,77 +192,76 @@ public class Login extends AppCompatActivity {
             Log.d(TAG, "signInWithEmail:success");
             FirebaseFirestore.getInstance()
                     .collection("users").document(mAuth.getUid())
-                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                            if (documentSnapshot.getData() != null) {
+                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.getData() != null) {
 //                                        if user type == student
-                                if (documentSnapshot.getData().get("userType").toString().equals("student")) {
-                                    FirebaseFirestore.getInstance()
-                                            .collection("studentProfile")
-                                            .document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-//                                                   check if user is registered
-                                            if (documentSnapshot.getData() != null) {
-                                                if (documentSnapshot.get("accountStatus").equals("pending")) {
-                                                    Intent i = new Intent(Login.this, IfAccountIsPending.class);
-                                                    startActivity(i);
-                                                    finish();
-                                                } else if (documentSnapshot.get("accountStatus").equals("block")) {
-                                                    Intent i = new Intent(Login.this, IfAccountIsBlock.class);
-                                                    startActivity(i);
-                                                    finish();
-                                                } else {
-                                                    Intent i = new Intent(Login.this, StudentProfile.class);
-                                                    startActivity(i);
-                                                    finish();
-                                                }
-                                            } else {
+                        if (documentSnapshot.getData().get("userType").toString().equals("student")) {
+                            FirebaseFirestore.getInstance()
+                                    .collection("studentProfile")
+                                    .document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.getData() != null) {
+                                        if (documentSnapshot.get("accountStatus").equals("pending")) {
+                                            Intent i = new Intent(Login.this, IfAccountIsPending.class);
+                                            startActivity(i);
+                                            finish();
+                                        } else if (documentSnapshot.get("accountStatus").equals("block")) {
+                                            Intent i = new Intent(Login.this, IfAccountIsBlock.class);
+                                            startActivity(i);
+                                            finish();
+                                        } else {
+                                            Intent i = new Intent(Login.this, StudentProfile.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
+                                    } else {
 //                                                        the user has not been registered
-                                                Intent i = new Intent(Login.this, StudentRegistration.class);
-                                                i.putExtra("isUpdate", false);
-                                                startActivity(i);
-                                                finish();
-                                            }
-                                        }
-                                    });
-                                } else {
-//                                            else user is a teacher
-                                    FirebaseFirestore.getInstance()
-                                            .collection("teacherProfile")
-                                            .document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                            if (documentSnapshot.getData() != null) {
-                                                if (documentSnapshot.get("accountStatus").equals("pending")) {
-                                                    Intent i = new Intent(Login.this, IfAccountIsPendingTeacher.class);
-                                                    startActivity(i);
-                                                    finish();
-                                                } else if (documentSnapshot.get("accountStatus").equals("block")) {
-                                                    Intent i = new Intent(Login.this, IfAccountIsBlockTeacher.class);
-                                                    startActivity(i);
-                                                    finish();
-                                                } else {
-                                                    Intent i = new Intent(Login.this, TeacherProfile.class);
-                                                    startActivity(i);
-                                                    finish();
-                                                }
-
-                                            } else {
-                                                Intent i = new Intent(Login.this, TeacherRegistration.class);
-                                                startActivity(i);
-                                                finish();
-                                            }
-                                        }
-                                    });
-
+                                        Intent i = new Intent(Login.this, StudentRegistration.class);
+                                        i.putExtra("isUpdate", false);
+                                        startActivity(i);
+                                        finish();
+                                    }
                                 }
-                            } else {
-//                                selectUserTypeDialog();
-                            }
+                            });
+                        } else {
+//                                            else user is a teacher
+                            FirebaseFirestore.getInstance()
+                                    .collection("teacherProfile")
+                                    .document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.getData() != null) {
+                                        if (documentSnapshot.get("accountStatus").equals("pending")) {
+                                            Intent i = new Intent(Login.this, IfAccountIsPendingTeacher.class);
+                                            startActivity(i);
+                                            finish();
+                                        } else if (documentSnapshot.get("accountStatus").equals("block")) {
+                                            Intent i = new Intent(Login.this, IfAccountIsBlockTeacher.class);
+                                            startActivity(i);
+                                            finish();
+                                        } else {
+                                            Intent i = new Intent(Login.this, TeacherProfile.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
+
+                                    } else {
+                                        Intent i = new Intent(Login.this, TeacherRegistration.class);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                }
+                            });
+
                         }
-                    });
+                    } else {
+//                                selectUserTypeDialog();
+                    }
+                }
+            });
         }
     }
 

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +28,7 @@ import javax.annotation.Nullable;
 
 public class ClassProjectListStudentsAct extends AppCompatActivity {
     ArrayList<StudentClassObjectModel> studentClassObjectModelArrayList = new ArrayList<>();
+    ArrayList<StudentClassObjectModel> filteredList = new ArrayList<>();
     ProjectStudentsClassRecordRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
     ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel;
     FirebaseFirestore db;
@@ -35,6 +39,7 @@ public class ClassProjectListStudentsAct extends AppCompatActivity {
     String partKey;
     String term;
     TextView title;
+    EditText search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +52,47 @@ public class ClassProjectListStudentsAct extends AppCompatActivity {
         db  =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         context = this;
-        studentListTeacherRecyclerViewAdapter  = new ProjectStudentsClassRecordRecyclerViewAdapter(context,studentClassObjectModelArrayList,partKey,term);
+        studentListTeacherRecyclerViewAdapter  = new ProjectStudentsClassRecordRecyclerViewAdapter(context,filteredList,partKey,term);
         studentList.setLayoutManager(new LinearLayoutManager(context));
         studentList.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();
         title.setText("Projects");
+        search = (EditText) findViewById(R.id.search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
 
 
+    }
+    void filter(String filter){
+        if (!filter.equals("")){
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentClassObjectModelArrayList){
+                if (studentClassObjectModel.getfName().contains(filter) || studentClassObjectModel.getlName().contains(filter)){
+                    filteredList.add(studentClassObjectModel);
+                }
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }else {
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentClassObjectModelArrayList){
+                filteredList.add(studentClassObjectModel);
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
     void getStudents(){
         db.collection("studentClasses")
@@ -66,6 +105,7 @@ public class ClassProjectListStudentsAct extends AppCompatActivity {
                 for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                     studentClassObjectModelArrayList.add(documentSnapshot.toObject(StudentClassObjectModel.class));
                 }
+                filter("");
                 studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
             }
         });

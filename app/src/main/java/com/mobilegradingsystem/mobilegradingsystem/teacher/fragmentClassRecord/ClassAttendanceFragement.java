@@ -37,6 +37,7 @@ public class ClassAttendanceFragement extends Fragment {
     FirebaseFirestore db;
     ClassRecordActBotNav act;
     ArrayList<StudentClassObjectModel> studentList = new ArrayList<>();
+    ArrayList<StudentClassObjectModel> filteredList = new ArrayList<>();
     AttendanceClassRecordRecyclerViewAdapter attendanceClassRecordRecyclerViewAdapter;
     RecyclerView studentListRecyclerView;
     BottomSheetBehavior bottomSheetBehavior;
@@ -59,10 +60,11 @@ public class ClassAttendanceFragement extends Fragment {
         classRecordCategoryName.setText("Attendance ("+(act.getClassRecordVersion().getAttendance()*100)+"%)");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
         search = (EditText) view.findViewById(R.id.search);
-        attendanceClassRecordRecyclerViewAdapter = new AttendanceClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getTerm(),studentProfileProfileObjectModels);
+        attendanceClassRecordRecyclerViewAdapter = new AttendanceClassRecordRecyclerViewAdapter(getActivity(),filteredList,act.getTerm(),studentProfileProfileObjectModels);
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(attendanceClassRecordRecyclerViewAdapter);
         getStudents();
+        filter("");
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -93,18 +95,14 @@ public class ClassAttendanceFragement extends Fragment {
                 studentList.clear();
                 try {
                     for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
+                        StudentProfileProfileObjectModel studentProfileProfileObjectModel = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
                         StudentClassObjectModel studentClassObjectModel = documentSnapshot.toObject(StudentClassObjectModel.class);
-                        studentList.add(documentSnapshot.toObject(StudentClassObjectModel.class));
-                        db.collection("studentProfile").document(studentClassObjectModel.getStudentUserId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                StudentProfileProfileObjectModel studentProfile = documentSnapshot.toObject(StudentProfileProfileObjectModel.class);
-                                studentProfileProfileObjectModels.add(studentProfile);
-                                attendanceClassRecordRecyclerViewAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
+                        studentClassObjectModel.setfName(studentProfileProfileObjectModel.getfName());
+                        studentClassObjectModel.setlName(studentProfileProfileObjectModel.getlName());
+                        studentList.add(studentClassObjectModel);
 
+                    }
+                   filter("");
 
 
 
@@ -117,15 +115,21 @@ public class ClassAttendanceFragement extends Fragment {
     }
 
     void filter(String filter){
-        studentProfileProfileObjectModelsFiltered.clear();
-        for (int i = 0;i<studentList.size();i++){
-            if(studentProfileProfileObjectModels.get(i).getfName().contains(filter)|| studentProfileProfileObjectModels.get(i).getlName().contains(filter)){
-                studentProfileProfileObjectModelsFiltered.add(studentProfileProfileObjectModels.get(i));
+        if (!filter.equals("")){
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentList){
+                if (studentClassObjectModel.getfName().contains(filter) || studentClassObjectModel.getlName().contains(filter)){
+                    filteredList.add(studentClassObjectModel);
+                }
             }
+            attendanceClassRecordRecyclerViewAdapter.notifyDataSetChanged();
+        }else {
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentList){
+                    filteredList.add(studentClassObjectModel);
+            }
+            attendanceClassRecordRecyclerViewAdapter.notifyDataSetChanged();
         }
-        attendanceClassRecordRecyclerViewAdapter = new AttendanceClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getTerm(),studentProfileProfileObjectModelsFiltered);
-        studentListRecyclerView.setAdapter(attendanceClassRecordRecyclerViewAdapter);
-        attendanceClassRecordRecyclerViewAdapter.notifyDataSetChanged();
     }
 
 

@@ -90,7 +90,7 @@ public class ViewStudentsTeacherFragement extends Fragment {
                    }
                    studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
                }catch (NullPointerException ex){
-                   
+
                }
             }
         });

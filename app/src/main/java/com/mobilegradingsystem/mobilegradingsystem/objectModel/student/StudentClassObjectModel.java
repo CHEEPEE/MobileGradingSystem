@@ -23,6 +23,8 @@ public class StudentClassObjectModel {
    private String classCode;
    private String status;
    private String lName;
+   private String fName;
+   private String mName;
    private @ServerTimestamp
     Date timeStamp;
    private StudentProfileProfileObjectModel studentProfileProfileObjectModel;
@@ -63,4 +65,29 @@ public class StudentClassObjectModel {
     public String getStatus() {
         return status;
     }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
+
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public String getfName() {
+        return fName;
+    }
+
+    public String getlName() {
+        return lName;
+    }
+
 }

@@ -6,6 +6,8 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +40,13 @@ public class ClassExamFragement extends Fragment {
     FirebaseFirestore db;
     ClassRecordActBotNav act;
     ArrayList<StudentClassObjectModel> studentList = new ArrayList<>();
+    ArrayList<StudentClassObjectModel> filteredList = new ArrayList<>();
     ExamStudentsClassRecordRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
     RecyclerView studentListRecyclerView;
     BottomSheetBehavior bottomSheetBehavior;
     TextView bntSetMaxScore;
     TextView type;
-
+    EditText search;
     public ClassExamFragement(){
 
     }
@@ -66,10 +69,27 @@ public class ClassExamFragement extends Fragment {
             }
         });
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        studentListTeacherRecyclerViewAdapter = new ExamStudentsClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getClassKey(),act.getTerm());
+        studentListTeacherRecyclerViewAdapter = new ExamStudentsClassRecordRecyclerViewAdapter(getActivity(),filteredList,act.getClassKey(),act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
         getStudents();
+        search = (EditText) view.findViewById(R.id.search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
         return view;
     }
 
@@ -85,9 +105,28 @@ public class ClassExamFragement extends Fragment {
                 for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                     studentList.add(documentSnapshot.toObject(StudentClassObjectModel.class));
                 }
+                filter("");
                 studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    void filter(String filter){
+        if (!filter.equals("")){
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentList){
+                if (studentClassObjectModel.getfName().contains(filter) || studentClassObjectModel.getlName().contains(filter)){
+                    filteredList.add(studentClassObjectModel);
+                }
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }else {
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentList){
+                filteredList.add(studentClassObjectModel);
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
     private void setUpadateMaxScore(){
         final Dialog dialog = new Dialog(getContext());

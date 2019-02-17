@@ -5,9 +5,12 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,8 +33,10 @@ public class ClassCharacterFragement extends Fragment {
     FirebaseFirestore db;
     ClassRecordActBotNav act;
     ArrayList<StudentClassObjectModel> studentList = new ArrayList<>();
+    ArrayList<StudentClassObjectModel> filteredList = new ArrayList<>();
     CharacterClassRecordRecyclerViewAdapter studentListTeacherRecyclerViewAdapter;
     RecyclerView studentListRecyclerView;
+    EditText search;
     BottomSheetBehavior bottomSheetBehavior;
 
     TextView classRecordCategoryName;
@@ -50,11 +55,28 @@ public class ClassCharacterFragement extends Fragment {
         classRecordCategoryName = (TextView) view.findViewById(R.id.classRecordCategoryName);
         classRecordCategoryName.setText("Character ("+(act.getClassRecordVersion().getCharacter()*100)+"%)");
         studentListRecyclerView = (RecyclerView) view.findViewById(R.id.studentlist);
-        studentListTeacherRecyclerViewAdapter = new CharacterClassRecordRecyclerViewAdapter(getActivity(),studentList,act.getTerm());
+        studentListTeacherRecyclerViewAdapter = new CharacterClassRecordRecyclerViewAdapter(getActivity(),filteredList,act.getTerm());
         studentListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentListRecyclerView.setAdapter(studentListTeacherRecyclerViewAdapter);
 
         getStudents();
+        search = (EditText) view.findViewById(R.id.search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
         return view;
     }
 
@@ -71,11 +93,29 @@ public class ClassCharacterFragement extends Fragment {
                     for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                         studentList.add(documentSnapshot.toObject(StudentClassObjectModel.class));
                     }
+                    filter("");
                     studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
                 }catch (NullPointerException ex){
 
                 }
             }
         });
+    }
+    void filter(String filter){
+        if (!filter.equals("")){
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentList){
+                if (studentClassObjectModel.getfName().contains(filter) || studentClassObjectModel.getlName().contains(filter)){
+                    filteredList.add(studentClassObjectModel);
+                }
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }else {
+            filteredList.clear();
+            for (StudentClassObjectModel studentClassObjectModel:studentList){
+                filteredList.add(studentClassObjectModel);
+            }
+            studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 }
