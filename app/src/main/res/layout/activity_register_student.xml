@@ -60,7 +60,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
 
-
             <EditText
                 android:id="@+id/fName"
                 style="@style/TextInput"
@@ -68,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="First Name"
+                android:inputType="textCapSentences"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/announcementTitle"
                 app:layout_constraintStart_toStartOf="@+id/announcementTitle"
@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Middle Name"
+                android:inputType="textCapSentences"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@id/announcementTitle"
                 app:layout_constraintStart_toStartOf="@+id/fName"
@@ -92,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Last Name"
+                android:inputType="textCapWords|textCapSentences"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@id/announcementTitle"
                 app:layout_constraintStart_toStartOf="@+id/mName"
@@ -104,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Phone Number"
+                android:inputType="phone"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/lName"
                 app:layout_constraintStart_toStartOf="@+id/lName"

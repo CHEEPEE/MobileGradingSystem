@@ -79,19 +79,17 @@ public class ViewStudentsTeacherFragement extends Fragment {
         return view;
     }
     void getStudentList(){
-        db.collection("studentClasses").whereEqualTo("classCode",act.getClassKey()).orderBy("lName").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("studentClasses").whereEqualTo("classCode",act.getClassKey()).whereEqualTo("status","approved").orderBy("lName").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-               try {
+
                    studentList.clear();
                    for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots.getDocuments()){
                        StudentClassObjectModel studentClassObjectModel = documentSnapshot.toObject(StudentClassObjectModel.class);
                        studentList.add(studentClassObjectModel);
                    }
                    studentListTeacherRecyclerViewAdapter.notifyDataSetChanged();
-               }catch (NullPointerException ex){
 
-               }
             }
         });
     }

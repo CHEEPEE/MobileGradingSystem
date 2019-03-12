@@ -93,7 +93,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_marginTop="8dp"
-        android:text="View Class"
+        android:text="View Records"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/des" />
 
