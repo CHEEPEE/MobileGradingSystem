@@ -1,6 +1,7 @@
 package com.mobilegradingsystem.mobilegradingsystem.viewsAdapter.teacher.classRecordAdapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +32,7 @@ import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentGr
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.StudentParticipationClassObjectModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
@@ -166,8 +169,8 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                         try {
                                             int raw = (int) Math.round((examStudentGrade.getValue()/examGradeObjectModel.getMaxScode())*100);
                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
-                                                System.out.println("exam %D "+i);
-                                                studentGradeObjectModel.setExam(Double.parseDouble(i)*.95);
+                                                System.out.println("exam %D exam"+i);
+                                                studentGradeObjectModel.setExam(Double.parseDouble(i));
                                                 solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                                             }
                                         }catch (NullPointerException ex){
@@ -221,8 +224,8 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                                         for (String i:gradeEquivalentObjectModel.getRawScore()){
                                                             int raw = (int) Math.round((projectValue1.getsTotal()/projectValue1.getPtotal())*100);
                                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
-                                                                System.out.println("%D "+i);
-                                                                studentGradeObjectModel.setProject(Double.parseDouble(i)*.95);
+                                                                System.out.println("%D project"+i);
+                                                                studentGradeObjectModel.setProject(Double.parseDouble(i));
                                                                 solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                                                             }
                                                         }
@@ -272,8 +275,8 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                                         for (String i:gradeEquivalentObjectModel.getRawScore()){
                                                             int raw = (int) Math.round((projectValue1.getsTotal()/projectValue1.getPtotal())*100);
                                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
-                                                                System.out.println("%D "+i);
-                                                                studentGradeObjectModel.setQuizLongTest(Double.parseDouble(i)*.95);
+                                                                System.out.println("%D quiz longtest"+i);
+                                                                studentGradeObjectModel.setQuizLongTest(Double.parseDouble(i));
                                                                 solveStudentTermGrade(studentGradeObjectModel,grade,studentClassObjectModel);
                                                             }
                                                         }
@@ -324,7 +327,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                                                             int raw = (int) Math.round((projectValue1.getsTotal()/projectValue1.getPtotal())*100);
                                                             if (Integer.parseInt(raw+"")==Integer.parseInt(i)){
                                                                 System.out.println("%D "+i);
-                                                                studentGradeObjectModel.setClassParticipation(Double.parseDouble(i)*.95);
+                                                                studentGradeObjectModel.setClassParticipation(Double.parseDouble(i));
                                                                 System.out.println("Stude Grade Object Model"+
                                                                         "attendance : "+studentGradeObjectModel.getAttendance()+" "+
                                                                         "Character : "+studentGradeObjectModel.getCharacter()+" "+
@@ -353,21 +356,21 @@ public class GradeStudentListTeacherRecyclerViewAdapter
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 double termGrade = 0;
                 ClassRecordVersion classRecordVersion = documentSnapshot.toObject(ClassRecordVersion.class);
-                System.out.println(classRecordVersion.getAttendance()
-                        +" "+classRecordVersion.getQuizLongTest()+" "+
-                        " "+classRecordVersion.getProjects()+" "+
-                        classRecordVersion.getExam()+" "+
-                        classRecordVersion.getClassParticipation()+" "+
-                        classRecordVersion.getCharacter()
+                System.out.println("attendance: "+studentGradeObjectModel.getAttendance()* classRecordVersion.getAttendance()
+                        +"Quiz Long Test: "+getRating((int) studentGradeObjectModel.getQuizLongTest()) * classRecordVersion.getQuizLongTest()+" "+
+                        " Projects"+getRating((int)studentGradeObjectModel.getProject()) * classRecordVersion.getProjects()+" Exam: "+
+                       getRating((int) studentGradeObjectModel.getExam())* classRecordVersion.getExam()+" Class Participation: "+
+                        getRating((int)studentGradeObjectModel.getClassParticipation()) * classRecordVersion.getClassParticipation()+" Character: "+
+                        studentGradeObjectModel.getCharacter() * classRecordVersion.getCharacter()
                 );
                 termGrade += studentGradeObjectModel.getAttendance()*classRecordVersion.getAttendance();
                 termGrade += studentGradeObjectModel.getCharacter()*classRecordVersion.getCharacter();
-                termGrade += studentGradeObjectModel.getClassParticipation()*classRecordVersion.getClassParticipation();
-                termGrade += studentGradeObjectModel.getExam()*classRecordVersion.getExam();
-                termGrade += studentGradeObjectModel.getProject()*classRecordVersion.getProjects();
-                termGrade += studentGradeObjectModel.getQuizLongTest()*classRecordVersion.getQuizLongTest();
+                termGrade += getRating((int)studentGradeObjectModel.getClassParticipation()) * classRecordVersion.getClassParticipation();
+                termGrade += getRating((int) studentGradeObjectModel.getExam())* classRecordVersion.getExam();
+                termGrade += getRating((int)studentGradeObjectModel.getProject()) * classRecordVersion.getProjects();
+                termGrade += getRating((int) studentGradeObjectModel.getQuizLongTest()) * classRecordVersion.getQuizLongTest();
                 System.out.println("final Grade "+termGrade);
-                grade.setText(termGrade+"");
+                grade.setText((int)termGrade+"");
                 setFinalTermGrade(termGrade,studentClassObjectModel);
             }
         });
@@ -382,9 +385,9 @@ public class GradeStudentListTeacherRecyclerViewAdapter
     }
 
     private class  ProjectValue{
-        double ptotal;
-        double sTotal;
-        double parNum;
+        double ptotal = 0;
+        double sTotal = 0;
+        double parNum = 0;
 
         public ProjectValue(){
 
@@ -413,6 +416,114 @@ public class GradeStudentListTeacherRecyclerViewAdapter
         public void setsTotal(double sTotal) {
             this.sTotal = sTotal;
         }
+    }
+
+    int getRating(int score){
+        Integer[] rawScore = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100};
+        int[] rating =  {65,
+                65,
+                65,
+                65,
+                65,
+                66,
+                66,
+                66,
+                66,
+                66,
+                67,
+                67,
+                67,
+                67,
+                67,
+                68,
+                68,
+                68,
+                68,
+                68,
+                69,
+                69,
+                69,
+                69,
+                69,
+                70,
+                70,
+                70,
+                70,
+                70,
+                70,
+                71,
+                71,
+                71,
+                71,
+                71,
+                71,
+                72,
+                72,
+                72,
+                72,
+                72,
+                72,
+                73,
+                73,
+                73,
+                73,
+                73,
+                73,
+                74,
+                75,
+                75,
+                76,
+                76,
+                77,
+                77,
+                78,
+                78,
+                79,
+                79,
+                80,
+                80,
+                81,
+                81,
+                82,
+                82,
+                83,
+                83,
+                84,
+                84,
+                85,
+                85,
+                85,
+                86,
+                86,
+                86,
+                87,
+                87,
+                87,
+                88,
+                88,
+                88,
+                89,
+                89,
+                89,
+                90,
+                90,
+                90,
+                91,
+                91,
+                91,
+                92,
+                92,
+                92,
+                93,
+                93,
+                93,
+                94,
+                94,
+                94,
+                95};
+
+        return rating[Arrays.asList(rawScore).indexOf(score)];
+
     }
 }
 
