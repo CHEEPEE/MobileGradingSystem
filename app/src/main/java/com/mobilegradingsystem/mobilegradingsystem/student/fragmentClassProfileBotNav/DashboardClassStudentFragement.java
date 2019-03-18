@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
+import com.mobilegradingsystem.mobilegradingsystem.Utils;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.FinalTermGradeObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
@@ -95,10 +96,10 @@ public class DashboardClassStudentFragement extends Fragment {
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         try {
                             FinalTermGradeObjectModel finalTermGradeObjectModelFinals = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
-                            Double finalGrade =  (finalTermGradeObjectModelMidterm.getGrade()+(2*finalTermGradeObjectModelFinals.getGrade()))/3;
+                            Double finalGrade =  (finalTermGradeObjectModelMidterm.getGrade()+(finalTermGradeObjectModelFinals.getGrade()))/2;
                             tentativeFinal.setText(finalTermGradeObjectModelFinals.getGrade()+"");
                             System.out.println(finalTermGradeObjectModelMidterm.getGrade()+" "+(finalTermGradeObjectModelFinals.getGrade()));
-                            fGrade.setText(finalGrade+"");
+                            fGrade.setText(Utils.getEquivalentGrade((int) Math.round(finalGrade))+" ("+(Math.round(finalGrade * 100.0) / 100.0+")"));
                         }catch (NullPointerException ex){
                             fGrade.setText("No Grade(Incomplete scores)");
                         }

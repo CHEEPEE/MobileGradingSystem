@@ -370,7 +370,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                 termGrade += getRating((int)studentGradeObjectModel.getProject()) * classRecordVersion.getProjects();
                 termGrade += getRating((int) studentGradeObjectModel.getQuizLongTest()) * classRecordVersion.getQuizLongTest();
                 System.out.println("final Grade "+termGrade);
-                grade.setText(getEquivalentGrade((int)Math.round(termGrade))+" (" +(termGrade)+")");
+                grade.setText(getEquivalentGrade((int)Math.round(termGrade))+" (" +(Math.round(termGrade * 100.0) / 100.0)+")");
                 setFinalTermGrade(termGrade,studentClassObjectModel);
             }
         });

@@ -143,7 +143,7 @@ public class StudentListTeacherRecyclerViewAdapter
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                        try {
                            FinalTermGradeObjectModel finalTermGradeObjectModelFinals = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
-                           Double finalGrade =  getEquivalentGrade((finalTermGradeObjectModelMidterm.getGrade()+(finalTermGradeObjectModelFinals.getGrade()))/2);
+                           Double finalGrade =  getEquivalentGrade(Math.round((finalTermGradeObjectModelMidterm.getGrade()+(finalTermGradeObjectModelFinals.getGrade()))/2));
                            grade.setText(finalGrade+"");
                        }catch (NullPointerException ex){
                            grade.setText("No Grade(Incomplete scores)");
