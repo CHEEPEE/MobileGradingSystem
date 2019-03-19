@@ -253,6 +253,7 @@ public class GradeStudentListTeacherRecyclerViewAdapter
                             System.out.println("max Score "+participationCategoryGradeObjectModel.getMaxScode());
                             System.out.println(studentClassObjectModel.getStudentUserId()+participationCategoryGradeObjectModel.getKey());
                             db.collection("quizLongTest")
+
                                     .document(studentClassObjectModel.getStudentUserId()+participationCategoryGradeObjectModel.getKey())
                                     .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
