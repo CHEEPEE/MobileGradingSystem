@@ -97,7 +97,7 @@ public class DashboardClassStudentFragement extends Fragment {
                         try {
                             FinalTermGradeObjectModel finalTermGradeObjectModelFinals = documentSnapshot.toObject(FinalTermGradeObjectModel.class);
                             Double finalGrade =  (finalTermGradeObjectModelMidterm.getGrade()+(finalTermGradeObjectModelFinals.getGrade()))/2;
-                            tentativeFinal.setText(finalTermGradeObjectModelFinals.getGrade()+"");
+                            tentativeFinal.setText(Math.round(finalTermGradeObjectModelFinals.getGrade() * 100.0) / 100.0+"");
                             System.out.println(finalTermGradeObjectModelMidterm.getGrade()+" "+(finalTermGradeObjectModelFinals.getGrade()));
                             fGrade.setText(Utils.getEquivalentGrade((int) Math.round(finalGrade))+" ("+(Math.round(finalGrade * 100.0) / 100.0+")"));
                         }catch (NullPointerException ex){
