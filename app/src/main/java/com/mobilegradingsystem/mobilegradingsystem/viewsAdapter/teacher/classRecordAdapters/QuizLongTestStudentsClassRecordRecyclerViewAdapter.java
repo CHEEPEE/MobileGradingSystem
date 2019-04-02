@@ -104,7 +104,7 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel = documentSnapshot.toObject(ParticipationCategoryGradeObjectModel.class);
-                        setGradeDialog(studentClassObjectModel,participationCategoryGradeObjectModel);
+                        setGradeDialog(studentClassObjectModel,participationCategoryGradeObjectModel,position);
                     }
                 });
             }
@@ -139,7 +139,7 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-   private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel, final ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel){
+   private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel, final ParticipationCategoryGradeObjectModel participationCategoryGradeObjectModel,final int position){
         final Dialog  dialog = new Dialog(context);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -173,6 +173,9 @@ public class QuizLongTestStudentsClassRecordRecyclerViewAdapter
                                       @Override
                                       public void onSuccess(Void aVoid) {
                                           dialog.dismiss();
+                                          if(position != (studentClassObjectModelArrayList.size()-1) ){
+                                              setGradeDialog(studentClassObjectModelArrayList.get(position+1),participationCategoryGradeObjectModel,position+1);
+                                          }
                                       }
                                   });
                       }

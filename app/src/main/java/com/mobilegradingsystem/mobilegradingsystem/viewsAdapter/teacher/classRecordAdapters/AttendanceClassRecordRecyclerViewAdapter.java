@@ -107,7 +107,7 @@ public class AttendanceClassRecordRecyclerViewAdapter
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setGradeDialog(studentClassObjectModel);
+                setGradeDialog(studentClassObjectModel,position);
             }
         });
 //        db.collection("attendance")
@@ -150,7 +150,11 @@ public class AttendanceClassRecordRecyclerViewAdapter
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-   private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel){
+    private void setNextStudentGrade(final int pos){
+        setGradeDialog(studentClassObjectModelArrayList.get(pos+1),pos+1);
+    }
+
+   private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel,final int position){
         final Dialog  dialog = new Dialog(context);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -184,6 +188,9 @@ public class AttendanceClassRecordRecyclerViewAdapter
                                       @Override
                                       public void onSuccess(Void aVoid) {
                                           dialog.dismiss();
+                                          if(position != (studentClassObjectModelArrayList.size()-1) ){
+                                              setNextStudentGrade(position);
+                                          }
                                       }
                                   });
                       }

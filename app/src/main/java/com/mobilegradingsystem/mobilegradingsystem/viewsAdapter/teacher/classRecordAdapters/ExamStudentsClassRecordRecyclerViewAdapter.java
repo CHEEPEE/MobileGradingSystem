@@ -113,7 +113,7 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
                         ExamGradeObjectModel participationCategoryGradeObjectModel = documentSnapshot.toObject(ExamGradeObjectModel.class);
                         try {
                             if(participationCategoryGradeObjectModel.getMaxScode()!= null){
-                                setGradeDialog(studentClassObjectModel,participationCategoryGradeObjectModel);
+                                setGradeDialog(studentClassObjectModel,participationCategoryGradeObjectModel,position);
                             }
                         }catch (NullPointerException ex){
                             Utils.message("Set Exam max Score first",context);
@@ -152,7 +152,9 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-   private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel, final ExamGradeObjectModel participationCategoryGradeObjectModel){
+
+
+   private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel, final ExamGradeObjectModel participationCategoryGradeObjectModel,final int position){
         final Dialog  dialog = new Dialog(context);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -186,6 +188,9 @@ public class ExamStudentsClassRecordRecyclerViewAdapter
                                       @Override
                                       public void onSuccess(Void aVoid) {
                                           dialog.dismiss();
+                                          if(position != (studentClassObjectModelArrayList.size()-1) ){
+                                            setGradeDialog(studentClassObjectModelArrayList.get(position+1),participationCategoryGradeObjectModel,position+1);
+                                          }
                                       }
                                   });
                       }

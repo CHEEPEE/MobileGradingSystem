@@ -101,7 +101,7 @@ public class CharacterClassRecordRecyclerViewAdapter
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setGradeDialog(studentClassObjectModel);
+                setGradeDialog(studentClassObjectModel,position);
             }
         });
 //        db.collection("character")
@@ -145,7 +145,10 @@ public class CharacterClassRecordRecyclerViewAdapter
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel) {
+    private void setNextStudentGrade(final int pos){
+        setGradeDialog(studentClassObjectModelArrayList.get(pos+1),pos+1);
+    }
+    private void setGradeDialog(final StudentClassObjectModel studentClassObjectModel,final int pos) {
         final Dialog dialog = new Dialog(context);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -179,6 +182,9 @@ public class CharacterClassRecordRecyclerViewAdapter
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             dialog.dismiss();
+                                            if(pos != (studentClassObjectModelArrayList.size()-1) ){
+                                                setNextStudentGrade(pos);
+                                            }
                                         }
                                     });
                         }
