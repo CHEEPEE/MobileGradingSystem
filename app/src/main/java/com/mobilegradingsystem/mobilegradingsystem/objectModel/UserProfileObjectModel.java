@@ -6,7 +6,7 @@ package com.mobilegradingsystem.mobilegradingsystem.objectModel;
 
 public class UserProfileObjectModel {
     private String userId;
-    private String userImage;
+    private String userImage = "https://firebasestorage.googleapis.com/v0/b/classrecordsystem-f6067.appspot.com/o/assets%2Fser1.png?alt=media&token=f6b84fc2-2ecd-4cef-981f-ac427f2aeeb8";
     private String userName;
     private String contactNumber;
     private String email;
@@ -25,6 +25,34 @@ public class UserProfileObjectModel {
         this.email=email;
         this.userType = userType;
         this.userSchoolId = userSchoolId;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserSchoolId(String userSchoolId) {
+        this.userSchoolId = userSchoolId;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public String getContactNumber() {

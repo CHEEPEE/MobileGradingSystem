@@ -5,8 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -43,7 +43,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class StudentRegistration extends AppCompatActivity {
+public class StudentRegistrationFromLoginForm extends AppCompatActivity {
     TextView selectDepartment,selectProgram;
     ArrayList<DepartmentObjectModel> departmentObjectModelArrayList = new ArrayList<>();
     ArrayList<ProgramsObjectModel> programsObjectModels =  new ArrayList<>();
@@ -73,8 +73,8 @@ public class StudentRegistration extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         tempUserObject = new TempUserObject();
         mAuth = FirebaseAuth.getInstance();
-        context  = StudentRegistration.this;
-        isUpdateProfile = getIntent().getExtras().getBoolean("isUpdate");
+        context  = StudentRegistrationFromLoginForm.this;
+//            isUpdateProfile = getIntent().getExtras().getBoolean("isUpdate");
 
         fname = (EditText) findViewById(R.id.fName);
         mName = (EditText) findViewById(R.id.mName);
@@ -207,7 +207,7 @@ public class StudentRegistration extends AppCompatActivity {
     }
 
     void selectDepartmentDialog(){
-        final Dialog dialog = new Dialog(StudentRegistration.this);
+        final Dialog dialog = new Dialog(StudentRegistrationFromLoginForm.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dlg_select_department);
@@ -250,7 +250,7 @@ public class StudentRegistration extends AppCompatActivity {
     }
 
     void selectProgram(){
-        final Dialog dialog = new Dialog(StudentRegistration.this);
+        final Dialog dialog = new Dialog(StudentRegistrationFromLoginForm.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dlg_select_program);

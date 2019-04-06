@@ -12,8 +12,9 @@ public class StudentProfileProfileObjectModel {
     private String mNme;
     private String lName;
     private String studentId;
-    private String accoutStatus;
+    private String accountStatus;
     private String yearLevelKey;
+    private String email;
     private String sectionKey;
     private String phoneNumber;
 
@@ -28,23 +29,33 @@ public class StudentProfileProfileObjectModel {
             String mNme,
             String lName,
             String studentId,
-            String accoutStatus,
+            String accountStatus,
             String yearLevelKey,
             String sectionKey,
-            String phoneNumber
+            String phoneNumber,
+            String email
     ){
       this.userId = userId;
+      this.email = email;
       this.departmentKey = departmentKey;
       this.programKey = programKey;
       this.fName = fName;
       this.mNme = mNme;
       this.lName = lName;
       this.studentId = studentId;
-      this.accoutStatus = accoutStatus;
+      this.accountStatus = accountStatus;
       this.yearLevelKey = yearLevelKey;
       this.sectionKey = sectionKey;
       this.phoneNumber = phoneNumber;
 
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setYearLevelKey(String yearLevelKey) {
@@ -83,8 +94,8 @@ public class StudentProfileProfileObjectModel {
         return studentId;
     }
 
-    public String getAccoutStatus() {
-        return accoutStatus;
+    public String getAccountStatus() {
+        return accountStatus;
     }
 
     public String getSectionKey() {
@@ -123,8 +134,8 @@ public class StudentProfileProfileObjectModel {
         this.userId = userId;
     }
 
-    public void setAccoutStatus(String accoutStatus) {
-        this.accoutStatus = accoutStatus;
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
     }
 
     public void setmNme(String mNme) {

@@ -43,6 +43,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.UserProfileObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentProfile;
 import com.mobilegradingsystem.mobilegradingsystem.student.StudentRegistration;
+import com.mobilegradingsystem.mobilegradingsystem.teacher.RegisterStudent;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherProfile;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.TeacherRegistration;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -65,6 +66,7 @@ public class Login extends AppCompatActivity {
     Dialog inputEmailDialog;
     ConstraintLayout laodingIndicator;
     CheckBox passwordVisibility;
+    TextView registerAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,14 @@ public class Login extends AppCompatActivity {
         forgotPassword = (TextView) findViewById(R.id.forgotPassword);
         laodingIndicator = (ConstraintLayout) findViewById(R.id.loading_layout);
         passwordVisibility = (CheckBox) findViewById(R.id.passwordVisibility);
+        registerAccount = (TextView) findViewById(R.id.registerAccount);
+
+        registerAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectUserTypeDialog();
+            }
+        });
 
 
         firestore = FirebaseFirestore.getInstance();
@@ -363,19 +373,19 @@ public class Login extends AppCompatActivity {
 
 
 
-//    void selectUserTypeDialog(){
-//        final Dialog dialog = new Dialog(Login.this);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setCancelable(false);
-//        dialog.setContentView(R.layout.dialog_select_user);
-//        Window window = dialog.getWindow();
-//        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        dialog.show();
-//        dialog.findViewById(R.id.student).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
+    void selectUserTypeDialog(){
+        final Dialog dialog = new Dialog(Login.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_select_user);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.show();
+        dialog.findViewById(R.id.student).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
 //                UserProfileObjectModel userProfileObjectModel
 //                        = new UserProfileObjectModel(mAuth.getUid(),
 //                        mAuth.getCurrentUser().getPhotoUrl().toString(),
@@ -388,18 +398,18 @@ public class Login extends AppCompatActivity {
 //                        .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                            @Override
 //                            public void onSuccess(Void aVoid) {
-//
-//                                Intent i = new Intent(Login.this,StudentRegistration.class);
-//                                startActivity(i);
-//                                dialog.dismiss();
-//                                finish();
+
+                                Intent i = new Intent(Login.this, RegisterStudent.class);
+                                startActivity(i);
+                                dialog.dismiss();
+                                finish();
 //                            }
 //                        });
-//            }
-//        });
-//        dialog.findViewById(R.id.teacher).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+            }
+        });
+        dialog.findViewById(R.id.teacher).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                UserProfileObjectModel userProfileObjectModel
 //                        = new UserProfileObjectModel(mAuth.getUid(),
 //                        mAuth.getCurrentUser().getPhotoUrl().toString(),
@@ -412,22 +422,22 @@ public class Login extends AppCompatActivity {
 //                        .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                            @Override
 //                            public void onSuccess(Void aVoid) {
-//
-//                                Intent i = new Intent(Login.this,TeacherRegistration.class);
-//                                startActivity(i);
-//                                dialog.dismiss();
-//                                finish();
+
+                                Intent i = new Intent(Login.this,TeacherRegistration.class);
+                                startActivity(i);
+                                dialog.dismiss();
+                                finish();
 //                            }
 //                        });
-//            }
-//        });
-//        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//
-//            }
-//        });
-//    }
+            }
+        });
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
+    }
 
 
 }
