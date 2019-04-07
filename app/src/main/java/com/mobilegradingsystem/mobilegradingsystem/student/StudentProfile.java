@@ -300,13 +300,25 @@ public class StudentProfile extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     if (queryDocumentSnapshots.getDocuments().size() == 0){
-                                                        String key = db.collection("studentClasses").document().getId();
+                                                      final String key = db.collection("studentClasses").document().getId();
                                                         StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),inptClassCode.getText().toString(),studentProfileProfileObjectModel.getStudentId(),"pending");
                                                         db.collection("studentClasses").document(key).set(studentClassObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
-                                                                dialog.dismiss();
-                                                                toggleMenu();
+                                                                db.collection("studentProfile").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                                    @Override
+                                                                    public void onSuccess(DocumentSnapshot studentProfileSnapshot) {
+
+                                                                        db.collection("studentClasses")
+                                                                                .document(key).update(studentProfileSnapshot.getData()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                                dialog.dismiss();
+                                                                                toggleMenu();
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
                                                             }
                                                         });
                                                     }else {
