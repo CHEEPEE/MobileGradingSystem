@@ -124,6 +124,7 @@ public class StudentProfile extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 userProfileObjectModel = documentSnapshot.toObject(UserProfileObjectModel.class);
+
                 GlideApp.with(context).load(userProfileObjectModel.getUserImage()).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(accountImage);
 
             }
@@ -380,6 +381,7 @@ public class StudentProfile extends AppCompatActivity {
                 Log.d("MainActivity", "Cancelled scan");
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
+//                Utils.message(result.getContents(),StudentProfile.this);
 
                 db.collection("class").document(result.getContents()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -397,14 +399,29 @@ public class StudentProfile extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                 if (queryDocumentSnapshots.getDocuments().size() == 0){
-                                                    String key = db.collection("studentClasses").document().getId();
-                                                    StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),result.getContents(),studentProfileProfileObjectModel.getStudentId(),"pending");
+                                                    final String key = db.collection("studentClasses").document().getId();
+                                                    final StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),result.getContents(),studentProfileProfileObjectModel.getStudentId(),"pending");
+
                                                     db.collection("studentClasses").document(key).set(studentClassObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            toggleMenu();
+
+                                                            db.collection("studentProfile").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(DocumentSnapshot studentProfileSnapshot) {
+
+                                                                    db.collection("studentClasses")
+                                                                            .document(key).update(studentProfileSnapshot.getData()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void aVoid) {
+                                                                            toggleMenu();
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }else {
                                                     Toast.makeText(context,"Already Added to Your Classes",Toast.LENGTH_LONG).show();
                                                 }
