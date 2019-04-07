@@ -2,6 +2,9 @@ package com.mobilegradingsystem.mobilegradingsystem.teacher.fragment.ClassProfil
 
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobilegradingsystem.mobilegradingsystem.R;
 import com.mobilegradingsystem.mobilegradingsystem.Utils;
+import com.mobilegradingsystem.mobilegradingsystem.appModules.GlideApp;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.student.StudentClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher.TeacherClassObjectModel;
 import com.mobilegradingsystem.mobilegradingsystem.teacher.ClassRecordActBotNav;
@@ -42,7 +49,7 @@ public class DashboardClassTeacherFragement extends Fragment {
     EditText title,desciption;
     Dialog updateClassDialog;
     String loading = "loading...";
-    TextView settings;
+    TextView settings,classCode,showQRCode,copyCode;
     TextView delete;
     TeacherClassObjectModel oldClassModel;
 
@@ -62,6 +69,9 @@ public class DashboardClassTeacherFragement extends Fragment {
         announcementNumber = (TextView) view.findViewById(R.id.announcementsNumber);
         settings = (TextView) view.findViewById(R.id.settings);
         delete = (TextView) view.findViewById(R.id.delete);
+        classCode = (TextView) view.findViewById(R.id.classCode);
+        showQRCode = (TextView) view.findViewById(R.id.showQRCode);
+        copyCode = (TextView) view.findViewById(R.id.copyClassCode);
         feedbacks = (TextView) view.findViewById(R.id.feedbacks);
         studentNumbers.setText(loading);
         className.setText(loading);
@@ -118,6 +128,19 @@ public class DashboardClassTeacherFragement extends Fragment {
                     }
                 });
                 alert.show();
+            }
+        });
+        showQRCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewQRCode(act.getClassKey());
+            }
+        });
+        classCode.setText(act.getClassKey());
+        copyCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copyToClibBoard(act.getClassKey());
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
@@ -223,5 +246,27 @@ public class DashboardClassTeacherFragement extends Fragment {
                         updateClassDialog.dismiss();
                     }
                 });
+    }
+
+
+    void copyToClibBoard(String code){
+        ClipboardManager clipboard = (ClipboardManager) act.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("userId", code);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(act,"Copy to Clipboard "+code,Toast.LENGTH_SHORT).show();
+    }
+
+    void viewQRCode(String code){
+        final Dialog dialog = new Dialog(act);
+        String api = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_class_qr_code);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.show();
+        ImageView qrCode = (ImageView) dialog.findViewById(R.id.qrCode);
+        GlideApp.with(act).load(api+code).diskCacheStrategy(DiskCacheStrategy.ALL).into(qrCode);
     }
 }

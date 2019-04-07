@@ -11,14 +11,15 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="16dp"
-            >
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/announcementTitle"
@@ -26,10 +27,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="8dp"
                 android:paddingTop="16dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="8dp"
                 android:text="Class Name"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -37,15 +38,49 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/classCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Class Code"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/showQRCode"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/showQRCode" />
+            <TextView
+                android:id="@+id/copyClassCode"
+                style="@style/defaultButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="Copy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/announcementTitle" />
+
+            <TextView
+                android:id="@+id/showQRCode"
+                style="@style/defaultButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Show QR"
+                app:layout_constraintEnd_toStartOf="@+id/copyClassCode"
+                app:layout_constraintTop_toBottomOf="@+id/announcementTitle" />
+
+
+            <TextView
                 android:id="@+id/classSched"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:text=""
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/announcementTitle"
-                app:layout_constraintTop_toBottomOf="@+id/announcementTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/copyClassCode" />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -88,9 +123,9 @@
                 android:id="@+id/view2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@color/colorLightGrey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/announcementTitle"
@@ -138,9 +173,9 @@
                 android:id="@+id/view4"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@color/colorLightGrey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/announcementTitle"
@@ -199,8 +234,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                android:drawablePadding="5dp"
                 android:drawableStart="@drawable/ic_edit_black_24dp"
+                android:drawablePadding="5dp"
                 android:gravity="center"
                 android:text="Edit"
                 app:layout_constraintStart_toStartOf="parent"
@@ -212,8 +247,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:drawablePadding="5dp"
                 android:drawableStart="@drawable/ic_delete_black_24dp"
+                android:drawablePadding="5dp"
                 android:drawableTint="@color/colorRed"
                 android:gravity="center"
                 android:text="Delete"
@@ -228,8 +263,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:drawablePadding="5dp"
                 android:drawableStart="@drawable/ic_feedback_black_24dp"
+                android:drawablePadding="5dp"
                 android:gravity="center"
                 android:text="FeedBacks"
                 app:layout_constraintStart_toStartOf="parent"

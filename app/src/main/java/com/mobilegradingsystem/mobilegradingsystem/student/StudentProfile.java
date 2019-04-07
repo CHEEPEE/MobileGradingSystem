@@ -328,6 +328,43 @@ public class StudentProfile extends AppCompatActivity {
                 }
             }
         });
+
+//        db.collection("studentClasses").whereEqualTo("studentUserId",userProfileObjectModel.getUserId()).whereEqualTo("classCode",act.getClassKey()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                if (queryDocumentSnapshots.getDocuments().size() >=1){
+//                    try {
+//                        Toast.makeText(getContext(),"You cannot add the same student on the same class",Toast.LENGTH_SHORT).show();
+//                    }catch (NullPointerException ex){
+//
+//                    }
+//                }else {
+//                    final String studentClassKey = db.collection("studentClasses").document().getId();
+//                    StudentClassObjectModel studentClassObjectModel =
+//                            new StudentClassObjectModel(studentClassKey,userProfileObjectModel.getUserId(),act.getClassKey(),userProfileObjectModel.getUserSchoolId(),"approved");
+//                    db.collection("studentClasses")
+//                            .document(studentClassKey).set(studentClassObjectModel)
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    addStudentToClassDialog.dismiss();
+//                                }
+//                            });
+//                    db.collection("studentProfile").document(userProfileObjectModel.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                            db.collection("studentClasses")
+//                                    .document(studentClassKey).update(documentSnapshot.getData()).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//
+//                                }
+//                            });
+//                        }
+//                    });
+//                }
+//            }
+//        });
     }
 
     void scanQRCode(){
