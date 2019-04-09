@@ -1,9 +1,13 @@
 package com.mobilegradingsystem.mobilegradingsystem.objectModel.teacher;
 
+import android.widget.Toast;
+
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
+
+import javax.security.auth.callback.Callback;
 
 /**
  * Created by Keji's Lab on 26/11/2017.
@@ -22,9 +26,7 @@ public class TeacherClassObjectModel {
     private String schoolYear;
 
 
-    public TeacherClassObjectModel(){
 
-    }
     public TeacherClassObjectModel(
            String classKey,
            String userId,
@@ -44,6 +46,42 @@ public class TeacherClassObjectModel {
       this.classRecordVersionKey = "4TYJW5v4LBujNmMCNEPs";
       this.semester = semester;
       this.schoolYear = schoolYear;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setClassKey(String classKey) {
+        this.classKey = classKey;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setClassRecordVersionKey(String classRecordVersionKey) {
+        this.classRecordVersionKey = classRecordVersionKey;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setSched(String sched) {
+        this.sched = sched;
+    }
+
+    public void setSchoolYear(String schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public String getUserId()

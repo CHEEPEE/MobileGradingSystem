@@ -423,7 +423,7 @@ public class Login extends AppCompatActivity {
 //                            @Override
 //                            public void onSuccess(Void aVoid) {
 
-                                Intent i = new Intent(Login.this,TeacherRegistration.class);
+                                Intent i = new Intent(Login.this,RegisterInstructorActivity.class);
                                 startActivity(i);
                                 dialog.dismiss();
                                 finish();

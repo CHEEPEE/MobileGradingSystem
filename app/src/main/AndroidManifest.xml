@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RegisterInstructorActivity"></activity>
         <activity
             android:name=".Login"
             android:theme="@style/themeTransStatusbar">
@@ -46,8 +47,7 @@
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="barcode" />
-        <!-- To use multiple models: android:value="barcode,model2,model3" -->
+            android:value="barcode" /> <!-- To use multiple models: android:value="barcode,model2,model3" -->
         <activity
             android:name=".teacher.ClassRecordActBotNav"
             android:label="@string/title_activity_class_record_act_bot_nav" />
@@ -61,8 +61,8 @@
         <activity android:name=".IfAccountIsBlockTeacher" />
         <activity android:name=".teacher.FeedBackStudentList" />
         <activity android:name=".teacher.RegisterStudent" />
-        <activity android:name=".teacher.UserUpdatePassword"></activity>
-        <activity android:name=".teacher.UpdateProfilePicture"/>
+        <activity android:name=".teacher.UserUpdatePassword" />
+        <activity android:name=".teacher.UpdateProfilePicture" />
     </application>
 
 </manifest>
