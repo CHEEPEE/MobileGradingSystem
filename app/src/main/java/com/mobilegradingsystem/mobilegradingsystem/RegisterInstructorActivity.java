@@ -52,6 +52,7 @@ public class RegisterInstructorActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         Utils.message("Valid",RegisterInstructorActivity.this);
+                        teacherObjectModel.registerTeacher();
                     }
 
                     @Override

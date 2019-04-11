@@ -37,6 +37,7 @@ public class TeacherProfileProfileObjectModel {
     private String email = "";
     private Context context;
     private String password = "";
+    private String userType = "teacher";
     private Activity act;
 
 
@@ -49,7 +50,8 @@ public class TeacherProfileProfileObjectModel {
             String teacherId,
             String teacherName,
             String accountStatus,
-            String email
+            String email,String userType
+
 
     ) {
         this.userId = userId;
@@ -57,6 +59,7 @@ public class TeacherProfileProfileObjectModel {
         this.teacherName = teacherName;
         this.accountStatus = accountStatus;
         this.email = email;
+        this.userType = "teacher";
 
     }
 
@@ -104,18 +107,22 @@ public class TeacherProfileProfileObjectModel {
         });
     }
 
-    private void registerTeacher() {
+    public void registerTeacher() {
         validate(new MyCallback() {
             @Override
             public void onSuccess() {
                 validateIfInstructorExist(new MyCallback() {
                     @Override
                     public void onSuccess() {
+                        System.out.println("ID Valid");
+                        System.out.println("Email: "+email+" Password: "+password);
                         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
+                                        System.out.println("TASK DONE");
                                         if (task.isSuccessful()) {
+                                            System.out.println("Success Registration");
                                             // Sign in success, update UI with
                                             // the signed-in user's information
                                             final FirebaseUser user = FirebaseAuth.getInstance()
@@ -124,19 +131,25 @@ public class TeacherProfileProfileObjectModel {
                                             saveToTeacherProfile();
                                             saveToUsers();
                                             addTeacherToTempUsers();
+                                            Intent i = new Intent(act,Login.class);
+                                            act.startActivity(i);
+                                            act.finish();
 
                                         } else {
                                             // If sign in fails, display a message to the user.
-//                                    Utils.message("Registration Failed",this.context);
+                                    Utils.message("Registration Failed",context);
                                         }
                                         // ...
                                     }
+
                                 });
+
                     }
 
                     @Override
                     public void onError(String err) {
-
+                        Utils.message("ID already Exist",context);
+                        System.out.println("ID already Exist");
                     }
                 });
 
@@ -264,5 +277,13 @@ public class TeacherProfileProfileObjectModel {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 }
