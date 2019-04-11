@@ -5,7 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +23,7 @@ public class RegisterInstructorActivity extends AppCompatActivity {
      Context context;
      EditText teacherId,email,teacherName,password;
      TextView login;
+     CheckBox isShowPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,13 @@ public class RegisterInstructorActivity extends AppCompatActivity {
         teacherName =(EditText) findViewById(R.id.UserName);
         password =(EditText) findViewById(R.id.password);
         login = (TextView) findViewById(R.id.login);
+        isShowPassword = (CheckBox) findViewById(R.id.isShowPassword);
+        isShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                password.setTransformationMethod(b? HideReturnsTransformationMethod.getInstance(): PasswordTransformationMethod.getInstance());
+            }
+        });
         
         userInputs();
 

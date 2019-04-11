@@ -108,28 +108,38 @@ public class TeacherProfileProfileObjectModel {
         validate(new MyCallback() {
             @Override
             public void onSuccess() {
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with
-                                    // the signed-in user's information
-                                    final FirebaseUser user = FirebaseAuth.getInstance()
-                                            .getCurrentUser();
-                                    setUserId(user.getUid());
-                                    saveToTeacherProfile();
-                                    saveToUsers();
-                                    addTeacherToTempUsers();
+                validateIfInstructorExist(new MyCallback() {
+                    @Override
+                    public void onSuccess() {
+                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            // Sign in success, update UI with
+                                            // the signed-in user's information
+                                            final FirebaseUser user = FirebaseAuth.getInstance()
+                                                    .getCurrentUser();
+                                            setUserId(user.getUid());
+                                            saveToTeacherProfile();
+                                            saveToUsers();
+                                            addTeacherToTempUsers();
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
+                                        } else {
+                                            // If sign in fails, display a message to the user.
 //                                    Utils.message("Registration Failed",this.context);
-                                }
+                                        }
+                                        // ...
+                                    }
+                                });
+                    }
 
-                                // ...
-                            }
-                        });
+                    @Override
+                    public void onError(String err) {
+
+                    }
+                });
+
             }
 
             @Override
