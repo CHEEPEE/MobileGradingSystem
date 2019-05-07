@@ -48,6 +48,10 @@ public class TeacherClassObjectModel {
       this.schoolYear = schoolYear;
     }
 
+    public TeacherClassObjectModel(){
+
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }

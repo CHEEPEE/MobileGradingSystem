@@ -93,6 +93,7 @@ public class RegisterInstructorActivity extends AppCompatActivity {
             @Override
             public void change(String text) {
                 teacherObjectModel.setTeacherId(text);
+                teacherObjectModel.setUserSchoolId(text);
             }
 
             @Override

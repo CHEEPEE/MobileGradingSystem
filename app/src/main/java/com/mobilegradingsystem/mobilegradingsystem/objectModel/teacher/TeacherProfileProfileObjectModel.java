@@ -35,6 +35,7 @@ public class TeacherProfileProfileObjectModel {
     private String teacherId = "";
     private String accountStatus = "pending";
     private String email = "";
+    private String userSchoolId = "";
     private Context context;
     private String password = "";
     private String userType = "teacher";
@@ -50,7 +51,7 @@ public class TeacherProfileProfileObjectModel {
             String teacherId,
             String teacherName,
             String accountStatus,
-            String email,String userType
+            String email,String userType,String userSchoolId
 
 
     ) {
@@ -60,7 +61,15 @@ public class TeacherProfileProfileObjectModel {
         this.accountStatus = accountStatus;
         this.email = email;
         this.userType = "teacher";
+        this.userSchoolId = teacherId;
+    }
 
+    public void setUserSchoolId(String userSchoolId) {
+        this.userSchoolId = userSchoolId;
+    }
+
+    public String getUserSchoolId() {
+        return userSchoolId;
     }
 
     public void setEmail(String email) {

@@ -308,7 +308,6 @@ public class StudentProfile extends AppCompatActivity {
                                                                 db.collection("studentProfile").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                                                     @Override
                                                                     public void onSuccess(DocumentSnapshot studentProfileSnapshot) {
-
                                                                         db.collection("studentClasses")
                                                                                 .document(key).update(studentProfileSnapshot.getData()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                             @Override
@@ -412,7 +411,7 @@ public class StudentProfile extends AppCompatActivity {
                                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                 if (queryDocumentSnapshots.getDocuments().size() == 0){
                                                     final String key = db.collection("studentClasses").document().getId();
-                                                    final StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),result.getContents(),studentProfileProfileObjectModel.getStudentId(),"pending");
+                                                    final StudentClassObjectModel studentClassObjectModel = new StudentClassObjectModel(key,mAuth.getUid(),result.getContents(),studentProfileProfileObjectModel.getStudentId(),"approved");
 
                                                     db.collection("studentClasses").document(key).set(studentClassObjectModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
