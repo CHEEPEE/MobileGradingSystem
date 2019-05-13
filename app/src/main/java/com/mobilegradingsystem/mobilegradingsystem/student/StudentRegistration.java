@@ -82,7 +82,7 @@ public class StudentRegistration extends AppCompatActivity {
         studentId = (EditText) findViewById(R.id.announcementTitle);
         saveInfo = (TextView) findViewById(R.id.saveInfo);
 
-
+        Utils.message("Student Registration class'",context);
         selectDepartment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -329,7 +329,7 @@ public class StudentRegistration extends AppCompatActivity {
     }
     boolean validate(String a,String b,String c,String d){
         boolean isValid = true;
-        if (a == null || b == null || c == null || d == null){
+        if (a == null || b == null || c == null || d == null ){
             isValid = false;
         }
         return isValid;

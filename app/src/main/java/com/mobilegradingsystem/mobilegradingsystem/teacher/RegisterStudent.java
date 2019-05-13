@@ -115,6 +115,8 @@ public class RegisterStudent extends AppCompatActivity {
                 password.setTransformationMethod(b? HideReturnsTransformationMethod.getInstance(): PasswordTransformationMethod.getInstance());
             }
         });
+
+        Utils.message("Student Registration class'",context);
         selectYearLevel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

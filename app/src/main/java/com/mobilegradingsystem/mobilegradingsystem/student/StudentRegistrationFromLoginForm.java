@@ -66,6 +66,7 @@ public class StudentRegistrationFromLoginForm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_registration);
+
         selectDepartment = (TextView) findViewById(R.id.selectDepartment);
         selectProgram = (TextView) findViewById(R.id.selectProgram);
         selectYearLevel = (TextView) findViewById(R.id.selectYearLevel);
@@ -74,6 +75,7 @@ public class StudentRegistrationFromLoginForm extends AppCompatActivity {
         tempUserObject = new TempUserObject();
         mAuth = FirebaseAuth.getInstance();
         context  = StudentRegistrationFromLoginForm.this;
+
 //            isUpdateProfile = getIntent().getExtras().getBoolean("isUpdate");
 
         fname = (EditText) findViewById(R.id.fName);
